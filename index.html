@@ -51,7 +51,6 @@
             top: 50%;
             display: flex;
             flex-direction: column;
-            /* Transform 由 JS 自動加入 scale，保證永遠在正中央 */
         }
 
         .battle-main { flex:1; display:flex; justify-content:space-between; align-items:stretch; padding:20px 10px; gap:15px; }
@@ -110,11 +109,8 @@
         .inspect-btn{position:absolute;top:-5px;left:-5px;background:rgba(0,0,0,.8);color:white;border-radius:50%;width:24px;height:24px;display:flex;justify-content:center;align-items:center;z-index:10;transition:transform .2s;border:1px solid #fff}
         .inspect-btn:hover{transform:scale(1.2);background:#ffcb05;color:black}
         
-        /* 調整增益標籤的位置與樣式 (移至圖片右上角內) */
         .buff-container{position:absolute;top:4px;right:4px;display:flex;gap:3px;flex-direction:column;align-items:flex-end;z-index:5}
         .item-tag{background:#ffcb05;color:black;padding:3px 5px;border-radius:6px;font-size:9px;font-weight:bold;box-shadow:0 2px 4px rgba(0,0,0,.5);border:1px solid #000}
-        
-        /* 放大的卡牌標籤特調 */
         #inspect-content .item-tag{font-size:14px;padding:4px 8px;border-radius:8px;}
 
         .status-container{position:absolute;bottom:3px;left:3px;display:flex;gap:2px;flex-wrap:wrap;z-index:5}
@@ -148,10 +144,7 @@
         .hp-bar{height:6px;background:#333;border-radius:3px;margin:3px 0;overflow:hidden;border:1px solid #000}
         .hp-fill{height:100%;background:#4caf50;transition:width .3s}
 
-        /* ★ 遊戲內部 Modal 移入 Scale Wrapper 內，跟著比例完美縮放 ★ */
         .game-modal{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:10000; border-radius: 20px;}
-        
-        /* 系統獨立 Modal 維持最上層 */
         .modal{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.95);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:20000}
         .modal-box{background:#1a1a1a;padding:30px;border-radius:20px;max-width:1000px;width:95%;text-align:center;border:2px solid #ffcb05;position:relative}
         .btn{padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:bold;border:none;font-size:14px;transition:.3s;width:100%;display:block;margin-bottom:8px;}
@@ -160,7 +153,6 @@
         
         #setup-ui { display: flex; flex-direction: column; width: 100%; gap: 5px; margin-bottom: 10px; }
 
-        /* 大按鈕 */
         .kahoot-btn { padding: 20px 30px; border-radius: 16px; border: none; color: white; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 6px 0 rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: flex-start; min-height: 130px; max-height: 180px; flex: 1 1 calc(50% - 30px); overflow: hidden; box-sizing: border-box;}
         .kahoot-btn:hover { filter: brightness(1.15); transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,0.3); }
         .kahoot-btn:active { transform: translateY(6px); box-shadow: 0 0 0 rgba(0,0,0,0.3); }
@@ -169,12 +161,6 @@
         .kb-yellow { background-color: #d89e00; }
         .kb-green { background-color: #26890c; }
 
-        .question-formatted{text-align:left;display:inline-block;max-width:100%;font-size:32px;line-height:1.6;font-family:Arial,sans-serif}
-        .question-body{text-align:left;margin-bottom:15px; font-weight:bold; color:#ffcb05;}
-        .question-q{color:white}
-        .question-a{margin-top:10px;color:#ffcb05;font-weight:bold}
-        .question-option{padding-left:2em;text-indent:-2em;margin-bottom:6px;text-align:left}
-        
         #inspect-content .card{width:320px;font-size:16px;padding:15px;cursor:default;box-shadow:0 0 40px rgba(255,255,255,.5)}
         #inspect-content .card-img{height:160px}
         #inspect-content .energy-icon{width:20px;height:20px}
@@ -182,7 +168,6 @@
         
         .hidden{display:none!important}
         
-        /* 置頂傷害數字 */
         .damage-pop{position:fixed;color:#f00;font-size:55px;font-weight:900;text-shadow:0 0 12px #fff;pointer-events:none;z-index:20001;animation:popUp 1s forwards}
         @keyframes popUp{0%{transform:scale(.5);opacity:1}100%{transform:translateY(-80px) scale(1.5);opacity:0}}
         
@@ -204,7 +189,7 @@
 
 <canvas id="fx-canvas"></canvas>
 
-<!-- 系統彈窗：固定於視窗最上層 -->
+<!-- 系統彈窗 -->
 <div id="sys-alert" class="modal" style="z-index: 99999;">
     <div class="modal-box" style="border-color: #ff4444; padding: 40px; max-width: 500px;">
         <div id="sys-alert-msg" style="font-size: 24px; margin-bottom: 30px; line-height:1.5;"></div>
@@ -261,7 +246,6 @@
             </div>
         </button>
 
-        <!-- ☁️ 雲端同步按鈕移至大廳下方 -->
         <div style="text-align: center; margin-top: 20px;">
             <button class="btn" style="background:#444; color:#fff; width:200px; font-size:12px; opacity:0.6; margin: 0 auto;" onclick="uploadDataToFirestore()">☁️ 同步角色資料至雲端</button>
         </div>
@@ -269,7 +253,6 @@
 </div>
 
 <div id="battle-field" class="hidden">
-    <!-- ★ 遊戲引擎框：保持 1280x720 以免空隙太大 ★ -->
     <div id="battle-scale-wrapper" style="height: 720px;">
         <div class="battle-main">
             <!-- TEAM 1 -->
@@ -310,9 +293,7 @@
             </div>
         </div>
 
-        <!-- ★ 遊戲內部 Modal 放置於 Wrapper 內，隨之完美縮放 ★ -->
         <div id="quiz-modal" class="game-modal">
-            <!-- 放大答題寬度，並增加邊緣適配 -->
             <div class="modal-box" style="max-width: 1200px; width: 95%; padding: 40px;">
                 <h2 id="modal-team-name" style="margin-bottom: 25px; font-size:45px; font-weight:900; text-shadow:0 0 10px rgba(255,255,255,0.5); color:#ffcb05;"></h2>
                 <div id="quiz-text" style="margin: 30px 0;"></div>
@@ -361,7 +342,7 @@
 <!-- 腳本區域                              -->
 <!-- ===================================== -->
 
-<!-- 1. 載入本地資料庫 (作為初始來源，如果不需要可忽略) -->
+<!-- 1. 載入本地資料庫 (作為備份或初始來源，確保 data.js 在同一目錄) -->
 <script src="data.js"></script>
 
 <!-- 2. Firebase 雲端模組邏輯 -->
@@ -444,51 +425,65 @@
 <!-- 3. 遊戲本體渲染與核心邏輯 -->
 <script>
     // ==============================================================
-    // ⚔️ 核心招式效果字典 (直接內建於主程式，確保 100% 絕對觸發)
+    // ⚔️ 核心招式效果字典 (修正伊布/自傷/多次擲幣 等所有遺失機率)
     // ==============================================================
     window.AttackEffects = {
         // 狀態類
-        'poison': (attacker, defender, log) => { defender.status.poison = true; log.text += ` ☠️ 中毒！`; },
-        'poison_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.poison = true; log.text += ` ☠️ 中毒！`; } },
-        'burn': (attacker, defender, log) => { defender.status.burn = true; log.text += ` 🔥 灼傷！`; },
-        'burn_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.burn = true; log.text += ` 🔥 灼傷！`; } },
-        'asleep': (attacker, defender, log) => { defender.status.asleep = true; log.text += ` 💤 睡眠！`; },
-        'asleep_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.asleep = true; log.text += ` 💤 睡眠！`; } },
-        'asleep_self': (attacker, defender, log) => { attacker.status.asleep = true; log.text += ` 💤 自己陷入睡眠！`; },
-        'confuse': (attacker, defender, log) => { defender.status.confused = true; log.text += ` 💫 混亂！`; },
-        'confuse_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.confused = true; log.text += ` 💫 混亂！`; } },
-        'confuse_self_flip': (attacker, defender, log, coinResult) => { if (!coinResult) { attacker.status.confused = true; log.text += ` 💫 自己陷入混亂！`; } },
-        'paralyze_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.paralyze = true; log.text += ` ⚡ 麻痺！`; } },
+        'poison': (attacker, defender, log) => { defender.status.poison = true; log.text += ` ☠️ 對手中毒！`; },
+        'poison_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.poison = true; log.text += ` ☠️ 對手中毒！`; } },
+        'burn': (attacker, defender, log) => { defender.status.burn = true; log.text += ` 🔥 對手灼傷！`; },
+        'burn_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.burn = true; log.text += ` 🔥 對手灼傷！`; } },
+        'asleep': (attacker, defender, log) => { defender.status.asleep = true; log.text += ` 💤 對手睡眠！`; },
+        'asleep_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.asleep = true; log.text += ` 💤 對手睡眠！`; } },
+        'asleep_self': (attacker, defender, log) => { attacker.status.asleep = true; log.text += ` 💤 副作用：自己陷入睡眠！`; },
+        'confuse': (attacker, defender, log) => { defender.status.confused = true; log.text += ` 💫 對手混亂！`; },
+        'confuse_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.confused = true; log.text += ` 💫 對手混亂！`; } },
+        'confuse_self_flip': (attacker, defender, log, coinResult) => { if (!coinResult) { attacker.status.confused = true; log.text += ` 💫 副作用：自己陷入混亂！`; } },
+        'paralyze_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.paralyze = true; log.text += ` ⚡ 對手麻痺！`; } },
         
         // 增傷與回復類
-        'heal_self_20': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 20); log.text += ` 💚 恢復 20 HP！`; },
-        'heal_self_30': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 30); log.text += ` 💚 恢復 30 HP！`; },
-        'red_hp_burst_40': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發+40！)`; return baseDmg + 40; } return baseDmg; },
-        'red_hp_burst_50': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發+50！)`; return baseDmg + 50; } return baseDmg; },
-        'red_hp_burst_60': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發+60！)`; return baseDmg + 60; } return baseDmg; },
-        'plus_dmg_if_status_30': (attacker, defender, log, coinResult, baseDmg) => { const hasS = defender.status.poison || defender.status.burn || defender.status.asleep || defender.status.confused || defender.status.paralyze; if(hasS) { log.text += ` (狀態異常加成+30)`; return baseDmg + 30; } return baseDmg; },
-        'plus_dmg_if_status_40': (attacker, defender, log, coinResult, baseDmg) => { const hasS = defender.status.poison || defender.status.burn || defender.status.asleep || defender.status.confused || defender.status.paralyze; if(hasS) { log.text += ` (狀態異常加成+40)`; return baseDmg + 40; } return baseDmg; },
-        'self_dmg_20': (attacker, defender, log) => { attacker.currHp = Math.max(0, attacker.currHp - 20); showDamage(attacker.uid, 20, 'normal', false, attacker.uid); log.text += ` (自己受到 20 傷害)`; },
-        'self_dmg_30': (attacker, defender, log) => { attacker.currHp = Math.max(0, attacker.currHp - 30); showDamage(attacker.uid, 30, 'normal', false, attacker.uid); log.text += ` (自己受到 30 傷害)`; },
-
-        // 控制與牽制類
-        'cant_act_next': (attacker, defender, log) => { attacker.status.cant_attack = 2; log.text += ` (下回合無法攻擊)`; },
-        'cant_act_next_and_discard_1': (attacker, defender, log) => { attacker.status.cant_attack = 2; if(attacker.attachedEnergy.length > 0) attacker.attachedEnergy.pop(); log.text += ` (自棄 1 能且下回禁攻)`; },
-        'seal_both_discard': (attacker, defender, log) => { defender.status.cant_attack = 1; if(attacker.attachedEnergy.length > 0) attacker.attachedEnergy.pop(); if(defender.attachedEnergy.length > 0) defender.attachedEnergy.pop(); log.text += ` (雙方棄能，敵下回禁攻)`; },
-        'immune_next_flip': (attacker, defender, log, coinResult) => { if(coinResult) { attacker.status.immune_next = true; log.text += ` (下回合免傷)`; } },
-        'reduce_dmg_taken_30': (attacker, defender, log) => { attacker.status.reduce_dmg_30 = true; log.text += ` (下回受傷-30)`; },
-        'reduce_dmg_taken_50': (attacker, defender, log) => { attacker.status.reduce_dmg_50 = true; log.text += ` (下回受傷-50)`; },
-        'reduce_dmg_taken_flip': (attacker, defender, log, coinResult) => { if(coinResult) { attacker.status.reduce_dmg_30 = true; log.text += ` (下回受傷-30)`; } },
-        'reduce_dmg_taken_flip_30': (attacker, defender, log, coinResult) => { if(coinResult) { attacker.status.reduce_dmg_30 = true; log.text += ` (下回受傷-30)`; } },
-        'enemy_dmg_minus_30': (attacker, defender, log) => { defender.status.enemy_dmg_minus_30 = 2; log.text += ` (對手下回攻擊-30)`; },
-        'calm_mind_20': (attacker, defender, log) => { attacker.buff.dmg = 20; attacker.buff.turns = 2; attacker.status.reduce_dmg_20 = true; log.text += ` (攻擊+20，受傷-20)`; },
-        'seal_attack': (attacker, defender, log) => { defender.status.cant_attack = 1; if(attacker.attachedEnergy.length > 0) attacker.attachedEnergy.pop(); log.text += ` (自棄1能，敵下回禁攻)`; },
-        'discard_1_fire': (attacker, defender, log) => { let r=0; attacker.attachedEnergy = attacker.attachedEnergy.filter(e => { if((e==='fire'||e==='rainbow') && r<1) { r++; return false; } return true; }); log.text += ` (丟棄 1 火能)`; },
-        'discard_2_fire': (attacker, defender, log) => { let r=0; attacker.attachedEnergy = attacker.attachedEnergy.filter(e => { if((e==='fire'||e==='rainbow') && r<2) { r++; return false; } return true; }); log.text += ` (丟棄 2 火能)`; },
-        'discard_enemy_energy': (attacker, defender, log) => { if(defender.attachedEnergy.length > 0) { defender.attachedEnergy.pop(); log.text += ` (丟棄對手 1 能)`; } },
-        'discard_enemy_energy_flip': (attacker, defender, log, coinResult) => { if(coinResult && defender.attachedEnergy.length > 0) { defender.attachedEnergy.pop(); log.text += ` (丟棄對手 1 能)`; } },
-        'discard_1_elec_and_paralyze': (attacker, defender, log) => { let r=false; attacker.attachedEnergy = attacker.attachedEnergy.filter(e => { if((e==='electric'||e==='rainbow') && !r) { r=true; return false; } return true; }); defender.status.paralyze = true; log.text += ` (棄1電能) ⚡ 麻痺！`; },
-        'ignore_resistance': (attacker, defender, log, coinResult, baseDmg) => { log.text += ` (無視抗性與減傷)`; return baseDmg; }
+        'heal_self_20': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 20); log.text += ` 💚 恢復了 20 HP！`; },
+        'heal_self_30': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 30); log.text += ` 💚 恢復了 30 HP！`; },
+        'red_hp_burst_40': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+40！)`; return baseDmg + 40; } return baseDmg; },
+        'red_hp_burst_50': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+50！)`; return baseDmg + 50; } return baseDmg; },
+        'red_hp_burst_60': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+60！)`; return baseDmg + 60; } return baseDmg; },
+        
+        // 💡 修正：「自己(攻擊方)」狀態異常加成 (伊布的突擊等)
+        'plus_dmg_if_status_30': (attacker, defender, log, coinResult, baseDmg) => { 
+            const hasS = attacker.status.poison || attacker.status.burn || attacker.status.asleep || attacker.status.confused || attacker.status.paralyze; 
+            if(hasS) { log.text += ` (自己狀態異常，潛能激發追加 30 傷害！)`; return baseDmg + 30; } 
+            return baseDmg; 
+        },
+        'plus_dmg_if_status_40': (attacker, defender, log, coinResult, baseDmg) => { 
+            const hasS = attacker.status.poison || attacker.status.burn || attacker.status.asleep || attacker.status.confused || attacker.status.paralyze; 
+            if(hasS) { log.text += ` (自己狀態異常，潛能激發追加 40 傷害！)`; return baseDmg + 40; } 
+            return baseDmg; 
+        },
+        
+        // 自傷與副作用類
+        'self_dmg_20': (attacker, defender, log) => { attacker.currHp = Math.max(0, attacker.currHp - 20); showDamage(attacker.uid, 20, 'normal', false, attacker.uid); log.text += ` (副作用：自己受到 20 點反作用力傷害)`; },
+        'self_dmg_30': (attacker, defender, log) => { attacker.currHp = Math.max(0, attacker.currHp - 30); showDamage(attacker.uid, 30, 'normal', false, attacker.uid); log.text += ` (副作用：自己受到 30 點反作用力傷害)`; },
+        'cant_act_next': (attacker, defender, log) => { attacker.status.cant_attack = 2; log.text += ` (副作用：自己下回合無法攻擊)`; },
+        'cant_act_next_and_discard_1': (attacker, defender, log) => { attacker.status.cant_attack = 2; if(attacker.attachedEnergy.length > 0) attacker.attachedEnergy.pop(); log.text += ` (副作用：自棄 1 能且下回合無法攻擊)`; },
+        
+        // 其他機制與防禦
+        'seal_both_discard': (attacker, defender, log) => { defender.status.cant_attack = 1; if(attacker.attachedEnergy.length > 0) attacker.attachedEnergy.pop(); if(defender.attachedEnergy.length > 0) defender.attachedEnergy.pop(); log.text += ` (雙方各棄 1 能，對手下回合無法攻擊)`; },
+        'immune_next_flip': (attacker, defender, log, coinResult) => { if(coinResult) { attacker.status.immune_next = true; log.text += ` (防禦準備：下回合免疫傷害)`; } },
+        'reduce_dmg_taken_30': (attacker, defender, log) => { attacker.status.reduce_dmg_30 = true; log.text += ` (防禦準備：下回合受傷-30)`; },
+        'reduce_dmg_taken_50': (attacker, defender, log) => { attacker.status.reduce_dmg_50 = true; log.text += ` (防禦準備：下回合受傷-50)`; },
+        'reduce_dmg_taken_flip': (attacker, defender, log, coinResult) => { if(coinResult) { attacker.status.reduce_dmg_30 = true; log.text += ` (防禦準備：下回合受傷-30)`; } },
+        'reduce_dmg_taken_flip_30': (attacker, defender, log, coinResult) => { if(coinResult) { attacker.status.reduce_dmg_30 = true; log.text += ` (防禦準備：下回合受傷-30)`; } },
+        'enemy_dmg_minus_30': (attacker, defender, log) => { defender.status.enemy_dmg_minus_30 = 2; log.text += ` (牽制：對手下回合攻擊力-30)`; },
+        'calm_mind_20': (attacker, defender, log) => { attacker.buff.dmg = 20; attacker.buff.turns = 2; attacker.status.reduce_dmg_20 = true; log.text += ` (冥想：攻擊力+20，且受傷-20)`; },
+        'seal_attack': (attacker, defender, log) => { defender.status.cant_attack = 1; if(attacker.attachedEnergy.length > 0) attacker.attachedEnergy.pop(); log.text += ` (自棄 1 能，封印對手下回合攻擊)`; },
+        'discard_1_fire': (attacker, defender, log) => { let r=0; attacker.attachedEnergy = attacker.attachedEnergy.filter(e => { if((e==='fire'||e==='rainbow') && r<1) { r++; return false; } return true; }); log.text += ` (代價：丟棄 1 個火能量)`; },
+        'discard_2_fire': (attacker, defender, log) => { let r=0; attacker.attachedEnergy = attacker.attachedEnergy.filter(e => { if((e==='fire'||e==='rainbow') && r<2) { r++; return false; } return true; }); log.text += ` (代價：丟棄 2 個火能量)`; },
+        'discard_enemy_energy': (attacker, defender, log) => { if(defender.attachedEnergy.length > 0) { defender.attachedEnergy.pop(); log.text += ` (破壞：丟棄對手 1 個能量)`; } },
+        'discard_enemy_energy_flip': (attacker, defender, log, coinResult) => { if(coinResult && defender.attachedEnergy.length > 0) { defender.attachedEnergy.pop(); log.text += ` (破壞：丟棄對手 1 個能量)`; } },
+        'discard_1_elec_and_paralyze': (attacker, defender, log) => { let r=false; attacker.attachedEnergy = attacker.attachedEnergy.filter(e => { if((e==='electric'||e==='rainbow') && !r) { r=true; return false; } return true; }); defender.status.paralyze = true; log.text += ` (棄 1 電能) ⚡ 對手麻痺！`; },
+        'ignore_resistance': (attacker, defender, log, coinResult, baseDmg) => { log.text += ` (無視對手抗性與減傷)`; return baseDmg; },
+        'damage_flip_20': (attacker, defender, log, coinResult, baseDmg) => { if(coinResult) { log.text += ' (正面追加 20 傷害！)'; return baseDmg + 20; } return baseDmg; },
+        'damage_flip_30': (attacker, defender, log, coinResult, baseDmg) => { if(coinResult) { log.text += ' (正面追加 30 傷害！)'; return baseDmg + 30; } return baseDmg; }
     };
 
     // --- Scale Wrapper 邏輯 ---
@@ -521,7 +516,6 @@
         if (l.children.length > 8) { l.removeChild(l.lastChild); }
     }
 
-    // --- 獲取能量類型的輔助函數 ---
     function getSmartEnergyType(team) {
         let pool = new Set();
         team.pokemon.filter(p => p.currHp > 0).forEach(p => { pool.add(p.type); p.attacks.forEach(atk => { atk.cost.forEach(c => { if (c !== 'any') pool.add(c); }); }); });
@@ -634,7 +628,6 @@
         teams: { 1: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [] }, 2: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [] } }
     };
 
-    // --- CSV 資料解析 ---
     function parseCSVData(text) {
         const lines = text.split(/\r\n|\n|\r/); 
         state.csvQuestions = [];
@@ -963,21 +956,12 @@
         const atk = state.pendingAttack.atk;
         if (atk.special && typeof atk.special === 'string' && atk.special.includes('flip') && !atk.special.startsWith('flip_')) {
             state.coinFlipReason = 'attack'; let desc = '發動招式附加效果：<br>';
-            
             const flipDescMap = {
-                'paralyze_flip': '若為正面，對手麻痺！',
-                'poison_flip': '若為正面，對手中毒！',
-                'burn_flip': '若為正面，對手灼傷！',
-                'confuse_flip': '若為正面，對手混亂！',
-                'immune_next_flip': '若為正面，下回合免傷！',
-                'reduce_dmg_taken_flip': '若為正面，下回合受傷減輕！',
-                'reduce_dmg_taken_flip_30': '若為正面，下回受傷-30！',
-                'dmg_flip': '必須正面才能造成傷害！',
-                'discard_enemy_energy_flip': '若為正面，丟棄對手能量！',
-                'asleep_flip': '若為正面，對手睡眠！',
-                'confuse_self_flip': '若為反面，自己混亂！'
+                'paralyze_flip': '若為正面，對手麻痺！', 'poison_flip': '若為正面，對手中毒！', 'burn_flip': '若為正面，對手灼傷！',
+                'confuse_flip': '若為正面，對手混亂！', 'immune_next_flip': '若為正面，下回合免傷！', 'reduce_dmg_taken_flip': '若為正面，下回合受傷減輕！',
+                'reduce_dmg_taken_flip_30': '若為正面，下回受傷-30！', 'dmg_flip': '必須正面才能造成傷害！', 'discard_enemy_energy_flip': '若為正面，丟棄對手能量！',
+                'asleep_flip': '若為正面，對手睡眠！', 'confuse_self_flip': '若為反面，自己混亂！'
             };
-
             if (atk.special.includes('damage_flip')) desc += '若為正面，造成額外傷害！';
             else if (flipDescMap[atk.special]) desc += flipDescMap[atk.special];
             else desc += '依據硬幣結果觸發效果！';
@@ -1044,13 +1028,18 @@
                 const newDmg = window.AttackEffects[atk.special](attacker, defender, log, coinResult, dmg);
                 if (newDmg !== undefined) dmg = newDmg;
             } else if (atk.special) {
-                // 保留尚未移入字典的複雜邏輯
-                if (atk.special === 'force_swap_choose') { const aliveBench = state.teams[enemyTeamNum].pokemon.filter((p, i) => i !== state.teams[enemyTeamNum].activeIdx && p.currHp > 0); if(aliveBench.length > 0) { state.step = 'select_enemy_bench'; state.pendingAttack = null; state.isAttacking = false; updateHint("請選擇對手後備寶可夢拖上場！"); render(); return; } else { log.text += ` (對手無後備，招式無效)`; } }
+                // 處理未放入字典的特殊動態效果
+                if (atk.special === 'force_swap_choose') { const aliveBench = state.teams[enemyTeamNum].pokemon.filter((p, i) => i !== state.teams[enemyTeamNum].activeIdx && p.currHp > 0); if(aliveBench.length > 0) { state.step = 'select_enemy_bench'; state.pendingAttack = null; state.isAttacking = false; updateHint("請選擇對手後備寶可夢拖上場！"); render(); return; } else { log.text += ` (對手無後備，替換無效)`; } }
                 if (atk.special === 'transform_choose') { state.step = 'select_transform_target'; state.transformingPokemon = attacker; state.pendingAttack = null; state.isAttacking = false; updateHint("請選擇對手進行複製！"); render(); return; }
 
-                if(atk.special.includes('damage_flip') && coinResult === true) dmg += parseInt(atk.special.split('_')[2] || 20); 
-                if(atk.special === 'dmg_flip' && coinResult === false) dmg = 0;
-                if(atk.special.includes('flip_') && atk.special.includes('x')) dmg = coinResult * parseInt(atk.special.split('x')[1]);
+                if(atk.special.includes('flip_') && atk.special.includes('x')) {
+                    dmg = coinResult * parseInt(atk.special.split('x')[1]);
+                    log.text += ` (擲出 ${coinResult} 次正面，造成 ${dmg} 傷害！)`;
+                }
+                if(atk.special === 'dmg_flip') {
+                    if(!coinResult) { log.text += ' (硬幣反面，攻擊失敗無傷害)'; dmg = 0; }
+                    else { log.text += ' (正面，攻擊成功！)'; }
+                }
                 
                 if(atk.special === 'plus_dmg_per_elec') { let extra = attacker.attachedEnergy.filter(e => e === 'electric' || e === 'rainbow').length - 2; if(extra > 0) dmg += Math.min(2, extra) * 10; }
                 if(atk.special === 'plus_dmg_per_water') { let extra = attacker.attachedEnergy.filter(e => e === 'water' || e === 'rainbow').length - 2; if(extra > 0) dmg += Math.min(2, extra) * 10; }
@@ -1061,18 +1050,21 @@
                         const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
                         if(Math.random() < 0.3 && tDB.length > 0) myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] });
                         else myTeam.hand.push({ cardType: 'energy', type: getSmartEnergyType(myTeam) });
-                        log.text += ` (隨機抽卡)`;
+                        log.text += ` (隨機抽 1 張卡)`;
                     }
                 }
                 if (atk.special === 'draw_2') {
                     const myTeam = state.teams[state.currentTeam];
                     const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
+                    let drawn = 0;
                     for(let k=0; k<2; k++) {
                         if(myTeam.hand.length < 7) {
                             if(Math.random() < 0.3 && tDB.length > 0) myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] });
                             else myTeam.hand.push({ cardType: 'energy', type: getSmartEnergyType(myTeam) });
+                            drawn++;
                         }
                     }
+                    log.text += ` (隨機抽 ${drawn} 張卡)`;
                 }
             }
 
