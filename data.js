@@ -106,7 +106,31 @@ const POKEMON_DB = [
     { id: 912, name: '潤水鴨', type: 'water', hp: 70, weakness: 'electric', resistance: {type:'fire', val:20}, attacks: [{n:'水槍', d:20, cost:['water']}, {n:'液態裂破', d:50, cost:['water','any'], special:'damage_flip_20', desc:'硬幣正面+20傷害'}] },
     { id: 148, name: '哈克龍', type: 'water', hp: 100, weakness: 'electric', resistance: {type:'fire', val:20}, attacks: [{n:'龍之俯衝', d:50, cost:['water','any'], special:'paralyze_flip', desc:'正面麻痺'}, {n:'破壞光線', d:70, cost:['water','any','any'], special:'cant_act_next', desc:'該寶可夢下回合無法使用招式'}] },
     { id: 43, name: '走路草', type: 'grass', hp: 60, weakness: 'fire', resistance: {type:'water', val:20}, attacks: [{n:'催眠粉', d:10, cost:['grass'], special:'asleep', desc:'對手必定睡眠'}, {n:'麻痺粉', d:40, cost:['grass','any'], special:'paralyze_flip', desc:'硬幣正面麻痺'}] },
-    { id: 83, name: '大蔥鴨', type: 'normal', hp: 70, weakness: 'electric', resistance: {type:'none', val:0}, attacks: [{n:'突擊', d:20, cost:['any']}, {n:'碎岩', d:30, cost:['any','any'], special:'damage_flip_30', desc:'硬幣正面+30傷害'}] }
+    { id: 83, name: '大蔥鴨', type: 'normal', hp: 70, weakness: 'electric', resistance: {type:'none', val:0}, attacks: [{n:'突擊', d:20, cost:['any']}, {n:'碎岩', d:30, cost:['any','any'], special:'damage_flip_30', desc:'硬幣正面+30傷害'}] }, { 
+        id: 887, name: '多隆巴魯托', type: 'purple', hp: 150, 
+        weakness: 'purple', resistance: {type:'brown', val:20}, 
+        attacks: [{n:'龍箭', d:25, cost:['purple','any'], special:'damage_flip_25', desc:'擲 1 幣正面+25'}, {n:'龍之俯衝', d:80, cost:['purple','purple','any']}] 
+    },
+    { 
+        id: 784, name: '杖尾鱗甲龍', type: 'brown', hp: 150, 
+        weakness: ['grass', 'water'], resistance: {type:'electric', val:20}, 
+        attacks: [{n:'戰吼', d:40, cost:['any','any'], special:'reduce_dmg_taken_30', desc:'下回受傷-30'}, {n:'魂舞烈音爆', d:120, cost:['any','any','brown','brown'], special:'seal_both_discard', desc:'雙方各棄 1 能'}] 
+    },
+    { 
+        id: 612, name: '雙斧戰龍', type: 'normal', hp: 140, 
+        weakness: 'brown', resistance: {type:'none', val:0}, 
+        attacks: [{n:'廣域破壞', d:40, cost:['any','any'], special:'reduce_dmg_taken_20', desc:'下回受傷-20'}, {n:'龍之波動', d:90, cost:['any','any','brown']}] 
+    },
+    { 
+        id: 706, name: '黏美龍', type: 'normal', hp: 140, 
+        weakness: 'brown', resistance: {type:'none', val:0}, 
+        attacks: [{n:'水炮', d:50, cost:['water','any']}, {n:'流星群', d:110, cost:['water','water','any'], special:'cant_act_next', desc:'下回合禁攻'}] 
+    },
+    { 
+        id: 635, name: '三首惡龍', type: 'normal', hp: 150, 
+        weakness: 'brown', resistance: {type:'none', val:0}, 
+        attacks: [{n:'咬住', d:40, cost:['any','any'], special:'paralyze_flip', desc:'硬幣正面對方麻痺'}, {n:'三重攻擊', d:80, cost:['fire','any','any'], special:'burn_flip', desc:'硬幣正面對方灼傷'}] 
+    },
 ];
 
 const TRAINERS_DB=[
@@ -122,5 +146,6 @@ const TRAINERS_DB=[
     {id:"muscle_band",name:"力量頭帶",icon:"💪",desc:"我方戰鬥寶可夢攻擊力+20，持續2回合",target:"active_ally"},
     {id:"focus_sash",name:"氣勢披帶",icon:"🎗",desc:"滿血時若受致命傷，保留10HP不氣絕(觸發後棄置)",target:"active_ally"},
     {id:"full_face_guard",name:"全罩防守",icon:"🛡️",desc:"受傷-20(持續3回合)",target:"ally"},
-    {id:"pot_helmet",name:"鍋型頭盔",icon:"🪖",desc:"受傷-40(限最大HP<100，持續2回合)",target:"ally"}
+    {id:"pot_helmet",name:"鍋型頭盔",icon:"🪖",desc:"受傷-40(限最大HP<100，持續2回合)",target:"ally"},
+    {id:"mystery_swap", name:"神秘置換", icon:"🎲", desc:"從雲端隨機召喚一隻不在場上的寶可夢，替換我方目標", target:"ally"}
 ];
