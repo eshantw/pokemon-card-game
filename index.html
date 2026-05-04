@@ -317,19 +317,12 @@
     </div>
 </div>
 
-<!-- ===================================== -->
-<!-- 腳本區域 (僅限一個區塊，保證流暢！)   -->
-<!-- ===================================== -->
-
-<!-- 1. 載入本地資料庫 (確保 data.js 在同一目錄) -->
 <script src="data.js"></script>
 
-<!-- 2. Firebase 雲端與遊戲核心引擎整合 -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // 🔑 您的 Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyBHI3N7AJZIQiG-an7TG92tw7hJZgM640g",
         authDomain: "pokemon-card-game-9e185.firebaseapp.com",
@@ -342,46 +335,32 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // --- 遊戲全域狀態與變數 ---
     window.state = {
         quizMode: 'manual', questions: [], csvQuestions: [], qIdx: 0, currentTeam: 1, step: 'quiz', selectedHandItem: null, hasAttachedEnergyThisTurn: false,
         pendingAttack: null, pendingCatcherTarget: null, eotFlips: [], coinFlipReason: '', coinFlipsQueue: 0, coinFlipsResults: 0, transformingPokemon: null, isAttacking: false, redrawsLeft: 2, nextTurnTeam: null,
         teams: { 1: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [] }, 2: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [] } }
     };
 
-    // --- ☁️ 防呆版同步功能 ---
     window.uploadDataToFirestore = async function() {
         if (typeof POKEMON_DB === 'undefined') return window.showAlert("找不到 data.js，請確認檔案位置！");
         window.showConfirm("確定要將本地 data.js 的資料同步至 Firebase 雲端嗎？", async () => {
             try {
                 window.addLog("⏳ 正在同步角色資料...");
-                
-                // 🔍 嚴格檢查寶可夢資料
                 for (const p of POKEMON_DB) { 
-                    if (p === null || typeof p !== 'object') continue; // 略過空行或無效格式
-                    if (p.id === undefined || p.id === null || p.id === "") {
-                        throw new Error(`發現一隻寶可夢沒有設定 id！寶可夢名稱為：「${p.name || '未命名'}」`);
-                    }
+                    if (p === null || typeof p !== 'object') continue;
+                    if (p.id === undefined || p.id === null || p.id === "") throw new Error(`發現一隻寶可夢沒有設定 id！寶可夢名稱為：「${p.name || '未命名'}」`);
                     await setDoc(doc(db, "pokemons", p.id.toString()), p); 
                 }
-                
-                // 🔍 嚴格檢查道具資料
                 for (const t of TRAINERS_DB) { 
                     if (t === null || typeof t !== 'object') continue;
-                    if (t.id === undefined || t.id === null || t.id === "") {
-                        throw new Error(`發現一個道具沒有設定 id！道具名稱為：「${t.name || '未命名'}」`);
-                    }
+                    if (t.id === undefined || t.id === null || t.id === "") throw new Error(`發現一個道具沒有設定 id！道具名稱為：「${t.name || '未命名'}」`);
                     await setDoc(doc(db, "trainers", t.id.toString()), t); 
                 }
-                
                 window.showAlert("✅ 同步成功！角色與道具已上傳至雲端。"); window.addLog("✅ 雲端資料庫已更新。");
-            } catch (e) { 
-                window.showAlert("❌ 同步失敗: " + e.message); 
-            }
+            } catch (e) { window.showAlert("❌ 同步失敗: " + e.message); }
         });
     };
 
-    // --- 遊戲啟動與抽卡邏輯 ---
     window.initGame = async function() {
         if (window.state.quizMode === 'manual' && window.state.questions.length === 0) {
             const input = document.getElementById('qInput').value.trim();
@@ -409,7 +388,7 @@
                     const pool = [...cloudPokemonDB].sort(() => Math.random() - 0.5);
                     window.state.teams[t].pokemon = pool.slice(0, 5).map((p, i) => ({
                         ...p, currHp: p.hp, attachedEnergy: [], uid: `t${t}_${i}`,
-                        status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0 },
+                        status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
                         buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0 }, isDead: false, hasContributedToLoss: false
                     }));
                     window.state.teams[t].hand = []; window.state.teams[t].lostLives = 0; window.state.teams[t].wrongAnswers = [];
@@ -428,7 +407,9 @@
         } catch (e) { window.showAlert("❌ 連線失敗：" + e.message); }
     };
 
-    // --- 招式字典 (包含所有特效與異常加傷) ---
+    // =========================================================
+    // 💡 大腦：招式效果字典 (對應問題 5 的招式修改位置)
+    // =========================================================
     window.AttackEffects = {
         'poison': (attacker, defender, log) => { defender.status.poison = true; log.text += ` ☠️ 對手中毒！`; },
         'poison_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.poison = true; log.text += ` ☠️ 對手中毒！`; } },
@@ -441,13 +422,30 @@
         'confuse_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.confused = true; log.text += ` 💫 對手混亂！`; } },
         'confuse_self_flip': (attacker, defender, log, coinResult) => { if (!coinResult) { attacker.status.confused = true; log.text += ` 💫 副作用：自己陷入混亂！`; } },
         'paralyze_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.paralyze = true; log.text += ` ⚡ 對手麻痺！`; } },
+        
         'heal_self_20': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 20); log.text += ` 💚 恢復了 20 HP！`; },
         'heal_self_30': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 30); log.text += ` 💚 恢復了 30 HP！`; },
+        
+        // 🌟 新增：全體恢復 30 生命
+        'heal_all_allies_30': (attacker, defender, log) => { 
+            const myTeam = window.state.teams[window.state.currentTeam];
+            myTeam.pokemon.forEach(p => { if (p.currHp > 0) p.currHp = Math.min(p.hp, p.currHp + 30); });
+            log.text += ` 💚 聖光發動！我方全體恢復 30 HP！`; 
+        },
+
         'red_hp_burst_40': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+40！)`; return baseDmg + 40; } return baseDmg; },
         'red_hp_burst_50': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+50！)`; return baseDmg + 50; } return baseDmg; },
         'red_hp_burst_60': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+60！)`; return baseDmg + 60; } return baseDmg; },
         'plus_dmg_if_status_30': (attacker, defender, log, coinResult, baseDmg) => { const hasS = attacker.status.poison || attacker.status.burn || attacker.status.asleep || attacker.status.confused || attacker.status.paralyze; if(hasS) { log.text += ` (潛能激發追加 30 傷害！)`; return baseDmg + 30; } return baseDmg; },
         'plus_dmg_if_status_40': (attacker, defender, log, coinResult, baseDmg) => { const hasS = attacker.status.poison || attacker.status.burn || attacker.status.asleep || attacker.status.confused || attacker.status.paralyze; if(hasS) { log.text += ` (潛能激發追加 40 傷害！)`; return baseDmg + 40; } return baseDmg; },
+        
+        // 🌟 新增：根據身上能量多寡追加傷害
+        'plus_dmg_per_energy_10': (attacker, defender, log, coinResult, baseDmg) => { 
+            let extra = attacker.attachedEnergy.length * 10; 
+            log.text += ` (依能量加成 ${extra} 傷害！)`; 
+            return baseDmg + extra; 
+        },
+
         'self_dmg_20': (attacker, defender, log) => { attacker.currHp = Math.max(0, attacker.currHp - 20); window.showDamage(attacker.uid, 20, 'normal', false, attacker.uid); log.text += ` (副作用：自傷 20)`; },
         'self_dmg_30': (attacker, defender, log) => { attacker.currHp = Math.max(0, attacker.currHp - 30); window.showDamage(attacker.uid, 30, 'normal', false, attacker.uid); log.text += ` (副作用：自傷 30)`; },
         'cant_act_next': (attacker, defender, log) => { attacker.status.cant_attack = 2; log.text += ` (下回禁攻)`; },
@@ -460,7 +458,14 @@
         'reduce_dmg_taken_flip': (attacker, defender, log, coinResult) => { if(coinResult) { attacker.status.reduce_dmg_30 = true; log.text += ` (受傷-30)`; } },
         'reduce_dmg_taken_flip_30': (attacker, defender, log, coinResult) => { if(coinResult) { attacker.status.reduce_dmg_30 = true; log.text += ` (受傷-30)`; } },
         'enemy_dmg_minus_30': (attacker, defender, log) => { defender.status.enemy_dmg_minus_30 = 2; },
-        'calm_mind_20': (attacker, defender, log) => { attacker.buff.dmg = 20; attacker.buff.turns = 2; attacker.status.reduce_dmg_20 = true; },
+        
+        // 💡 修正冥想邏輯：改為延遲生效 (保留至下一回攻擊發動)
+        'calm_mind_20': (attacker, defender, log) => { 
+            attacker.status.pending_buff_dmg = 20; // 存入暫存區
+            attacker.status.reduce_dmg_20 = true;  // 本回合立即套用減傷盾
+            log.text += ` (冥想發動：下回攻擊+20，且目前受傷-20)`;
+        },
+
         'seal_attack': (attacker, defender, log) => { defender.status.cant_attack = 1; if(attacker.attachedEnergy.length > 0) attacker.attachedEnergy.pop(); },
         'discard_1_fire': (attacker, defender, log) => { let r=0; attacker.attachedEnergy = attacker.attachedEnergy.filter(e => { if((e==='fire'||e==='rainbow') && r<1) { r++; return false; } return true; }); },
         'discard_2_fire': (attacker, defender, log) => { let r=0; attacker.attachedEnergy = attacker.attachedEnergy.filter(e => { if((e==='fire'||e==='rainbow') && r<2) { r++; return false; } return true; }); },
@@ -470,10 +475,24 @@
         'ignore_resistance': (attacker, defender, log, coinResult, baseDmg) => { log.text += ` (無視對手防禦)`; return baseDmg; },
         'damage_flip_20': (attacker, defender, log, coinResult, baseDmg) => { if(coinResult) { log.text += ' (+20傷害！)'; return baseDmg + 20; } return baseDmg; },
         'damage_flip_25': (attacker, defender, log, coinResult, baseDmg) => { if(coinResult) { log.text += ' (+25傷害！)'; return baseDmg + 25; } return baseDmg; },
-        'damage_flip_30': (attacker, defender, log, coinResult, baseDmg) => { if(coinResult) { log.text += ' (+30傷害！)'; return baseDmg + 30; } return baseDmg; }
+        'damage_flip_30': (attacker, defender, log, coinResult, baseDmg) => { if(coinResult) { log.text += ' (+30傷害！)'; return baseDmg + 30; } return baseDmg; },
+
+        // 🌟 新增：全體範圍攻擊 (AoE)
+        'aoe_20': (attacker, defender, log) => {
+            const enemyTeam = window.state.teams[window.state.currentTeam === 1 ? 2 : 1];
+            let hits = 0;
+            enemyTeam.pokemon.forEach((p, idx) => {
+                if (idx !== enemyTeam.activeIdx && p.currHp > 0) {
+                    p.currHp = Math.max(0, p.currHp - 20);
+                    window.showDamage(p.uid, 20, attacker.type, false);
+                    hits++;
+                    if (p.currHp <= 0 && !p.isDead) { p.isDead = true; enemyTeam.lostLives++; log.text += ` 💀 後備 ${p.name} 氣絕！`; }
+                }
+            });
+            if(hits > 0) log.text += ` (龍捲風：波及對手全體後備造成 20 傷害！)`;
+        }
     };
 
-    // --- 全域 UI 與輔助函數 ---
     window.updateBattleScale = function() {
         const winW = window.innerWidth; const winH = window.innerHeight;
         const wrapper = document.getElementById('battle-scale-wrapper');
@@ -503,7 +522,6 @@
         if (Math.random() < 0.15) chosen = 'rainbow'; return chosen;
     };
 
-    // --- 視覺特效 ---
     const fxCanvas = document.getElementById('fx-canvas'); const fxCtx = fxCanvas.getContext('2d');
     let fxParticles = [], fxSparks = [], fxProjectiles = [], fxSpecial = []; let screenShake = 0, hitStop = 0, fxFrame = 0;
     window.resizeFxCanvas = function() { fxCanvas.width = window.innerWidth; fxCanvas.height = window.innerHeight; };
@@ -596,7 +614,6 @@
         }, popDelay);
     };
 
-    // --- CSV 資料解析 ---
     window.parseCSVData = function(text) {
         const lines = text.split(/\r\n|\n|\r/); window.state.csvQuestions = [];
         let startIndex = lines[0] && (lines[0].includes('題') || lines[0].includes('答')) ? 1 : 0;
@@ -659,7 +676,7 @@
 
     window.loadManualQs = function() {
         const input = document.getElementById('qInput').value.trim();
-        if(!input) return window.showAlert("請先輸入手動題目！");
+        if(!input) return window.showAlert("請先輸入手手動題目！");
         window.state.questions = input.split('/').map(s => s.trim().replace(/What'\s+s/ig, "What's")).filter(s => s);
         window.state.quizMode = 'manual';
         window.showAlert(`✅ 成功載入 ${window.state.questions.length} 題手動題目！`);
@@ -674,7 +691,7 @@
                     const pool = [...pDB].sort(() => Math.random() - 0.5);
                     window.state.teams[t].pokemon = pool.slice(0, 5).map((p, i) => ({
                         ...p, currHp: p.hp, attachedEnergy: [], uid: `t${t}_${i}`,
-                        status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0 },
+                        status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
                         buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0 }, isDead: false, hasContributedToLoss: false
                     }));
                     window.state.teams[t].hand = []; window.state.teams[t].lostLives = 0; window.state.teams[t].wrongAnswers = [];
@@ -716,13 +733,13 @@
             qObj.opts.forEach((opt, i) => {
                 const isCorrect = (i + 1 === qObj.ans);
                 let fontSize = opt.length > 40 ? '20px' : (opt.length > 15 ? '26px' : '32px');
-                qContainer.innerHTML += `<button class="kahoot-btn ${styles[i % 4]}" onclick="checkAnswer(${isCorrect})"><span style="margin-right:15px; font-size:36px; flex-shrink:0;">${icons[i % 4]}</span><span style="flex:1; text-align:left; font-size:${fontSize}; line-height:1.3; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; text-overflow:ellipsis;">${opt}</span></button>`;
+                qContainer.innerHTML += `<button class=\"kahoot-btn ${styles[i % 4]}\" onclick=\"window.checkAnswer(${isCorrect})\"><span style=\"margin-right:15px; font-size:36px; flex-shrink:0;\">${icons[i % 4]}</span><span style=\"flex:1; text-align:left; font-size:${fontSize}; line-height:1.3; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; text-overflow:ellipsis;\">${opt}</span></button>`;
             });
         } else {
             let qText = window.state.questions[window.state.qIdx % window.state.questions.length] || "無題目";
             let qFontSize = qText.length > 30 ? '40px' : '60px'; 
             document.getElementById('quiz-text').innerHTML = `<div style="font-size:${qFontSize}; font-weight:bold; color:#fff; text-shadow: 2px 2px 4px #000; margin-bottom:30px; padding: 0 20px;">${qText}</div>`;
-            qContainer.innerHTML = `<button class="btn" style="background:#4caf50; color:white; padding:25px 60px; width:auto; font-size:40px; margin:0 20px; border-radius:16px;" onclick="checkAnswer(true)">◯ 答對</button><button class="btn" style="background:#f44336; color:white; padding:25px 60px; width:auto; font-size:40px; margin:0 20px; border-radius:16px;" onclick="checkAnswer(false)">✕ 答錯</button>`;
+            qContainer.innerHTML = `<button class=\"btn\" style=\"background:#4caf50; color:white; padding:25px 60px; width:auto; font-size:40px; margin:0 20px; border-radius:16px;\" onclick=\"window.checkAnswer(true)\">◯ 答對</button><button class=\"btn\" style=\"background:#f44336; color:white; padding:25px 60px; width:auto; font-size:40px; margin:0 20px; border-radius:16px;\" onclick=\"window.checkAnswer(false)\">✕ 答錯</button>`;
         }
 
         document.getElementById('quiz-modal').style.display = 'flex'; window.updateHint("答對題目即可獲得資源並進行行動！"); window.render();
@@ -767,7 +784,7 @@
     window.retreatToBench = function(team, newIdx) {
         const oldActive = team.pokemon[team.activeIdx];
         if(oldActive.currHp > 0) {
-            oldActive.status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0 };
+            oldActive.status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 };
             if (oldActive.originalForm) {
                 oldActive.name = oldActive.originalForm.name; oldActive.hp = oldActive.originalForm.hp; oldActive.currHp = Math.min(oldActive.originalForm.hp, oldActive.currHp + 60); 
                 oldActive.type = oldActive.originalForm.type; oldActive.attacks = oldActive.originalForm.attacks; oldActive.weakness = oldActive.originalForm.weakness; oldActive.resistance = oldActive.originalForm.resistance; oldActive.id = oldActive.originalForm.id;
@@ -783,10 +800,36 @@
 
         if (p.currHp <= 0) { let isReviving = window.state.selectedHandItem && window.state.selectedHandItem.data.target === 'dead_ally' && teamNum === window.state.currentTeam; if (!isReviving) return; }
         if(window.state.step === 'must_swap' && teamNum === window.state.currentTeam && pIdx !== team.activeIdx && p.currHp > 0) {
-            team.pokemon[team.activeIdx].status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0 };
+            team.pokemon[team.activeIdx].status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 };
             if(team.pokemon[team.activeIdx].originalForm) { Object.assign(team.pokemon[team.activeIdx], team.pokemon[team.activeIdx].originalForm); team.pokemon[team.activeIdx].currHp = 0; delete team.pokemon[team.activeIdx].originalForm; }
             team.activeIdx = pIdx; window.addLog(`🔄 ${p.name} 上場！`); if (window.state.nextTurnTeam) { window.checkEotSwaps(); } else { window.state.step = 'quiz'; window.startQuiz(); } return;
         }
+
+        // 🌟 處理狙擊後備區的選取邏輯
+        if (window.state.step === 'select_enemy_bench_snipe') {
+            if (teamNum !== window.state.currentTeam && pIdx !== window.state.teams[teamNum].activeIdx && p.currHp > 0) {
+                p.currHp = Math.max(0, p.currHp - 30);
+                window.showDamage(p.uid, 30, 'normal', false);
+                window.addLog(`🎯 狙擊成功！直接對後備區的 ${p.name} 造成 30 傷害。`);
+                if (p.currHp <= 0) { p.isDead = true; window.state.teams[teamNum].lostLives++; window.addLog(`💀 ${p.name} 氣絕！`); }
+                window.state.step = 'finished'; window.render();
+                if(window.checkGameOver()) return;
+                setTimeout(window.processEndOfTurn, 1500);
+            } else { window.showAlert("請選擇對手的「後備區」寶可夢！"); }
+            return;
+        }
+        
+        // 🌟 處理指定補血的選取邏輯
+        if (window.state.step === 'select_ally_heal') {
+            if (teamNum === window.state.currentTeam && p.currHp > 0) {
+                p.currHp = Math.min(p.hp, p.currHp + 30);
+                window.addLog(`💚 恢復了 ${p.name} 30 點生命值！`);
+                window.state.step = 'finished'; window.render();
+                setTimeout(window.processEndOfTurn, 1500);
+            } else { window.showAlert("請選擇我方沒死的寶可夢！"); }
+            return;
+        }
+
         if (window.state.step === 'select_enemy_bench') {
             if (teamNum !== window.state.currentTeam && pIdx !== window.state.teams[teamNum].activeIdx && p.currHp > 0) { window.retreatToBench(window.state.teams[teamNum], pIdx); window.addLog(`💨 強制將 ${p.name} 拖入戰場！`); window.state.step = 'finished'; window.render(); setTimeout(window.processEndOfTurn, 1500); } 
             else { window.showAlert("請選擇對手後備區寶可夢！"); } return;
@@ -839,7 +882,7 @@
             const oldP = myTeam.pokemon[targetIdx];
             myTeam.pokemon[targetIdx] = {
                 ...newP, currHp: newP.hp, attachedEnergy: [], uid: oldP.uid,
-                status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0 },
+                status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
                 buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0 }, isDead: false
             };
             window.addLog(`🎲 神秘置換！${oldP.name} 換成了 ${newP.name}！`);
@@ -852,7 +895,7 @@
             const p = myTeam.pokemon[targetIdx]; if(p.currHp === p.hp) return window.showAlert("HP 已滿！");
             const heal = card.id === 'potion' ? 30 : 50; p.currHp = Math.min(p.hp, p.currHp + heal); window.addLog(`💊 ${p.name} 回復了 ${heal} HP。`);
         } else if(card.id === 'full_heal') { 
-            const p = myTeam.pokemon[targetIdx]; p.status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0 }; window.addLog(`🌿 ${p.name} 解除狀態。`); 
+            const p = myTeam.pokemon[targetIdx]; p.status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 }; window.addLog(`🌿 ${p.name} 解除狀態。`); 
         } else if(card.id === 'switch') { 
             window.retreatToBench(myTeam, targetIdx); window.addLog(`🔄 無消耗將 ${myTeam.pokemon[targetIdx].name} 換上場。`); 
         } else if(card.id === 'rescue_stretcher') { 
@@ -986,6 +1029,21 @@
                 const newDmg = window.AttackEffects[atk.special](attacker, defender, log, coinResult, dmg);
                 if (newDmg !== undefined) dmg = newDmg;
             } else if (atk.special) {
+                // 🌟 針對狙擊後備區的判斷
+                if (atk.special === 'snipe_choose_30') {
+                    const aliveBench = window.state.teams[enemyTeamNum].pokemon.filter((p, i) => i !== window.state.teams[enemyTeamNum].activeIdx && p.currHp > 0);
+                    if(aliveBench.length > 0) {
+                        window.state.step = 'select_enemy_bench_snipe'; window.state.pendingAttack = null; window.state.isAttacking = false;
+                        window.updateHint("🎯 請選擇要狙擊的對手後備寶可夢！(將造成 30 傷害)"); window.render(); return;
+                    } else { log.text += ` (對手無後備，狙擊無效)`; }
+                }
+                
+                // 🌟 新增：針對指定隊友補血的判斷
+                if (atk.special === 'heal_choose_30') {
+                    window.state.step = 'select_ally_heal'; window.state.pendingAttack = null; window.state.isAttacking = false;
+                    window.updateHint("💚 請選擇要恢復的「我方」寶可夢！(將恢復 30 HP)"); window.render(); return;
+                }
+
                 if (atk.special === 'force_swap_choose') { const aliveBench = window.state.teams[enemyTeamNum].pokemon.filter((p, i) => i !== window.state.teams[enemyTeamNum].activeIdx && p.currHp > 0); if(aliveBench.length > 0) { window.state.step = 'select_enemy_bench'; window.state.pendingAttack = null; window.state.isAttacking = false; window.updateHint("請選擇對手後備寶可夢拖上場！"); window.render(); return; } else { log.text += ` (對手無後備，替換無效)`; } }
                 if (atk.special === 'transform_choose') { window.state.step = 'select_transform_target'; window.state.transformingPokemon = attacker; window.state.pendingAttack = null; window.state.isAttacking = false; window.updateHint("請選擇對手進行複製！"); window.render(); return; }
                 if(atk.special.includes('flip_') && atk.special.includes('x')) { dmg = coinResult * parseInt(atk.special.split('x')[1]); log.text += ` (擲出 ${coinResult} 次正面，造成 ${dmg} 傷害！)`; }
@@ -1028,7 +1086,6 @@
             if(dmg > 0) {
                 if(attacker.buff.turns > 0) dmg += attacker.buff.dmg;
                 
-                // --- 支援多重弱點 ---
                 const weakPool = Array.isArray(defender.weakness) ? defender.weakness : [defender.weakness];
                 if(weakPool.includes(attacker.type)) { dmg = Math.floor(dmg * 1.5); log.text += ` (效果絕佳！)`; }
                 
@@ -1076,6 +1133,12 @@
                     if(p.buff.potHelmet > 0) { p.buff.potHelmet--; if(p.buff.potHelmet === 0) window.addLog(`🪖 ${p.name} 頭盔失效。`); }
                 }
             });
+
+            if (activeP && activeP.currHp > 0 && activeP.status.pending_buff_dmg > 0 && t === window.state.currentTeam) {
+                activeP.buff.dmg = activeP.status.pending_buff_dmg;
+                activeP.buff.turns = 2;
+                activeP.status.pending_buff_dmg = 0;
+            }
 
             if(activeP && activeP.status.cant_attack > 0 && t === window.state.currentTeam) { activeP.status.cant_attack--; }
             if(activeP && activeP.status.enemy_dmg_minus_30 > 0 && t === window.state.currentTeam) { activeP.status.enemy_dmg_minus_30--; }
@@ -1170,7 +1233,9 @@
     window.render = function() {
         const drawSide = (t) => {
             const team = window.state.teams[t]; const isMyTurn = (t === window.state.currentTeam && window.state.step !== 'setup');
-            const lives = 3 - team.lostLives; let fireHtml = ''; for(let i=0; i<3; i++) fireHtml += (i < lives ? '🔥' : '⚪');
+            const lives = 3 - team.lostLives; let fireHtml = ''; 
+            for(let i=0; i<3; i++) fireHtml += (i < lives ? '🔥' : '<span style="filter:grayscale(100%); opacity:0.3;">🔥</span>');
+            
             document.getElementById(`side-${t}`).className = `team-container ${isMyTurn ? 'active-team' : ''}`;
             document.getElementById(`header-${t}`).innerHTML = `<h2>TEAM ${t} ${fireHtml}</h2>`;
 
@@ -1188,6 +1253,9 @@
                     if(hCard.target === 'dead_ally' && p.currHp <= 0) isValidTarget = true;
                 }
                 
+                if (window.state.step === 'select_enemy_bench_snipe' && !isActive && p.currHp > 0 && t !== window.state.currentTeam) isValidTarget = true;
+                if (window.state.step === 'select_ally_heal' && p.currHp > 0 && t === window.state.currentTeam) isValidTarget = true;
+
                 const weakIcon = p.weakness === 'none' ? '無' : (Array.isArray(p.weakness) ? p.weakness.map(w => `<div class="energy-icon energy-${w}"></div>`).join('') : `<div class="energy-icon energy-${p.weakness}"></div>`);
                 const resIcon = p.resistance.type === 'none' ? '無' : `<div class="energy-icon energy-${p.resistance.type}"></div>`;
                 
