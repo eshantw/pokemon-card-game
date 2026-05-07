@@ -91,8 +91,21 @@
         .item-tag{background:#ffcb05;color:black;padding:3px 5px;border-radius:6px;font-size:9px;font-weight:bold;box-shadow:0 2px 4px rgba(0,0,0,.5);border:1px solid #000}
         #inspect-content .item-tag{font-size:14px;padding:4px 8px;border-radius:8px;}
 
-        .status-container{position:absolute;bottom:3px;left:3px;display:flex;gap:2px;flex-wrap:wrap;z-index:5}
-        .status-tag{padding:2px 4px;border-radius:3px;font-size:8px;font-weight:bold;color:white;border:1px solid rgba(255,255,255,.5)}
+        /* 💡 狀態容器定位在圖片左上方 */
+        .status-container-img {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            display: flex;
+            gap: 3px;
+            flex-direction: column;
+            align-items: flex-start;
+            z-index: 5;
+        }
+
+        .status-tag{padding:3px 5px;border-radius:4px;font-size:9px;font-weight:bold;color:white;border:1px solid rgba(255,255,255,.5);box-shadow:0 2px 4px rgba(0,0,0,.5);}
+        #inspect-content .status-tag{font-size:14px;padding:4px 8px;border-radius:8px;} /* 放大顯示的設定 */
+        
         .status-poison{background-color:#904090}
         .status-paralyze{background-color:#f4d23c;color:#000}
         .status-burn{background-color:#f40}
@@ -149,7 +162,6 @@
         .hidden{display:none!important}
         
         .damage-pop{position:fixed;color:#f00;font-size:55px;font-weight:900;text-shadow:0 0 12px #fff;pointer-events:none;z-index:20001;animation:popUp 1s forwards}
-        /* 💡 新增：綠色補血文字動畫特效 */
         .heal-pop{position:fixed;color:#4caf50;font-size:55px;font-weight:900;text-shadow:0 0 12px #fff;pointer-events:none;z-index:20001;animation:popUp 1s forwards}
         @keyframes popUp{0%{transform:scale(.5);opacity:1}100%{transform:translateY(-80px) scale(1.5);opacity:0}}
         
@@ -171,7 +183,6 @@
 
 <canvas id="fx-canvas"></canvas>
 
-<!-- 系統彈窗 -->
 <div id="sys-alert" class="modal" style="z-index: 99999;">
     <div class="modal-box" style="border-color: #ff4444; padding: 40px; max-width: 500px;">
         <div id="sys-alert-msg" style="font-size: 24px; margin-bottom: 30px; line-height:1.5;"></div>
@@ -409,7 +420,6 @@
         } catch (e) { window.showAlert("❌ 連線失敗：" + e.message); }
     };
 
-    // 💡 新增：統一的補血動畫函數
     window.showHeal = function(uid, amount) {
         const target = document.getElementById(uid); if(!target) return;
         const rect = target.getBoundingClientRect();
@@ -419,9 +429,6 @@
         document.body.appendChild(pop); setTimeout(() => pop.remove(), 1000);
     };
 
-    // =========================================================
-    // 💡 大腦：招式效果字典
-    // =========================================================
     window.AttackEffects = {
         'poison': (attacker, defender, log) => { defender.status.poison = true; log.text += ` ☠️ 對手中毒！`; },
         'poison_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.poison = true; log.text += ` ☠️ 對手中毒！`; } },
@@ -435,10 +442,10 @@
         'confuse_self_flip': (attacker, defender, log, coinResult) => { if (!coinResult) { attacker.status.confused = true; log.text += ` 💫 副作用：自己陷入混亂！`; } },
         'paralyze_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.paralyze = true; log.text += ` ⚡ 對手麻痺！`; } },
         
+        // 💡 修改數值：如果您想調整這些招式的效果，可以更改下方的數字 (例如 20 改成 30，或是把 30 改成 60)
         'heal_self_20': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 20); window.showHeal(attacker.uid, 20); log.text += ` 💚 恢復了 20 HP！`; },
         'heal_self_30': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 30); window.showHeal(attacker.uid, 30); log.text += ` 💚 恢復了 30 HP！`; },
         
-        // 🌟 新增：全體恢復 30 生命
         'heal_all_allies_30': (attacker, defender, log) => { 
             const myTeam = window.state.teams[window.state.currentTeam];
             myTeam.pokemon.forEach(p => { 
@@ -457,7 +464,7 @@
         'plus_dmg_if_status_30': (attacker, defender, log, coinResult, baseDmg) => { const hasS = attacker.status.poison || attacker.status.burn || attacker.status.asleep || attacker.status.confused || attacker.status.paralyze; if(hasS) { log.text += ` (潛能激發追加 30 傷害！)`; return baseDmg + 30; } return baseDmg; },
         'plus_dmg_if_status_40': (attacker, defender, log, coinResult, baseDmg) => { const hasS = attacker.status.poison || attacker.status.burn || attacker.status.asleep || attacker.status.confused || attacker.status.paralyze; if(hasS) { log.text += ` (潛能激發追加 40 傷害！)`; return baseDmg + 40; } return baseDmg; },
         
-        // 🌟 新增：扣除招式所需後，額外能量每多一顆加 10 傷害
+        // 💡 如果您想讓這個招式的每個能量增加 20 點傷害，把下面的 10 改成 20 即可。
         'plus_dmg_per_extra_energy_10': (attacker, defender, log, coinResult, baseDmg, atk) => { 
             let extraCount = Math.max(0, attacker.attachedEnergy.length - atk.cost.length);
             let added = extraCount * 10;
@@ -479,8 +486,8 @@
         'enemy_dmg_minus_30': (attacker, defender, log) => { defender.status.enemy_dmg_minus_30 = 2; },
         
         'calm_mind_20': (attacker, defender, log) => { 
-            attacker.status.pending_buff_dmg = 20; // 存入暫存區
-            attacker.status.reduce_dmg_20 = true;  // 本回合立即套用減傷盾
+            attacker.status.pending_buff_dmg = 20;
+            attacker.status.reduce_dmg_20 = true; 
             log.text += ` (冥想發動：下回攻擊+20，且目前受傷-20)`;
         },
 
@@ -495,7 +502,7 @@
         'damage_flip_25': (attacker, defender, log, coinResult, baseDmg) => { if(coinResult) { log.text += ' (+25傷害！)'; return baseDmg + 25; } return baseDmg; },
         'damage_flip_30': (attacker, defender, log, coinResult, baseDmg) => { if(coinResult) { log.text += ' (+30傷害！)'; return baseDmg + 30; } return baseDmg; },
 
-        // 🌟 新增：全體範圍攻擊 (AoE)
+        // 💡 如果您想更改對手全體受到的傷害，請修改這個數字 (20)
         'aoe_20': (attacker, defender, log) => {
             const enemyTeam = window.state.teams[window.state.currentTeam === 1 ? 2 : 1];
             let hits = 0;
@@ -507,7 +514,7 @@
                     if (p.currHp <= 0 && !p.isDead) { p.isDead = true; enemyTeam.lostLives++; log.text += ` 💀 後備 ${p.name} 氣絕！`; }
                 }
             });
-            if(hits > 0) log.text += ` (龍捲風：波及對手全體後備造成 20 傷害！)`;
+            if(hits > 0) log.text += ` (波及對手全體後備造成 20 傷害！)`;
         }
     };
 
@@ -823,7 +830,6 @@
             team.activeIdx = pIdx; window.addLog(`🔄 ${p.name} 上場！`); if (window.state.nextTurnTeam) { window.checkEotSwaps(); } else { window.state.step = 'quiz'; window.startQuiz(); } return;
         }
 
-        // 🌟 新增：處理「任意」狙擊的選取邏輯
         if (window.state.step === 'select_enemy_any_snipe') {
             if (teamNum !== window.state.currentTeam && p.currHp > 0) {
                 let dmg = window.state.pendingAttack.atk.d;
@@ -838,13 +844,14 @@
             return;
         }
         
-        // 🌟 處理指定補血的選取邏輯
+        // 💡 修改數值：如果您想調整這個招式的效果，可以更改下方的數字 (例如 50 改成 60，或是把 50 改成 80)
         if (window.state.step === 'select_ally_heal_50') {
             if (teamNum === window.state.currentTeam && p.currHp > 0) {
                 let healAmount = 50;
+                let oldHp = p.currHp;
                 p.currHp = Math.min(p.hp, p.currHp + healAmount);
-                window.showHeal(p.uid, healAmount);
-                window.addLog(`💚 恢復了 ${p.name} ${healAmount} 點生命值！`);
+                if(p.currHp > oldHp) window.showHeal(p.uid, p.currHp - oldHp);
+                window.addLog(`💚 恢復了 ${p.name} ${p.currHp - oldHp} 點生命值！`);
                 window.state.step = 'finished'; window.state.pendingAttack = null; window.render();
                 setTimeout(window.processEndOfTurn, 1500);
             } else { window.showAlert("請選擇我方沒死的寶可夢！"); }
@@ -915,9 +922,10 @@
         } else if(card.id === 'potion' || card.id === 'super_potion') {
             const p = myTeam.pokemon[targetIdx]; if(p.currHp === p.hp) return window.showAlert("HP 已滿！");
             const heal = card.id === 'potion' ? 30 : 50; 
+            let oldHp = p.currHp;
             p.currHp = Math.min(p.hp, p.currHp + heal); 
-            window.showHeal(p.uid, heal);
-            window.addLog(`💊 ${p.name} 回復了 ${heal} HP。`);
+            if(p.currHp > oldHp) window.showHeal(p.uid, p.currHp - oldHp);
+            window.addLog(`💊 ${p.name} 回復了 ${p.currHp - oldHp} HP。`);
         } else if(card.id === 'full_heal') { 
             const p = myTeam.pokemon[targetIdx]; p.status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 }; window.addLog(`🌿 ${p.name} 解除狀態。`); 
         } else if(card.id === 'switch') { 
@@ -1049,12 +1057,11 @@
             const isUltimate = (attacker.hp >= 100 && attacker.attacks.indexOf(atk) === 1);
             let dmg = atk.d; let log = { text: `⚔️ ${attacker.name} 使用了「${atk.n}」！` };
 
-            // 💡 確保傳入 atk 參數給特殊效果計算
             if (atk.special && window.AttackEffects && window.AttackEffects[atk.special]) {
                 const newDmg = window.AttackEffects[atk.special](attacker, defender, log, coinResult, dmg, atk);
                 if (newDmg !== undefined) dmg = newDmg;
+                if (atk.special === 'heal_choose_50') dmg = 0; 
             } else if (atk.special) {
-                // 🌟 新增：針對「全場自由狙擊」的判斷
                 if (atk.special === 'snipe_any') {
                     window.state.step = 'select_enemy_any_snipe'; 
                     window.state.isAttacking = false;
@@ -1063,7 +1070,6 @@
                     return; 
                 }
                 
-                // 🌟 新增：針對指定隊友補血的判斷
                 if (atk.special === 'heal_choose_50') {
                     window.state.step = 'select_ally_heal_50'; window.state.pendingAttack = null; window.state.isAttacking = false;
                     window.updateHint("💚 請選擇要恢復的「我方」寶可夢！(將恢復 50 HP)"); window.render(); return;
@@ -1244,9 +1250,13 @@
 
         const cardHtml = `
             <div class="card type-${p.type}" style="cursor: default;">
-                <div class="card-header"><div><div style="margin-bottom:5px;">${statusHtml}</div><span style="font-size:18px;">${p.name}</span></div><div style="text-align:right;"><span style="color: ${p.currHp < p.hp*0.3 ? '#ff0000' : '#000'}; font-weight:900;">HP ${p.currHp}/${p.hp}</span></div></div>
+                <div class="card-header"><div><div style="margin-bottom:5px;"></div><span style="font-size:18px;">${p.name}</span></div><div style="text-align:right;"><span style="color: ${p.currHp < p.hp*0.3 ? '#ff0000' : '#000'}; font-weight:900;">HP ${p.currHp}/${p.hp}</span></div></div>
                 <div class="hp-bar" style="height:12px;"><div class="hp-fill" style="width:${(p.currHp/p.hp)*100}%; background:${(p.currHp/p.hp)*100 < 30 ? '#ff4422' : '#4caf50'}"></div></div>
-                <div class="card-img"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.id}.png" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'"><div class="buff-container">${buffHtml}</div></div>
+                <div class="card-img">
+                    <div class="status-container-img">${statusHtml}</div>
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.id}.png" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
+                    <div class="buff-container">${buffHtml}</div>
+                </div>
                 <div class="energy-container" style="padding: 5px;">已附著: ${p.attachedEnergy.length === 0 ? '無' : p.attachedEnergy.map(e => `<div class="energy-icon energy-${e}"></div>`).join('')}</div>
                 <div style="margin-top:15px; flex:1;">${attacksHtml}</div>
                 <div style="font-size:12px; opacity:0.8; margin-top:15px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(0,0,0,0.2); padding-top:5px;"><div style="display:flex; align-items:center; gap:4px;"><span>弱:</span>${weakIcon}</div><div style="display:flex; align-items:center; gap:4px;"><span>抗:</span>${resIcon}</div></div>
@@ -1278,7 +1288,6 @@
                     if(hCard.target === 'dead_ally' && p.currHp <= 0) isValidTarget = true;
                 }
                 
-                // 🌟 新增：當進入「全場狙擊」模式時，所有對手未陣亡寶可夢皆可選
                 if (window.state.step === 'select_enemy_any_snipe' && p.currHp > 0 && t !== window.state.currentTeam) isValidTarget = true;
                 if (window.state.step === 'select_ally_heal_50' && p.currHp > 0 && t === window.state.currentTeam) isValidTarget = true;
 
@@ -1294,9 +1303,12 @@
                     <div class="card type-${p.type} ${isActive ? 'card-active is-active-fighter' : 'card-bench'} ${deadClass} ${isValidTarget && p.currHp>0 ? 'valid-target' : ''}" id="${p.uid}" onclick="window.clickPokemon(${t}, ${pIdx})">
                         <div class="inspect-btn" onclick="event.stopPropagation(); window.inspectCard(${t}, ${pIdx})">🔍</div>
                         <div class="${headerClass}"><span class="name-text">${p.name}</span><span class="hp-text" style="color: ${hpPer < 30 ? '#ff0000' : '#000'};">HP ${p.currHp}/${p.hp}</span></div>
-                        <div class="status-container">${statusHtml}</div>
                         <div class="hp-bar"><div class="hp-fill" style="width:${Math.max(0, hpPer)}%; background:${hpPer < 30 ? '#ff4422' : '#4caf50'}"></div></div>
-                        <div class="card-img"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.id}.png" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'"><div class="buff-container">${buffHtml}</div></div>
+                        <div class="card-img">
+                            <div class="status-container-img">${statusHtml}</div>
+                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.id}.png" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
+                            <div class="buff-container">${buffHtml}</div>
+                        </div>
                         <div class="energy-container">${p.attachedEnergy.map(e => `<div class="energy-icon energy-${e}"></div>`).join('')}</div>
                 `;
 
