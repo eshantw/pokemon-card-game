@@ -91,7 +91,7 @@
         .item-tag{background:#ffcb05;color:black;padding:3px 5px;border-radius:6px;font-size:9px;font-weight:bold;box-shadow:0 2px 4px rgba(0,0,0,.5);border:1px solid #000}
         #inspect-content .item-tag{font-size:14px;padding:4px 8px;border-radius:8px;}
 
-        /* 💡 狀態容器定位在圖片左上方 */
+        /* 狀態容器定位在圖片左上方 */
         .status-container-img {
             position: absolute;
             top: 4px;
@@ -264,7 +264,7 @@
                 <div id="action-hint" style="color: #bbb; font-size: 13px; text-align: center; margin-bottom: 8px; min-height: 35px; line-height:1.4;"></div>
                 
                 <div id="setup-ui">
-                    <button id="btn-redraw" class="btn" style="background:#ffcb05; color:black; font-size:16px;" onclick="redrawCards()">🔄 重抽卡牌 (2)</button>
+                    <button id="btn-redraw" class="btn" style="background:#ffcb05; color:black; font-size:16px;" onclick="redrawCards()">🔄 重抽卡牌 (5)</button>
                     <button class="btn" style="background:var(--team1-color); color:white; font-size:16px;" onclick="startGame(1)">▶ TEAM 1 先攻</button>
                     <button class="btn" style="background:var(--team2-color); color:white; font-size:16px;" onclick="startGame(2)">▶ TEAM 2 先攻</button>
                 </div>
@@ -350,7 +350,7 @@
 
     window.state = {
         quizMode: 'manual', questions: [], csvQuestions: [], qIdx: 0, currentTeam: 1, step: 'quiz', selectedHandItem: null, hasAttachedEnergyThisTurn: false,
-        pendingAttack: null, pendingCatcherTarget: null, eotFlips: [], coinFlipReason: '', coinFlipsQueue: 0, coinFlipsResults: 0, transformingPokemon: null, isAttacking: false, redrawsLeft: 2, nextTurnTeam: null,
+        pendingAttack: null, pendingCatcherTarget: null, eotFlips: [], coinFlipReason: '', coinFlipsQueue: 0, coinFlipsResults: 0, transformingPokemon: null, isAttacking: false, redrawsLeft: 5, nextTurnTeam: null,
         teams: { 1: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [] }, 2: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [] } }
     };
 
@@ -395,7 +395,7 @@
             window.CLOUD_POKEMON_DB = cloudPokemonDB;
             window.CLOUD_TRAINERS_DB = cloudTrainerDB;
 
-            window.state.redrawsLeft = 2; let isBalanced = false; let attempts = 0;
+            window.state.redrawsLeft = 5; let isBalanced = false; let attempts = 0;
             while (!isBalanced && attempts < 100) {
                 for(let t=1; t<=2; t++) {
                     const pool = [...cloudPokemonDB].sort(() => Math.random() - 0.5);
@@ -442,7 +442,6 @@
         'confuse_self_flip': (attacker, defender, log, coinResult) => { if (!coinResult) { attacker.status.confused = true; log.text += ` 💫 副作用：自己陷入混亂！`; } },
         'paralyze_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.paralyze = true; log.text += ` ⚡ 對手麻痺！`; } },
         
-        // 💡 修改數值：如果您想調整這些招式的效果，可以更改下方的數字 (例如 20 改成 30，或是把 30 改成 60)
         'heal_self_20': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 20); window.showHeal(attacker.uid, 20); log.text += ` 💚 恢復了 20 HP！`; },
         'heal_self_30': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 30); window.showHeal(attacker.uid, 30); log.text += ` 💚 恢復了 30 HP！`; },
         
@@ -464,7 +463,6 @@
         'plus_dmg_if_status_30': (attacker, defender, log, coinResult, baseDmg) => { const hasS = attacker.status.poison || attacker.status.burn || attacker.status.asleep || attacker.status.confused || attacker.status.paralyze; if(hasS) { log.text += ` (潛能激發追加 30 傷害！)`; return baseDmg + 30; } return baseDmg; },
         'plus_dmg_if_status_40': (attacker, defender, log, coinResult, baseDmg) => { const hasS = attacker.status.poison || attacker.status.burn || attacker.status.asleep || attacker.status.confused || attacker.status.paralyze; if(hasS) { log.text += ` (潛能激發追加 40 傷害！)`; return baseDmg + 40; } return baseDmg; },
         
-        // 💡 如果您想讓這個招式的每個能量增加 20 點傷害，把下面的 10 改成 20 即可。
         'plus_dmg_per_extra_energy_10': (attacker, defender, log, coinResult, baseDmg, atk) => { 
             let extraCount = Math.max(0, attacker.attachedEnergy.length - atk.cost.length);
             let added = extraCount * 10;
@@ -502,7 +500,22 @@
         'damage_flip_25': (attacker, defender, log, coinResult, baseDmg) => { if(coinResult) { log.text += ' (+25傷害！)'; return baseDmg + 25; } return baseDmg; },
         'damage_flip_30': (attacker, defender, log, coinResult, baseDmg) => { if(coinResult) { log.text += ' (+30傷害！)'; return baseDmg + 30; } return baseDmg; },
 
-        // 💡 如果您想更改對手全體受到的傷害，請修改這個數字 (20)
+        // 💡 丟棄任意能量
+        'discard_1_any': (attacker, defender, log) => {
+            if(attacker.attachedEnergy.length > 0) {
+                attacker.attachedEnergy.pop();
+                log.text += ` (自棄 1 能量)`;
+            }
+        },
+        'discard_2_any': (attacker, defender, log) => {
+            let count = 0;
+            while(attacker.attachedEnergy.length > 0 && count < 2) {
+                attacker.attachedEnergy.pop();
+                count++;
+            }
+            if(count > 0) log.text += ` (自棄 ${count} 能量)`;
+        },
+
         'aoe_20': (attacker, defender, log) => {
             const enemyTeam = window.state.teams[window.state.currentTeam === 1 ? 2 : 1];
             let hits = 0;
@@ -515,6 +528,21 @@
                 }
             });
             if(hits > 0) log.text += ` (波及對手全體後備造成 20 傷害！)`;
+        },
+        
+        // 💡 新增：全體後備 10 傷害
+        'aoe_10': (attacker, defender, log) => {
+            const enemyTeam = window.state.teams[window.state.currentTeam === 1 ? 2 : 1];
+            let hits = 0;
+            enemyTeam.pokemon.forEach((p, idx) => {
+                if (idx !== enemyTeam.activeIdx && p.currHp > 0) {
+                    p.currHp = Math.max(0, p.currHp - 10);
+                    window.showDamage(p.uid, 10, attacker.type, false);
+                    hits++;
+                    if (p.currHp <= 0 && !p.isDead) { p.isDead = true; enemyTeam.lostLives++; log.text += ` 💀 後備 ${p.name} 氣絕！`; }
+                }
+            });
+            if(hits > 0) log.text += ` (波及對手全體後備造成 10 傷害！)`;
         }
     };
 
@@ -707,6 +735,7 @@
         window.showAlert(`✅ 成功載入 ${window.state.questions.length} 題手動題目！`);
     };
 
+    // 💡 修改：重抽卡牌初始次數 5 次
     window.redrawCards = function() {
         if(window.state.redrawsLeft > 0) {
             window.state.redrawsLeft--; let isBalanced = false; let attempts = 0;
@@ -844,10 +873,10 @@
             return;
         }
         
-        // 💡 修改數值：如果您想調整這個招式的效果，可以更改下方的數字 (例如 50 改成 60，或是把 50 改成 80)
-        if (window.state.step === 'select_ally_heal_50') {
+        // 💡 點擊選擇補血目標 (整合 50 和 70)
+        if (window.state.step === 'select_ally_heal_50' || window.state.step === 'select_ally_heal_70') {
             if (teamNum === window.state.currentTeam && p.currHp > 0) {
-                let healAmount = 50;
+                let healAmount = window.state.step === 'select_ally_heal_50' ? 50 : 70;
                 let oldHp = p.currHp;
                 p.currHp = Math.min(p.hp, p.currHp + healAmount);
                 if(p.currHp > oldHp) window.showHeal(p.uid, p.currHp - oldHp);
@@ -1060,7 +1089,8 @@
             if (atk.special && window.AttackEffects && window.AttackEffects[atk.special]) {
                 const newDmg = window.AttackEffects[atk.special](attacker, defender, log, coinResult, dmg, atk);
                 if (newDmg !== undefined) dmg = newDmg;
-                if (atk.special === 'heal_choose_50') dmg = 0; 
+                // 若為補血招式，預防性將直接傷害歸零
+                if (atk.special === 'heal_choose_50' || atk.special === 'heal_choose_70') dmg = 0; 
             } else if (atk.special) {
                 if (atk.special === 'snipe_any') {
                     window.state.step = 'select_enemy_any_snipe'; 
@@ -1070,9 +1100,13 @@
                     return; 
                 }
                 
-                if (atk.special === 'heal_choose_50') {
-                    window.state.step = 'select_ally_heal_50'; window.state.pendingAttack = null; window.state.isAttacking = false;
-                    window.updateHint("💚 請選擇要恢復的「我方」寶可夢！(將恢復 50 HP)"); window.render(); return;
+                // 💡 呼叫選擇補血模式 (50 和 70)
+                if (atk.special === 'heal_choose_50' || atk.special === 'heal_choose_70') {
+                    window.state.step = atk.special === 'heal_choose_50' ? 'select_ally_heal_50' : 'select_ally_heal_70';
+                    window.state.pendingAttack = null; window.state.isAttacking = false;
+                    window.updateHint(`💚 請選擇要恢復的「我方」寶可夢！(將恢復 ${atk.special === 'heal_choose_50' ? 50 : 70} HP)`); 
+                    window.render(); 
+                    return;
                 }
 
                 if (atk.special === 'force_swap_choose') { const aliveBench = window.state.teams[enemyTeamNum].pokemon.filter((p, i) => i !== window.state.teams[enemyTeamNum].activeIdx && p.currHp > 0); if(aliveBench.length > 0) { window.state.step = 'select_enemy_bench'; window.state.pendingAttack = null; window.state.isAttacking = false; window.updateHint("請選擇對手後備寶可夢拖上場！"); window.render(); return; } else { log.text += ` (對手無後備，替換無效)`; } }
@@ -1289,7 +1323,7 @@
                 }
                 
                 if (window.state.step === 'select_enemy_any_snipe' && p.currHp > 0 && t !== window.state.currentTeam) isValidTarget = true;
-                if (window.state.step === 'select_ally_heal_50' && p.currHp > 0 && t === window.state.currentTeam) isValidTarget = true;
+                if ((window.state.step === 'select_ally_heal_50' || window.state.step === 'select_ally_heal_70') && p.currHp > 0 && t === window.state.currentTeam) isValidTarget = true;
 
                 const weakIcon = p.weakness === 'none' ? '無' : (Array.isArray(p.weakness) ? p.weakness.map(w => `<div class="energy-icon energy-${w}"></div>`).join('') : `<div class="energy-icon energy-${p.weakness}"></div>`);
                 const resIcon = p.resistance.type === 'none' ? '無' : `<div class="energy-icon energy-${p.resistance.type}"></div>`;
