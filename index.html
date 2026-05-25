@@ -29,17 +29,19 @@
 
         #battle-field { position: relative; width: 100vw; height: 100vh; background: #0a0a0c; overflow: hidden; }
         #battle-scale-wrapper { width: 1280px; height: 720px; position: absolute; left: 50%; top: 50%; display: flex; flex-direction: column; }
-        .battle-main { flex:1; display:flex; justify-content:space-between; align-items:stretch; padding:20px 10px; gap:15px; }
         
-        .team-container { width:510px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; padding:20px 15px; border-radius:25px; background:rgba(255,255,255,.03); border:3px solid transparent; transition:.3s;}
+        /* [修正重點] 將主戰鬥區塊加上 box-sizing: border-box 與 100% 高度限制，並隱藏溢位，防止被文字撐開 */
+        .battle-main { flex:1; display:flex; justify-content:space-between; align-items:stretch; padding:20px 10px; gap:15px; height: 100%; max-height: 100%; box-sizing: border-box; overflow: hidden; }
+        .team-container { width:510px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; padding:20px 15px; border-radius:25px; background:rgba(255,255,255,.03); border:3px solid transparent; transition:.3s; height: 100%; max-height: 100%; box-sizing: border-box; overflow: hidden;}
         .team-container.active-team{border-color:#00f2ff;background:linear-gradient(180deg,rgba(0,242,255,.05) 0,rgba(0,100,255,.15) 100%);box-shadow:0 0 30px rgba(0,242,255,.6),inset 0 0 20px rgba(0,150,255,.4);animation:neonPulse 2s infinite alternate}
         @keyframes neonPulse{0%{box-shadow:0 0 15px rgba(0,242,255,.4),inset 0 0 10px rgba(0,150,255,.3);border-color:#00c3ff}100%{box-shadow:0 0 35px rgba(0,242,255,.8),inset 0 0 25px rgba(0,150,255,.6);border-color:#00f2ff}}
         
-        .field-area { display:flex; gap:15px; align-items:center; justify-content:center; }
+        .field-area { display:flex; gap:15px; align-items:center; justify-content:center; flex: 1; min-height: 0;}
         .bench-grid { display:grid; grid-template-columns:repeat(2,120px); grid-template-rows:repeat(2,auto); gap:10px; justify-content:center; }
         .active-zone { flex:0 0 auto; display:flex; justify-content:center; align-items:center; padding:6px; border:2px dashed #444; border-radius:12px; margin: 0 5px; }
         
-        .hand-wrapper { position: relative; width: 100%; margin-top: auto; }
+        /* [修正重點] 手牌區塊新增 flex-shrink: 0 確保不會被上方的文字壓縮變形 */
+        .hand-wrapper { position: relative; width: 100%; margin-top: auto; flex-shrink: 0; }
         .hand-tooltip { position: absolute; bottom: 100%; margin-bottom: 5px; left: 50%; transform: translateX(-50%); width: 95%; background: rgba(20, 20, 20, 0.9); color: #ffcb05; padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: bold; text-align: center; border: 2px solid #ffcb05; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.2s ease-in-out; box-shadow: 0 5px 15px rgba(0,0,0,0.7); line-height: 1.4; }
         .hand-tooltip.show { opacity: 1; }
         
@@ -50,8 +52,11 @@
         .hand-energy{background:#333}
         .hand-trainer{background:linear-gradient(135deg,#eee,#aaa);color:#222}
 
-        .center-panel{width:210px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:20px 10px; gap:10px; align-self: stretch;}
-        #log{flex:1; width:100%; background:rgba(0,0,0,.7); border:1px solid #333; border-radius:8px; padding:10px; font-size:14px; color:#eee; overflow-y:auto; display:flex; flex-direction:column; gap:8px;}
+        /* [修正重點] 中央面板也鎖定高度，並強制讓紀錄區塊高度自適應與滾動 */
+        .center-panel{width:210px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:20px 10px; gap:10px; align-self: stretch; height: 100%; max-height: 100%; box-sizing: border-box; overflow: hidden; }
+        #action-hint { color: #bbb; font-size: 13px; text-align: center; margin-bottom: 8px; min-height: 45px; max-height: 45px; display: flex; align-items: center; justify-content: center; overflow: hidden; line-height:1.4; flex-shrink: 0; }
+        #log{flex:1; width:100%; background:rgba(0,0,0,.7); border:1px solid #333; border-radius:8px; padding:10px; font-size:14px; color:#eee; overflow-y:auto; display:flex; flex-direction:column; gap:8px; height: 0;}
+        
         .log-entry{border-bottom:1px solid #222; padding-bottom:5px; animation:slideIn .3s ease-out; opacity:1 !important; line-height:1.4;}
         @keyframes slideIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
 
@@ -75,6 +80,7 @@
         .card.dead{filter:grayscale(100%);opacity:.5;pointer-events:none;}
         .card.dead.revivable{pointer-events:auto;animation:pulse 1.5s infinite;border-color:#0f0;opacity:.8;filter:grayscale(30%)}
         .card.valid-target{border-color:#0f0;box-shadow:0 0 15px #0f0;animation:pulse 1.5s infinite}
+        
         .card.mega-target{border-color:#ffd700;box-shadow:0 0 25px #ffd700;animation:megaPulse 1.5s infinite; z-index:20;}
         @keyframes megaPulse{0%,100%{box-shadow:0 0 10px #ffd700}50%{box-shadow:0 0 35px #ffd700;border-color:#fff}}
         @keyframes pulse{0%,100%{box-shadow:0 0 5px #0f0}50%{box-shadow:0 0 20px #0f0}100%{box-shadow:0 0 5px #0f0}}
@@ -222,6 +228,17 @@
             <input type="file" id="csv-file" accept=".csv" style="color:white; font-size:14px; margin: 0 auto; display: block;" onchange="loadLocalCSV(event)">
         </div>
 
+        <!-- 💡 新增：隨機打亂題目與選項介面 -->
+        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin: 15px 0; text-align: left; border: 1px solid #444; width: 100%; box-sizing: border-box;">
+            <h3 style="color: #ffcb05; margin-bottom: 10px; font-size: 16px;">🎲 隨機設定</h3>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer; font-size: 14px;">
+                <input type="checkbox" id="shuffle-questions" style="margin-right: 8px; transform: scale(1.2);"> 隨機打亂題目順序
+            </label>
+            <label style="display: block; cursor: pointer; font-size: 14px;">
+                <input type="checkbox" id="shuffle-answers" style="margin-right: 8px; transform: scale(1.2);"> 隨機打亂選項順序 (僅適用 CSV 模式)
+            </label>
+        </div>
+
         <button class="btn" style="background:#ffcb05; color:black; width:260px; margin:15px auto 0; padding:12px; font-size:24px; border-radius:30px; font-weight:900; letter-spacing:2px;" onclick="initGame()">
             <div class="start-btn-content">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" class="pokeball-icon">
@@ -251,7 +268,7 @@
 
             <div class="center-panel">
                 <h2 id="turn-indicator" style="margin-bottom: 8px; font-size: 18px; font-weight:900; text-align: center; color: #ffcb05; text-shadow: 0 0 8px rgba(255, 203, 5, 0.8);"></h2>
-                <div id="action-hint" style="color: #bbb; font-size: 13px; text-align: center; margin-bottom: 8px; min-height: 35px; line-height:1.4;"></div>
+                <div id="action-hint"></div>
                 
                 <div id="setup-ui">
                     <button id="btn-redraw" class="btn" style="background:#ffcb05; color:black; font-size:16px;" onclick="redrawCards()">🔄 重抽卡牌 (5)</button>
@@ -319,6 +336,7 @@
     </div>
 </div>
 
+<!-- 💡 在進入主邏輯前載入分離出去的資料庫檔案 -->
 <script src="data.js"></script>
 
 <script type="module">
@@ -340,12 +358,17 @@
     window.state = {
         quizMode: 'manual', questions: [], csvQuestions: [], qIdx: 0, currentTeam: 1, step: 'quiz', selectedHandItem: null, hasAttachedEnergyThisTurn: false,
         pendingAttack: null, pendingCatcherTarget: null, eotFlips: [], coinFlipReason: '', coinFlipsQueue: 0, coinFlipsResults: 0, transformingPokemon: null, isAttacking: false, redrawsLeft: 5, nextTurnTeam: null,
-        teams: { 1: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [] }, 2: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [] } }
+        teams: { 
+            1: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [], usedDynamax: false, usedMega: false }, 
+            2: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [], usedDynamax: false, usedMega: false } 
+        },
+        // 💡 擲硬幣防護狀態
+        coinStreak: { result: null, count: 0 }
     };
 
     window.uploadDataToFirestore = async function() {
-        if (typeof POKEMON_DB === 'undefined') return window.showAlert("找不到 data.js，請確認檔案位置！");
-        window.showConfirm("確定要將本地 data.js 的資料同步至 Firebase 雲端嗎？", async () => {
+        if (typeof POKEMON_DB === 'undefined') return window.showAlert("找不到 POKEMON_DB！請確認 data.js 是否載入成功。");
+        window.showConfirm("確定要將本地資料同步至 Firebase 雲端嗎？", async () => {
             try {
                 window.addLog("⏳ 正在同步角色資料...");
                 for (const p of POKEMON_DB) { 
@@ -369,6 +392,16 @@
             if(!input) return window.showAlert("請輸入手動題目，或讀取 CSV 題庫！");
             window.state.questions = input.split('/').map(s => s.trim()).filter(s => s);
         }
+
+        // 💡 新增：隨機打亂題目順序
+        if (document.getElementById('shuffle-questions') && document.getElementById('shuffle-questions').checked) {
+            if (window.state.quizMode === 'csv' && window.state.csvQuestions.length > 0) {
+                window.state.csvQuestions.sort(() => Math.random() - 0.5);
+            } else if (window.state.questions.length > 0) {
+                window.state.questions.sort(() => Math.random() - 0.5);
+            }
+        }
+
         try {
             window.addLog("🌐 正在從雲端抓取角色資料...");
             const querySnapshot = await getDocs(collection(db, "pokemons"));
@@ -379,7 +412,11 @@
             let cloudTrainerDB = [];
             trainerSnapshot.forEach((doc) => { cloudTrainerDB.push(doc.data()); });
 
-            if (cloudPokemonDB.length === 0) return window.showAlert("雲端資料庫是空的！請先點擊同步。");
+            if (cloudPokemonDB.length === 0) {
+                // 如果雲端抓不到，自動使用本地 data.js 的 DB 作為備用
+                cloudPokemonDB = POKEMON_DB;
+                cloudTrainerDB = TRAINERS_DB;
+            }
 
             window.CLOUD_POKEMON_DB = cloudPokemonDB;
             window.CLOUD_TRAINERS_DB = cloudTrainerDB;
@@ -387,8 +424,8 @@
             window.state.redrawsLeft = 5; let isBalanced = false; let attempts = 0;
             while (!isBalanced && attempts < 100) {
                 for(let t=1; t<=2; t++) {
-                    // 💡 過濾掉 ID 大於 10000 的超級進化卡牌
-                    const pool = [...cloudPokemonDB].filter(p => p.id < 10000).sort(() => Math.random() - 0.5);
+                    // 💡 新增：過濾超級進化，確保開局不會直接抽到 Mega 卡
+                    const pool = [...cloudPokemonDB].filter(p => !p.name.includes('超級')).sort(() => Math.random() - 0.5);
                     window.state.teams[t].pokemon = pool.slice(0, 5).map((p, i) => ({
                         ...p, currHp: p.hp, attachedEnergy: [], uid: `t${t}_${i}`,
                         status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
@@ -396,6 +433,7 @@
                         dynamax: { turns: 0 }, mega: { turns: 0, originalForm: null }
                     }));
                     window.state.teams[t].hand = []; window.state.teams[t].lostLives = 0; window.state.teams[t].wrongAnswers = [];
+                    window.state.teams[t].usedDynamax = false; window.state.teams[t].usedMega = false;
                 }
                 const hp1 = window.state.teams[1].pokemon.reduce((sum, p) => sum + p.hp, 0);
                 const hp2 = window.state.teams[2].pokemon.reduce((sum, p) => sum + p.hp, 0);
@@ -406,7 +444,7 @@
             document.getElementById('battle-field').classList.remove('hidden');
             window.updateBattleScale(); 
             window.state.step = 'setup';
-            window.addLog(`🎲 雲端連線成功！請決定先攻方。`);
+            window.addLog(`🎲 連線成功！請決定先攻方。`);
             window.render();
         } catch (e) { window.showAlert("❌ 連線失敗：" + e.message); }
     };
@@ -556,6 +594,12 @@
         let poolArr = Array.from(pool); if (poolArr.length === 0) poolArr = ['normal'];
         let chosen = poolArr[Math.floor(Math.random() * poolArr.length)];
         if (Math.random() < 0.15) chosen = 'rainbow'; return chosen;
+    };
+
+    // 💡 取得當前隊伍抽到訓練家卡的機率 (若手牌沒道具則保底機率提高至 75%)
+    window.getTrainerDrawChance = function(team) {
+        let trainerCount = team.hand.filter(c => c.cardType === 'trainer').length;
+        return trainerCount < 1 ? 0.75 : 0.35;
     };
 
     const fxCanvas = document.getElementById('fx-canvas'); const fxCtx = fxCanvas.getContext('2d');
@@ -718,15 +762,14 @@
         window.showAlert(`✅ 成功載入 ${window.state.questions.length} 題手動題目！`);
     };
 
-    // 💡 點擊「重抽卡牌」時，剔除 ID >= 10000 的超進化寶可夢
     window.redrawCards = function() {
         if(window.state.redrawsLeft > 0) {
             window.state.redrawsLeft--; let isBalanced = false; let attempts = 0;
-            const pDB = window.CLOUD_POKEMON_DB || (typeof POKEMON_DB !== 'undefined' ? POKEMON_DB : []);
+            const pDB = window.CLOUD_POKEMON_DB || POKEMON_DB;
             while (!isBalanced && attempts < 100) {
                 for(let t=1; t<=2; t++) {
-                    // 💡 過濾邏輯在這裡
-                    const pool = [...pDB].filter(p => p.id < 10000).sort(() => Math.random() - 0.5);
+                    // 💡 新增：過濾超級進化，避免重抽洗到 Mega 卡
+                    const pool = [...pDB].filter(p => !p.name.includes('超級')).sort(() => Math.random() - 0.5);
                     window.state.teams[t].pokemon = pool.slice(0, 5).map((p, i) => ({
                         ...p, currHp: p.hp, attachedEnergy: [], uid: `t${t}_${i}`,
                         status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
@@ -734,6 +777,7 @@
                         dynamax: { turns: 0 }, mega: { turns: 0, originalForm: null }
                     }));
                     window.state.teams[t].hand = []; window.state.teams[t].lostLives = 0; window.state.teams[t].wrongAnswers = [];
+                    window.state.teams[t].usedDynamax = false; window.state.teams[t].usedMega = false;
                 }
                 const hp1 = window.state.teams[1].pokemon.reduce((sum, p) => sum + p.hp, 0); const hp2 = window.state.teams[2].pokemon.reduce((sum, p) => sum + p.hp, 0);
                 attempts++; if (Math.abs(hp1 - hp2) <= 80 || attempts >= 50) isBalanced = true; 
@@ -769,10 +813,20 @@
             document.getElementById('quiz-text').innerHTML = `<div style="font-size:${qFontSize}; font-weight:bold; color:#fff; text-shadow: 2px 2px 4px #000; margin-bottom:30px; padding: 0 20px;">${qObj.q}</div>`;
             
             const styles = ['kb-red', 'kb-blue', 'kb-yellow', 'kb-green']; const icons = ['▲', '◆', '●', '■'];
-            qObj.opts.forEach((opt, i) => {
-                const isCorrect = (i + 1 === qObj.ans);
-                let fontSize = opt.length > 40 ? '20px' : (opt.length > 15 ? '26px' : '32px');
-                qContainer.innerHTML += `<button class="kahoot-btn ${styles[i % 4]}" onclick="window.checkAnswer(${isCorrect})"><span style="margin-right:15px; font-size:36px; flex-shrink:0;">${icons[i % 4]}</span><span style="flex:1; text-align:left; font-size:${fontSize}; line-height:1.3; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; text-overflow:ellipsis;">${opt}</span></button>`;
+
+            // 💡 新增：隨機打亂選項順序機制
+            let optionsData = qObj.opts.map((opt, i) => ({
+                text: opt,
+                isCorrect: (i + 1 === qObj.ans)
+            }));
+
+            if (document.getElementById('shuffle-answers') && document.getElementById('shuffle-answers').checked) {
+                optionsData.sort(() => Math.random() - 0.5);
+            }
+
+            optionsData.forEach((optData, i) => {
+                let fontSize = optData.text.length > 40 ? '20px' : (optData.text.length > 15 ? '26px' : '32px');
+                qContainer.innerHTML += `<button class="kahoot-btn ${styles[i % 4]}" onclick="window.checkAnswer(${optData.isCorrect})"><span style="margin-right:15px; font-size:36px; flex-shrink:0;">${icons[i % 4]}</span><span style="flex:1; text-align:left; font-size:${fontSize}; line-height:1.3; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; text-overflow:ellipsis;">${optData.text}</span></button>`;
             });
         } else {
             let qText = window.state.questions[window.state.qIdx % window.state.questions.length] || "無題目";
@@ -792,8 +846,15 @@
             const myTeam = window.state.teams[window.state.currentTeam]; const givenEnergy = window.getSmartEnergyType(myTeam);
             if (myTeam.hand.length < 7) { myTeam.hand.push({ cardType: 'energy', type: givenEnergy }); window.addLog(`✅ 答對！獲得 [${window.getTypeName(givenEnergy)}] 能量。`); } else { window.addLog(`✅ 答對！(手牌已滿)`); }
             
-            const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
-            if(Math.random() < 0.4 && myTeam.hand.length < 7 && tDB.length > 0) { const trainer = tDB[Math.floor(Math.random() * tDB.length)]; myTeam.hand.push({ cardType: 'trainer', ...trainer }); window.addLog(`🎁 獲得道具：「${trainer.name}」！`); }
+            const tDB = window.CLOUD_TRAINERS_DB || TRAINERS_DB;
+            // 💡 動態訓練家卡機率：若手牌無道具，提升至 75%
+            const trainerChance = window.getTrainerDrawChance(myTeam);
+
+            if(Math.random() < trainerChance && myTeam.hand.length < 7 && tDB.length > 0) { 
+                const trainer = tDB[Math.floor(Math.random() * tDB.length)]; 
+                myTeam.hand.push({ cardType: 'trainer', ...trainer }); 
+                window.addLog(`🎁 獲得道具：「${trainer.name}」！`); 
+            }
             window.updateHint("請點擊手牌使用，或點擊招式攻擊 (攻擊後將自動結束回合)。\n🔍 點選左上角放大鏡可查看詳細狀態。");
         } else {
             const myTeam = window.state.teams[window.state.currentTeam];
@@ -897,11 +958,14 @@
             if(card.target === 'dead_ally' && teamNum === window.state.currentTeam && p.currHp <= 0) valid = true;
             if(card.target === 'enemy_bench' && teamNum !== window.state.currentTeam && pIdx !== window.state.teams[teamNum].activeIdx && p.currHp > 0) valid = true;
             
+            // 💡 修正：極巨化和超級進化只要死過1隻就能用，並且單場每隊限1次
             if(card.id === 'dynamax_band') {
-                if (window.state.teams[window.state.currentTeam].lostLives !== 1) { window.showAlert("極巨腕帶只能在隊伍剩下 2 個火焰時發動！"); return; }
+                if(window.state.teams[window.state.currentTeam].usedDynamax) { window.showAlert("極巨腕帶一場比賽只能使用一次！"); return; }
+                if (window.state.teams[window.state.currentTeam].lostLives < 1) { window.showAlert("極巨腕帶只能在隊伍有寶可夢陣亡過後發動！"); return; }
                 if (teamNum === window.state.currentTeam && pIdx === team.activeIdx && p.currHp > 0) valid = true;
             } else if (card.id === 'mega_stone') {
-                if (window.state.teams[window.state.currentTeam].lostLives !== 1) { window.showAlert("超級進化石只能在隊伍剩下 2 個火焰時發動！"); return; }
+                if(window.state.teams[window.state.currentTeam].usedMega) { window.showAlert("超級進化石一場比賽只能使用一次！"); return; }
+                if (window.state.teams[window.state.currentTeam].lostLives < 1) { window.showAlert("超級進化石只能在隊伍有寶可夢陣亡過後發動！"); return; }
                 if (teamNum === window.state.currentTeam && p.currHp > 0 && p.megaId) valid = true; else { if(teamNum === window.state.currentTeam && p.currHp > 0) window.showAlert("這隻寶可夢無法超級進化！"); return; }
             }
             
@@ -927,9 +991,8 @@
         const myTeam = window.state.teams[window.state.currentTeam]; const card = window.state.selectedHandItem.data; let consumed = true;
         
         if(card.id === 'mystery_swap') {
-            // 💡 避免神秘置換抽出超級進化卡牌
             const currentIds = [...window.state.teams[1].pokemon, ...window.state.teams[2].pokemon].map(p => p.id);
-            const candidates = window.CLOUD_POKEMON_DB.filter(p => !currentIds.includes(p.id) && p.id < 10000);
+            const candidates = window.CLOUD_POKEMON_DB.filter(p => !currentIds.includes(p.id));
             if(candidates.length === 0) return window.showAlert("目前沒有多餘的寶可夢可替換！");
             const newP = candidates[Math.floor(Math.random() * candidates.length)];
             const oldP = myTeam.pokemon[targetIdx];
@@ -941,7 +1004,7 @@
             window.addLog(`🎲 神秘置換！${oldP.name} 換成了 ${newP.name}！`);
         } else if(card.id === 'pokemon_catcher') {
             window.state.pendingCatcherTarget = targetIdx; window.state.coinFlipReason = 'catcher';
-            document.getElementById('coin-desc').innerHTML = `請擲硬幣：<br>正面則強制對手替換。`;
+            document.getElementById('coin-desc').innerHTML = `請擲硬幣：<br>正面則強制替換對手戰鬥寶可夢。`;
             const coinInner = document.getElementById('coin-inner'); if(coinInner) { coinInner.style.transition = 'none'; coinInner.style.transform = 'rotateY(0deg)'; }
             document.getElementById('coin-modal').style.display = 'flex'; return; 
         } else if(card.id === 'potion' || card.id === 'super_potion') {
@@ -973,13 +1036,21 @@
             window.addLog(`🔍 隨機抽取了能量卡。`);
         } else if(card.id === 'prof_research') {
             window.addLog(`🔬 捨棄手牌重新抽卡。`); myTeam.hand.splice(window.state.selectedHandItem.index, 1); myTeam.hand = []; 
-            const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
-            for(let i=0; i<3; i++){ if(Math.random() < 0.6 && myTeam.hand.length < 7) { myTeam.hand.push({ cardType: 'energy', type: window.getSmartEnergyType(myTeam) }); } else if (myTeam.hand.length < 7 && tDB.length > 0) { const trainer = tDB[Math.floor(Math.random() * tDB.length)]; myTeam.hand.push({ cardType: 'trainer', ...trainer }); } }
+            const tDB = window.CLOUD_TRAINERS_DB || TRAINERS_DB;
+            const trainerChance = window.getTrainerDrawChance(myTeam);
+            for(let i=0; i<3; i++){ 
+                if(Math.random() < trainerChance && myTeam.hand.length < 7 && tDB.length > 0) { 
+                    myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] }); 
+                } else if (myTeam.hand.length < 7) { 
+                    myTeam.hand.push({ cardType: 'energy', type: window.getSmartEnergyType(myTeam) }); 
+                } 
+            }
             consumed = false; 
         }
         else if (card.id === 'dynamax_band') {
             const p = myTeam.pokemon[targetIdx];
             p.dynamax.turns = 2;
+            myTeam.usedDynamax = true;
             window.addLog(`🎇 ${p.name} 戴上了極巨腕帶！傷害大幅提升並獲得減傷！`);
         }
         else if (card.id === 'mega_stone') {
@@ -988,7 +1059,6 @@
             if (!megaForm) return window.showAlert(`找不到超進化資料 (ID: ${p.megaId})`);
             
             let damageTaken = p.hp - p.currHp;
-            
             p.mega.originalForm = { name: p.name, hp: p.hp, type: p.type, attacks: JSON.parse(JSON.stringify(p.attacks)), weakness: p.weakness, resistance: p.resistance, id: p.id };
             
             p.name = megaForm.name;
@@ -1002,6 +1072,7 @@
             p.currHp = Math.max(1, p.hp - damageTaken);
             p.status.poison = p.status.paralyze = p.status.burn = p.status.asleep = p.status.confused = false;
             p.mega.turns = 2;
+            myTeam.usedMega = true;
             window.addLog(`💎 光芒閃耀！超級進化成 ${p.name}！(狀態已淨化)`);
         }
 
@@ -1072,7 +1143,15 @@
 
     window.autoFlipCoin = function() {
         const coinBtn = document.getElementById('auto-coin'); if (coinBtn && coinBtn.classList.contains('flipping')) return;
-        if(coinBtn) coinBtn.classList.add('flipping'); const coinInner = document.getElementById('coin-inner'); const isHeads = Math.random() < 0.5;
+        if(coinBtn) coinBtn.classList.add('flipping'); const coinInner = document.getElementById('coin-inner'); 
+        
+        // 💡 機率防護系統：連續擲出兩次相同的結果，第三次出現該結果的機率大幅降低至 15%
+        let chance = 0.5;
+        if (window.state.coinStreak.count >= 2) {
+            chance = window.state.coinStreak.result === true ? 0.15 : 0.85;
+        }
+        const isHeads = Math.random() < chance;
+        
         const spins = 5; const deg = spins * 360 + (isHeads ? 0 : 180);
         if(coinInner) { coinInner.style.transition = 'transform 2s cubic-bezier(0.2, 0.8, 0.3, 1)'; coinInner.style.transform = `rotateY(${deg}deg)`; }
         setTimeout(() => { if(coinBtn) coinBtn.classList.remove('flipping'); window.resolveCoinFlip(isHeads); setTimeout(() => { if(coinInner) { coinInner.style.transition = 'none'; coinInner.style.transform = `rotateY(0deg)`; } }, 500); }, 2100);
@@ -1080,6 +1159,15 @@
 
     window.resolveCoinFlip = function(isHeads) {
         document.getElementById('coin-modal').style.display = 'none'; const reason = window.state.coinFlipReason;
+        
+        // 💡 更新硬幣紀錄 (防連續相同機率)
+        if (isHeads === window.state.coinStreak.result) {
+            window.state.coinStreak.count++;
+        } else {
+            window.state.coinStreak.result = isHeads;
+            window.state.coinStreak.count = 1;
+        }
+
         if (reason === 'confusion') {
             if (isHeads) { window.addLog(`💫 克服混亂！`); window.continueAttack(); } 
             else {
@@ -1117,19 +1205,14 @@
                 if (atk.special === 'snipe_any') {
                     window.state.step = 'select_enemy_any_snipe'; 
                     window.state.isAttacking = false;
-                    window.updateHint(`🎯 請選擇對手場上（戰鬥或後備）任一寶可夢進行狙擊！(將造成 ${atk.d} 傷害)`); 
-                    window.render(); 
-                    return; 
+                    window.updateHint(`🎯 請選擇對手場上任一寶可夢進行狙擊！(將造成 ${atk.d} 傷害)`); 
+                    window.render(); return; 
                 }
-                
                 if (atk.special === 'heal_choose_50' || atk.special === 'heal_choose_70') {
                     window.state.step = atk.special === 'heal_choose_50' ? 'select_ally_heal_50' : 'select_ally_heal_70';
                     window.state.pendingAttack = null; window.state.isAttacking = false;
-                    window.updateHint(`💚 請選擇要恢復的「我方」寶可夢！(將恢復 ${atk.special === 'heal_choose_50' ? 50 : 70} HP)`); 
-                    window.render(); 
-                    return;
+                    window.updateHint(`💚 請選擇要恢復的「我方」寶可夢！`); window.render(); return;
                 }
-
                 if (atk.special === 'force_swap_choose') { const aliveBench = window.state.teams[enemyTeamNum].pokemon.filter((p, i) => i !== window.state.teams[enemyTeamNum].activeIdx && p.currHp > 0); if(aliveBench.length > 0) { window.state.step = 'select_enemy_bench'; window.state.pendingAttack = null; window.state.isAttacking = false; window.updateHint("請選擇對手後備寶可夢拖上場！"); window.render(); return; } else { log.text += ` (對手無後備，替換無效)`; } }
                 if (atk.special === 'transform_choose') { window.state.step = 'select_transform_target'; window.state.transformingPokemon = attacker; window.state.pendingAttack = null; window.state.isAttacking = false; window.updateHint("請選擇對手進行複製！"); window.render(); return; }
                 if(atk.special.includes('flip_') && atk.special.includes('x')) { dmg = coinResult * parseInt(atk.special.split('x')[1]); log.text += ` (擲出 ${coinResult} 次正面，造成 ${dmg} 傷害！)`; }
@@ -1139,19 +1222,19 @@
                 if (atk.special === 'draw_1') {
                     const myTeam = window.state.teams[window.state.currentTeam];
                     if(myTeam.hand.length < 7) {
-                        const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
-                        if(Math.random() < 0.3 && tDB.length > 0) myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] });
+                        const tDB = window.CLOUD_TRAINERS_DB || TRAINERS_DB;
+                        if(Math.random() < window.getTrainerDrawChance(myTeam) && tDB.length > 0) myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] });
                         else myTeam.hand.push({ cardType: 'energy', type: window.getSmartEnergyType(myTeam) });
                         log.text += ` (隨機抽 1 卡)`;
                     }
                 }
                 if (atk.special === 'draw_2') {
                     const myTeam = window.state.teams[window.state.currentTeam];
-                    const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
+                    const tDB = window.CLOUD_TRAINERS_DB || TRAINERS_DB;
                     let drawn = 0;
                     for(let k=0; k<2; k++) {
                         if(myTeam.hand.length < 7) {
-                            if(Math.random() < 0.3 && tDB.length > 0) myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] });
+                            if(Math.random() < window.getTrainerDrawChance(myTeam) && tDB.length > 0) myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] });
                             else myTeam.hand.push({ cardType: 'energy', type: window.getSmartEnergyType(myTeam) });
                             drawn++;
                         }
@@ -1174,12 +1257,9 @@
 
             if(dmg > 0) {
                 if(attacker.buff.turns > 0) dmg += attacker.buff.dmg;
-                
                 const weakPool = Array.isArray(defender.weakness) ? defender.weakness : [defender.weakness];
                 if(weakPool.includes(attacker.type)) { dmg = Math.floor(dmg * 1.5); log.text += ` (效果絕佳！)`; }
-                
                 if (atk.special !== 'ignore_resistance' && (defender.resistance.type === attacker.type || defender.resistance.type === 'any')) { dmg -= defender.resistance.val; log.text += ` (被抵抗)`; }
-                
                 if (atk.special !== 'ignore_resistance') {
                     if (defender.buff.fullFaceGuard > 0) { dmg = Math.max(0, dmg - 20); log.text += ` (🛡️防守-20)`; }
                     if (defender.buff.potHelmet > 0) { dmg = Math.max(0, dmg - 40); log.text += ` (🪖頭盔-40)`; }
@@ -1312,8 +1392,7 @@
         let statusHtml = ''; if (p.status.poison) statusHtml += '<span class="status-tag status-poison">中毒</span>'; if (p.status.burn) statusHtml += '<span class="status-tag status-burn">灼傷</span>'; if (p.status.asleep) statusHtml += '<span class="status-tag status-asleep">睡眠</span>'; if (p.status.confused) statusHtml += '<span class="status-tag status-confused">混亂</span>'; if (p.status.paralyze) statusHtml += '<span class="status-tag status-paralyze">麻痺</span>'; if (p.status.immune_next) statusHtml += '<span class="status-tag status-immune">免傷</span>'; if (p.status.cant_attack > 0) statusHtml += '<span class="status-tag status-cant-act">禁攻</span>';
         
         let buffHtml = ''; if (p.buff.turns > 0) buffHtml += `<div class="item-tag">💪攻擊+${p.buff.dmg}</div>`; if (p.buff.hasFocusSash) buffHtml += `<div class="item-tag">🎗️氣勢披帶</div>`; if (p.buff.fullFaceGuard > 0) buffHtml += `<div class="item-tag">🛡️傷害-20</div>`; if (p.buff.potHelmet > 0) buffHtml += `<div class="item-tag">🪖傷害-40</div>`;
-        
-        if (p.dynamax && p.dynamax.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇極巨化</div>`;
+        if (p.dynamax && p.dynamax.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇極巨化(傷+40/受傷-30)</div>`;
         if (p.mega && p.mega.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff00ff;color:white;">💎超進化</div>`;
         
         let attacksHtml = '';
@@ -1372,8 +1451,8 @@
                     if(hCard.target === 'bench' && !isActive && p.currHp > 0) isValidTarget = true;
                     if(hCard.target === 'dead_ally' && p.currHp <= 0) isValidTarget = true;
                     
-                    if(hCard.id === 'dynamax_band' && (!isActive || p.currHp <= 0 || team.lostLives !== 1)) isValidTarget = false;
-                    if(hCard.id === 'mega_stone' && (p.currHp <= 0 || team.lostLives !== 1 || !p.megaId)) isValidTarget = false;
+                    if(hCard.id === 'dynamax_band' && (!isActive || p.currHp <= 0 || team.lostLives < 1 || team.usedDynamax)) isValidTarget = false;
+                    if(hCard.id === 'mega_stone' && (p.currHp <= 0 || team.lostLives < 1 || !p.megaId || team.usedMega)) isValidTarget = false;
                 }
                 
                 if (window.state.step === 'select_enemy_any_snipe' && p.currHp > 0 && t !== window.state.currentTeam) isValidTarget = true;
@@ -1384,7 +1463,9 @@
                 
                 let statusHtml = ''; if (p.status.poison) statusHtml += '<span class="status-tag status-poison">中毒</span>'; if (p.status.burn) statusHtml += '<span class="status-tag status-burn">灼伤</span>'; if (p.status.asleep) statusHtml += '<span class="status-tag status-asleep">睡眠</span>'; if (p.status.confused) statusHtml += '<span class="status-tag status-confused">混亂</span>'; if (p.status.paralyze) statusHtml += '<span class="status-tag status-paralyze">麻痺</span>'; if (p.status.immune_next) statusHtml += '<span class="status-tag status-immune">免傷</span>'; if (p.status.cant_attack > 0) statusHtml += '<span class="status-tag status-cant-act">禁攻</span>';
                 let buffHtml = ''; if (p.buff.turns > 0) buffHtml += `<div class="item-tag">💪攻擊+${p.buff.dmg}</div>`; if (p.buff.hasFocusSash) buffHtml += `<div class="item-tag">🎗️披帶</div>`; if (p.buff.fullFaceGuard > 0) buffHtml += `<div class="item-tag">🛡️-20</div>`; if (p.buff.potHelmet > 0) buffHtml += `<div class="item-tag">🪖-40</div>`;
-                if (p.dynamax && p.dynamax.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇極巨化</div>`;
+                
+                // 💡 渲染字串補充屬性效果
+                if (p.dynamax && p.dynamax.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇極巨化(傷+40/受傷-30)</div>`;
                 if (p.mega && p.mega.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff00ff;color:white;">💎超進化</div>`;
                 
                 const deadClass = p.currHp <= 0 ? (isValidTarget ? 'dead revivable' : 'dead') : '';
@@ -1392,11 +1473,8 @@
 
                 let targetClass = '';
                 if (isValidTarget && p.currHp > 0) {
-                    if (window.state.selectedHandItem && window.state.selectedHandItem.data.id === 'mega_stone') {
-                        targetClass = 'mega-target';
-                    } else {
-                        targetClass = 'valid-target';
-                    }
+                    if (window.state.selectedHandItem && window.state.selectedHandItem.data.id === 'mega_stone') targetClass = 'mega-target';
+                    else targetClass = 'valid-target';
                 }
 
                 let cardHtml = `
@@ -1448,7 +1526,7 @@
             turnInd.style.display = 'none'; actionHint.style.display = 'none'; endBtn.style.display = 'none'; setupUI.style.display = 'flex';
             document.getElementById('btn-redraw').disabled = window.state.redrawsLeft <= 0; document.getElementById('btn-redraw').textContent = `🔄 重抽卡牌 (${window.state.redrawsLeft})`;
         } else {
-            setupUI.style.display = 'none'; turnInd.style.display = 'block'; actionHint.style.display = 'block';
+            setupUI.style.display = 'none'; turnInd.style.display = 'block'; actionHint.style.display = 'flex';
             turnInd.textContent = window.state.step === 'must_swap' ? `⚠️ TEAM ${window.state.currentTeam} 必須換人！` : `▶ TEAM ${window.state.currentTeam} 的回合`;
             turnInd.style.color = '#ffcb05'; endBtn.style.display = window.state.step === 'action' ? 'block' : 'none';
         }
