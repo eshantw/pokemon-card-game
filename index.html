@@ -30,7 +30,6 @@
         #battle-field { position: relative; width: 100vw; height: 100vh; background: #0a0a0c; overflow: hidden; }
         #battle-scale-wrapper { width: 1280px; height: 720px; position: absolute; left: 50%; top: 50%; display: flex; flex-direction: column; }
         
-        /* [修正重點] 將主戰鬥區塊加上 box-sizing: border-box 與 100% 高度限制，並隱藏溢位，防止被文字撐開 */
         .battle-main { flex:1; display:flex; justify-content:space-between; align-items:stretch; padding:20px 10px; gap:15px; height: 100%; max-height: 100%; box-sizing: border-box; overflow: hidden; }
         .team-container { width:510px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; padding:20px 15px; border-radius:25px; background:rgba(255,255,255,.03); border:3px solid transparent; transition:.3s; height: 100%; max-height: 100%; box-sizing: border-box; overflow: hidden;}
         .team-container.active-team{border-color:#00f2ff;background:linear-gradient(180deg,rgba(0,242,255,.05) 0,rgba(0,100,255,.15) 100%);box-shadow:0 0 30px rgba(0,242,255,.6),inset 0 0 20px rgba(0,150,255,.4);animation:neonPulse 2s infinite alternate}
@@ -40,7 +39,6 @@
         .bench-grid { display:grid; grid-template-columns:repeat(2,120px); grid-template-rows:repeat(2,auto); gap:10px; justify-content:center; }
         .active-zone { flex:0 0 auto; display:flex; justify-content:center; align-items:center; padding:6px; border:2px dashed #444; border-radius:12px; margin: 0 5px; }
         
-        /* [修正重點] 手牌區塊新增 flex-shrink: 0 確保不會被上方的文字壓縮變形 */
         .hand-wrapper { position: relative; width: 100%; margin-top: auto; flex-shrink: 0; }
         .hand-tooltip { position: absolute; bottom: 100%; margin-bottom: 5px; left: 50%; transform: translateX(-50%); width: 95%; background: rgba(20, 20, 20, 0.9); color: #ffcb05; padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: bold; text-align: center; border: 2px solid #ffcb05; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.2s ease-in-out; box-shadow: 0 5px 15px rgba(0,0,0,0.7); line-height: 1.4; }
         .hand-tooltip.show { opacity: 1; }
@@ -52,7 +50,6 @@
         .hand-energy{background:#333}
         .hand-trainer{background:linear-gradient(135deg,#eee,#aaa);color:#222}
 
-        /* [修正重點] 中央面板也鎖定高度，並強制讓紀錄區塊高度自適應與滾動 */
         .center-panel{width:210px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:20px 10px; gap:10px; align-self: stretch; height: 100%; max-height: 100%; box-sizing: border-box; overflow: hidden; }
         #action-hint { color: #bbb; font-size: 13px; text-align: center; margin-bottom: 8px; min-height: 45px; max-height: 45px; display: flex; align-items: center; justify-content: center; overflow: hidden; line-height:1.4; flex-shrink: 0; }
         #log{flex:1; width:100%; background:rgba(0,0,0,.7); border:1px solid #333; border-radius:8px; padding:10px; font-size:14px; color:#eee; overflow-y:auto; display:flex; flex-direction:column; gap:8px; height: 0;}
@@ -228,7 +225,7 @@
             <input type="file" id="csv-file" accept=".csv" style="color:white; font-size:14px; margin: 0 auto; display: block;" onchange="loadLocalCSV(event)">
         </div>
 
-        <!-- 💡 新增：隨機打亂題目與選項介面 -->
+        <!-- 💡 隨機打亂題目與選項介面 -->
         <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin: 15px 0; text-align: left; border: 1px solid #444; width: 100%; box-sizing: border-box;">
             <h3 style="color: #ffcb05; margin-bottom: 10px; font-size: 16px;">🎲 隨機設定</h3>
             <label style="display: block; margin-bottom: 8px; cursor: pointer; font-size: 14px;">
@@ -336,7 +333,7 @@
     </div>
 </div>
 
-<!-- 💡 在進入主邏輯前載入分離出去的資料庫檔案 -->
+<!-- 💡 載入分離的資料庫 -->
 <script src="data.js"></script>
 
 <script type="module">
@@ -362,7 +359,6 @@
             1: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [], usedDynamax: false, usedMega: false }, 
             2: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [], usedDynamax: false, usedMega: false } 
         },
-        // 💡 擲硬幣防護狀態
         coinStreak: { result: null, count: 0 }
     };
 
@@ -393,7 +389,6 @@
             window.state.questions = input.split('/').map(s => s.trim()).filter(s => s);
         }
 
-        // 💡 新增：隨機打亂題目順序
         if (document.getElementById('shuffle-questions') && document.getElementById('shuffle-questions').checked) {
             if (window.state.quizMode === 'csv' && window.state.csvQuestions.length > 0) {
                 window.state.csvQuestions.sort(() => Math.random() - 0.5);
@@ -413,7 +408,6 @@
             trainerSnapshot.forEach((doc) => { cloudTrainerDB.push(doc.data()); });
 
             if (cloudPokemonDB.length === 0) {
-                // 如果雲端抓不到，自動使用本地 data.js 的 DB 作為備用
                 cloudPokemonDB = POKEMON_DB;
                 cloudTrainerDB = TRAINERS_DB;
             }
@@ -424,7 +418,6 @@
             window.state.redrawsLeft = 5; let isBalanced = false; let attempts = 0;
             while (!isBalanced && attempts < 100) {
                 for(let t=1; t<=2; t++) {
-                    // 💡 新增：過濾超級進化，確保開局不會直接抽到 Mega 卡
                     const pool = [...cloudPokemonDB].filter(p => !p.name.includes('超級')).sort(() => Math.random() - 0.5);
                     window.state.teams[t].pokemon = pool.slice(0, 5).map((p, i) => ({
                         ...p, currHp: p.hp, attachedEnergy: [], uid: `t${t}_${i}`,
@@ -596,7 +589,6 @@
         if (Math.random() < 0.15) chosen = 'rainbow'; return chosen;
     };
 
-    // 💡 取得當前隊伍抽到訓練家卡的機率 (若手牌沒道具則保底機率提高至 75%)
     window.getTrainerDrawChance = function(team) {
         let trainerCount = team.hand.filter(c => c.cardType === 'trainer').length;
         return trainerCount < 1 ? 0.75 : 0.35;
@@ -768,7 +760,6 @@
             const pDB = window.CLOUD_POKEMON_DB || POKEMON_DB;
             while (!isBalanced && attempts < 100) {
                 for(let t=1; t<=2; t++) {
-                    // 💡 新增：過濾超級進化，避免重抽洗到 Mega 卡
                     const pool = [...pDB].filter(p => !p.name.includes('超級')).sort(() => Math.random() - 0.5);
                     window.state.teams[t].pokemon = pool.slice(0, 5).map((p, i) => ({
                         ...p, currHp: p.hp, attachedEnergy: [], uid: `t${t}_${i}`,
@@ -814,7 +805,6 @@
             
             const styles = ['kb-red', 'kb-blue', 'kb-yellow', 'kb-green']; const icons = ['▲', '◆', '●', '■'];
 
-            // 💡 新增：隨機打亂選項順序機制
             let optionsData = qObj.opts.map((opt, i) => ({
                 text: opt,
                 isCorrect: (i + 1 === qObj.ans)
@@ -847,7 +837,6 @@
             if (myTeam.hand.length < 7) { myTeam.hand.push({ cardType: 'energy', type: givenEnergy }); window.addLog(`✅ 答對！獲得 [${window.getTypeName(givenEnergy)}] 能量。`); } else { window.addLog(`✅ 答對！(手牌已滿)`); }
             
             const tDB = window.CLOUD_TRAINERS_DB || TRAINERS_DB;
-            // 💡 動態訓練家卡機率：若手牌無道具，提升至 75%
             const trainerChance = window.getTrainerDrawChance(myTeam);
 
             if(Math.random() < trainerChance && myTeam.hand.length < 7 && tDB.length > 0) { 
@@ -958,7 +947,6 @@
             if(card.target === 'dead_ally' && teamNum === window.state.currentTeam && p.currHp <= 0) valid = true;
             if(card.target === 'enemy_bench' && teamNum !== window.state.currentTeam && pIdx !== window.state.teams[teamNum].activeIdx && p.currHp > 0) valid = true;
             
-            // 💡 修正：極巨化和超級進化只要死過1隻就能用，並且單場每隊限1次
             if(card.id === 'dynamax_band') {
                 if(window.state.teams[window.state.currentTeam].usedDynamax) { window.showAlert("極巨腕帶一場比賽只能使用一次！"); return; }
                 if (window.state.teams[window.state.currentTeam].lostLives < 1) { window.showAlert("極巨腕帶只能在隊伍有寶可夢陣亡過後發動！"); return; }
@@ -992,7 +980,8 @@
         
         if(card.id === 'mystery_swap') {
             const currentIds = [...window.state.teams[1].pokemon, ...window.state.teams[2].pokemon].map(p => p.id);
-            const candidates = window.CLOUD_POKEMON_DB.filter(p => !currentIds.includes(p.id));
+            // 💡 修正：加上 !p.name.includes('超級')，防止神秘置換抽出超級進化的寶可夢
+            const candidates = window.CLOUD_POKEMON_DB.filter(p => !currentIds.includes(p.id) && !p.name.includes('超級'));
             if(candidates.length === 0) return window.showAlert("目前沒有多餘的寶可夢可替換！");
             const newP = candidates[Math.floor(Math.random() * candidates.length)];
             const oldP = myTeam.pokemon[targetIdx];
@@ -1145,7 +1134,6 @@
         const coinBtn = document.getElementById('auto-coin'); if (coinBtn && coinBtn.classList.contains('flipping')) return;
         if(coinBtn) coinBtn.classList.add('flipping'); const coinInner = document.getElementById('coin-inner'); 
         
-        // 💡 機率防護系統：連續擲出兩次相同的結果，第三次出現該結果的機率大幅降低至 15%
         let chance = 0.5;
         if (window.state.coinStreak.count >= 2) {
             chance = window.state.coinStreak.result === true ? 0.15 : 0.85;
@@ -1160,7 +1148,6 @@
     window.resolveCoinFlip = function(isHeads) {
         document.getElementById('coin-modal').style.display = 'none'; const reason = window.state.coinFlipReason;
         
-        // 💡 更新硬幣紀錄 (防連續相同機率)
         if (isHeads === window.state.coinStreak.result) {
             window.state.coinStreak.count++;
         } else {
