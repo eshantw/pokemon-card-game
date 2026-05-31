@@ -479,6 +479,25 @@
             log.text += ` 💚 聖光發動！我方全體恢復 HP！`; 
         },
 
+        'pain_split': (attacker, defender, log) => {
+            let avg = Math.ceil((attacker.currHp + defender.currHp) / 2);
+            let newAttackerHp = Math.min(attacker.hp, avg);
+            let newDefenderHp = Math.min(defender.hp, avg);
+            
+            let attackerDiff = newAttackerHp - attacker.currHp;
+            let defenderDiff = newDefenderHp - defender.currHp;
+            
+            attacker.currHp = newAttackerHp;
+            if (attackerDiff > 0) window.showHeal(attacker.uid, attackerDiff);
+            else if (attackerDiff < 0) window.showDamage(attacker.uid, Math.abs(attackerDiff), 'purple');
+            
+            defender.currHp = newDefenderHp;
+            if (defenderDiff > 0) window.showHeal(defender.uid, defenderDiff);
+            else if (defenderDiff < 0) window.showDamage(defender.uid, Math.abs(defenderDiff), 'purple');
+            
+            log.text += ` ⚖️ 發動分擔痛楚，雙方生命值重新分配！`;
+        },
+
         'red_hp_burst_40': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+40！)`; return baseDmg + 40; } return baseDmg; },
         'red_hp_burst_50': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+50！)`; return baseDmg + 50; } return baseDmg; },
         'red_hp_burst_60': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+60！)`; return baseDmg + 60; } return baseDmg; },
