@@ -355,11 +355,10 @@
     window.state = {
         quizMode: 'manual', questions: [], csvQuestions: [], qIdx: 0, currentTeam: 1, step: 'quiz', selectedHandItem: null, hasAttachedEnergyThisTurn: false,
         pendingAttack: null, pendingCatcherTarget: null, eotFlips: [], coinFlipReason: '', coinFlipsQueue: 0, coinFlipsResults: 0, transformingPokemon: null, isAttacking: false, redrawsLeft: 5, nextTurnTeam: null,
-        teams: { 1: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [] }, 2: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [] } },
+        teams: { 1: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [], usedDynamax: false, usedMega: false }, 2: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [], usedDynamax: false, usedMega: false } },
         coinStreak: { result: null, count: 0 }
     };
 
-    // 💡 隨機產生兩隻不一樣的大廳寶可夢
     document.addEventListener('DOMContentLoaded', () => {
         let id1 = Math.floor(Math.random() * 898) + 1;
         let id2 = Math.floor(Math.random() * 898) + 1;
@@ -416,8 +415,8 @@
             trainerSnapshot.forEach((doc) => { cloudTrainerDB.push(doc.data()); });
 
             if (cloudPokemonDB.length === 0) {
-                cloudPokemonDB = POKEMON_DB;
-                cloudTrainerDB = TRAINERS_DB;
+                cloudPokemonDB = typeof POKEMON_DB !== 'undefined' ? POKEMON_DB : [];
+                cloudTrainerDB = typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : [];
             }
 
             window.CLOUD_POKEMON_DB = cloudPokemonDB;
@@ -426,12 +425,12 @@
             window.state.redrawsLeft = 5; let isBalanced = false; let attempts = 0;
             while (!isBalanced && attempts < 100) {
                 for(let t=1; t<=2; t++) {
-                    const pool = [...cloudPokemonDB].filter(p => !p.name.includes('超級')).sort(() => Math.random() - 0.5);
+                    const pool = [...cloudPokemonDB].filter(p => !p.name.includes('超級') && !p.name.includes('超極巨')).sort(() => Math.random() - 0.5);
                     window.state.teams[t].pokemon = pool.slice(0, 5).map((p, i) => ({
                         ...p, currHp: p.hp, attachedEnergy: [], uid: `t${t}_${i}`,
                         status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
                         buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0 }, isDead: false, hasContributedToLoss: false,
-                        dynamax: { turns: 0 }, mega: { turns: 0, originalForm: null }
+                        dynamax: { turns: 0, originalForm: null }, mega: { turns: 0, originalForm: null }
                     }));
                     window.state.teams[t].hand = []; window.state.teams[t].lostLives = 0; window.state.teams[t].wrongAnswers = [];
                     window.state.teams[t].usedDynamax = false; window.state.teams[t].usedMega = false;
@@ -787,12 +786,12 @@
             const pDB = window.CLOUD_POKEMON_DB || (typeof POKEMON_DB !== 'undefined' ? POKEMON_DB : []);
             while (!isBalanced && attempts < 100) {
                 for(let t=1; t<=2; t++) {
-                    const pool = [...pDB].filter(p => !p.name.includes('超級')).sort(() => Math.random() - 0.5);
+                    const pool = [...pDB].filter(p => !p.name.includes('超級') && !p.name.includes('超極巨')).sort(() => Math.random() - 0.5);
                     window.state.teams[t].pokemon = pool.slice(0, 5).map((p, i) => ({
                         ...p, currHp: p.hp, attachedEnergy: [], uid: `t${t}_${i}`,
                         status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
                         buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0 }, isDead: false, hasContributedToLoss: false,
-                        dynamax: { turns: 0 }, mega: { turns: 0, originalForm: null }
+                        dynamax: { turns: 0, originalForm: null }, mega: { turns: 0, originalForm: null }
                     }));
                     window.state.teams[t].hand = []; window.state.teams[t].lostLives = 0; window.state.teams[t].wrongAnswers = [];
                     window.state.teams[t].usedDynamax = false; window.state.teams[t].usedMega = false;
@@ -904,7 +903,17 @@
                 oldActive.mega.originalForm = null; oldActive.mega.turns = 0;
                 window.addLog(`✨ 退回後備，超級進化解除！`);
             }
-        } else { if (oldActive.mega && oldActive.mega.originalForm) { Object.assign(oldActive, oldActive.mega.originalForm); oldActive.mega.originalForm = null; oldActive.mega.turns = 0; } }
+            if (oldActive.dynamax && oldActive.dynamax.originalForm) {
+                let damageTaken = oldActive.hp - oldActive.currHp;
+                Object.assign(oldActive, oldActive.dynamax.originalForm); 
+                oldActive.currHp = Math.max(0, oldActive.hp - damageTaken); 
+                oldActive.dynamax.originalForm = null; oldActive.dynamax.turns = 0;
+                window.addLog(`✨ 退回後備，超極巨化解除！`);
+            }
+        } else { 
+            if (oldActive.mega && oldActive.mega.originalForm) { Object.assign(oldActive, oldActive.mega.originalForm); oldActive.mega.originalForm = null; oldActive.mega.turns = 0; } 
+            if (oldActive.dynamax && oldActive.dynamax.originalForm) { Object.assign(oldActive, oldActive.dynamax.originalForm); oldActive.dynamax.originalForm = null; oldActive.dynamax.turns = 0; }
+        }
         team.activeIdx = newIdx;
     };
 
@@ -916,6 +925,7 @@
         if(window.state.step === 'must_swap' && teamNum === window.state.currentTeam && pIdx !== team.activeIdx && p.currHp > 0) {
             team.pokemon[team.activeIdx].status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 };
             if(team.pokemon[team.activeIdx].mega && team.pokemon[team.activeIdx].mega.originalForm) { Object.assign(team.pokemon[team.activeIdx], team.pokemon[team.activeIdx].mega.originalForm); team.pokemon[team.activeIdx].currHp = 0; team.pokemon[team.activeIdx].mega.originalForm = null; }
+            if(team.pokemon[team.activeIdx].dynamax && team.pokemon[team.activeIdx].dynamax.originalForm) { Object.assign(team.pokemon[team.activeIdx], team.pokemon[team.activeIdx].dynamax.originalForm); team.pokemon[team.activeIdx].currHp = 0; team.pokemon[team.activeIdx].dynamax.originalForm = null; }
             team.activeIdx = pIdx; window.addLog(`🔄 ${p.name} 上場！`); if (window.state.nextTurnTeam) { window.checkEotSwaps(); } else { window.state.step = 'quiz'; window.startQuiz(); } return;
         }
 
@@ -972,11 +982,9 @@
             
             if(card.id === 'dynamax_band') {
                 if(window.state.teams[window.state.currentTeam].usedDynamax) { window.showAlert("極巨腕帶一場比賽只能使用一次！"); return; }
-                if (window.state.teams[window.state.currentTeam].lostLives < 1) { window.showAlert("極巨腕帶只能在隊伍有寶可夢陣亡過後發動！"); return; }
                 if (teamNum === window.state.currentTeam && pIdx === team.activeIdx && p.currHp > 0) valid = true;
             } else if (card.id === 'mega_stone') {
                 if(window.state.teams[window.state.currentTeam].usedMega) { window.showAlert("超級進化石一場比賽只能使用一次！"); return; }
-                if (window.state.teams[window.state.currentTeam].lostLives < 1) { window.showAlert("超級進化石只能在隊伍有寶可夢陣亡過後發動！"); return; }
                 if (teamNum === window.state.currentTeam && p.currHp > 0 && p.megaId) valid = true; else { if(teamNum === window.state.currentTeam && p.currHp > 0) window.showAlert("這隻寶可夢無法超級進化！"); return; }
             }
             
@@ -1004,14 +1012,14 @@
         
         if(card.id === 'mystery_swap') {
             const currentIds = [...window.state.teams[1].pokemon, ...window.state.teams[2].pokemon].map(p => p.id);
-            const candidates = window.CLOUD_POKEMON_DB.filter(p => !currentIds.includes(p.id) && !p.name.includes('超級'));
+            const candidates = window.CLOUD_POKEMON_DB.filter(p => !currentIds.includes(p.id) && !p.name.includes('超級') && !p.name.includes('超極巨'));
             if(candidates.length === 0) return window.showAlert("目前沒有多餘的寶可夢可替換！");
             const newP = candidates[Math.floor(Math.random() * candidates.length)];
             const oldP = myTeam.pokemon[targetIdx];
             myTeam.pokemon[targetIdx] = {
                 ...newP, currHp: newP.hp, attachedEnergy: [], uid: oldP.uid,
                 status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
-                buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0 }, isDead: false, dynamax: { turns: 0 }, mega: { turns: 0, originalForm: null }
+                buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0 }, isDead: false, dynamax: { turns: 0, originalForm: null }, mega: { turns: 0, originalForm: null }
             };
             window.addLog(`🎲 神秘置換！${oldP.name} 換成了 ${newP.name}！`);
         } else if(card.id === 'pokemon_catcher') {
@@ -1063,7 +1071,28 @@
             const p = myTeam.pokemon[targetIdx];
             p.dynamax.turns = 2;
             myTeam.usedDynamax = true;
-            window.addLog(`🎇 ${p.name} 戴上了極巨腕帶！傷害大幅提升並獲得減傷！`);
+            
+            if (p.gmaxId) {
+                const gmaxForm = window.CLOUD_POKEMON_DB.find(m => m.id == p.gmaxId);
+                if (!gmaxForm) return window.showAlert(`找不到超極巨化資料 (ID: ${p.gmaxId})`);
+                
+                let damageTaken = p.hp - p.currHp;
+                p.dynamax.originalForm = { name: p.name, hp: p.hp, type: p.type, attacks: JSON.parse(JSON.stringify(p.attacks)), weakness: p.weakness, resistance: p.resistance, id: p.id };
+                
+                p.name = gmaxForm.name;
+                p.hp = gmaxForm.hp;
+                p.type = gmaxForm.type;
+                p.attacks = gmaxForm.attacks;
+                p.weakness = gmaxForm.weakness;
+                p.resistance = gmaxForm.resistance;
+                p.id = gmaxForm.id;
+                
+                p.currHp = Math.max(1, p.hp - damageTaken);
+                p.status.poison = p.status.paralyze = p.status.burn = p.status.asleep = p.status.confused = false;
+                window.addLog(`🎇 狂暴的能量湧現！超極巨化成 ${p.name}！(狀態已淨化)`);
+            } else {
+                window.addLog(`🎇 ${p.name} 戴上了極巨腕帶！傷害大幅提升並獲得減傷！`);
+            }
         }
         else if (card.id === 'mega_stone') {
             const p = myTeam.pokemon[targetIdx];
@@ -1215,14 +1244,19 @@
                 if (atk.special === 'snipe_any') {
                     window.state.step = 'select_enemy_any_snipe'; 
                     window.state.isAttacking = false;
-                    window.updateHint(`🎯 請選擇對手場上任一寶可夢進行狙擊！(將造成 ${atk.d} 傷害)`); 
-                    window.render(); return; 
+                    window.updateHint(`🎯 請選擇對手場上（戰鬥或後備）任一寶可夢進行狙擊！(將造成 ${atk.d} 傷害)`); 
+                    window.render(); 
+                    return; 
                 }
+                
                 if (atk.special === 'heal_choose_50' || atk.special === 'heal_choose_70') {
                     window.state.step = atk.special === 'heal_choose_50' ? 'select_ally_heal_50' : 'select_ally_heal_70';
                     window.state.pendingAttack = null; window.state.isAttacking = false;
-                    window.updateHint(`💚 請選擇要恢復的「我方」寶可夢！`); window.render(); return;
+                    window.updateHint(`💚 請選擇要恢復的「我方」寶可夢！(將恢復 ${atk.special === 'heal_choose_50' ? 50 : 70} HP)`); 
+                    window.render(); 
+                    return;
                 }
+
                 if (atk.special === 'force_swap_choose') { const aliveBench = window.state.teams[enemyTeamNum].pokemon.filter((p, i) => i !== window.state.teams[enemyTeamNum].activeIdx && p.currHp > 0); if(aliveBench.length > 0) { window.state.step = 'select_enemy_bench'; window.state.pendingAttack = null; window.state.isAttacking = false; window.updateHint("請選擇對手後備寶可夢拖上場！"); window.render(); return; } else { log.text += ` (對手無後備，替換無效)`; } }
                 if (atk.special === 'transform_choose') { window.state.step = 'select_transform_target'; window.state.transformingPokemon = attacker; window.state.pendingAttack = null; window.state.isAttacking = false; window.updateHint("請選擇對手進行複製！"); window.render(); return; }
                 if(atk.special.includes('flip_') && atk.special.includes('x')) { dmg = coinResult * parseInt(atk.special.split('x')[1]); log.text += ` (擲出 ${coinResult} 次正面，造成 ${dmg} 傷害！)`; }
@@ -1233,7 +1267,7 @@
                     const myTeam = window.state.teams[window.state.currentTeam];
                     if(myTeam.hand.length < 7) {
                         const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
-                        if(Math.random() < window.getTrainerDrawChance(myTeam) && tDB.length > 0) myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] });
+                        if(Math.random() < 0.3 && tDB.length > 0) myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] });
                         else myTeam.hand.push({ cardType: 'energy', type: window.getSmartEnergyType(myTeam) });
                         log.text += ` (隨機抽 1 卡)`;
                     }
@@ -1244,7 +1278,7 @@
                     let drawn = 0;
                     for(let k=0; k<2; k++) {
                         if(myTeam.hand.length < 7) {
-                            if(Math.random() < window.getTrainerDrawChance(myTeam) && tDB.length > 0) myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] });
+                            if(Math.random() < 0.3 && tDB.length > 0) myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] });
                             else myTeam.hand.push({ cardType: 'energy', type: window.getSmartEnergyType(myTeam) });
                             drawn++;
                         }
@@ -1262,14 +1296,18 @@
             }
             if(attacker.status.enemy_dmg_minus_30 > 0) { dmg = Math.max(0, dmg - 30); log.text += ` (受牽制傷害-30)`; }
 
-            if(attacker.dynamax && attacker.dynamax.turns > 0) { dmg += 40; }
-            if(defender.dynamax && defender.dynamax.turns > 0) { dmg = Math.max(0, dmg - 30); log.text += ` (極巨防禦-30)`; }
+            // 💡 新增：極巨化攻防加成 (僅限一般極巨化，超極巨化不套用此通用加成)
+            if(attacker.dynamax && attacker.dynamax.turns > 0 && !attacker.dynamax.originalForm) { dmg += 40; }
+            if(defender.dynamax && defender.dynamax.turns > 0 && !defender.dynamax.originalForm) { dmg = Math.max(0, dmg - 30); log.text += ` (極巨防禦-30)`; }
 
             if(dmg > 0) {
                 if(attacker.buff.turns > 0) dmg += attacker.buff.dmg;
+                
                 const weakPool = Array.isArray(defender.weakness) ? defender.weakness : [defender.weakness];
                 if(weakPool.includes(attacker.type)) { dmg = Math.floor(dmg * 1.5); log.text += ` (效果絕佳！)`; }
+                
                 if (atk.special !== 'ignore_resistance' && (defender.resistance.type === attacker.type || defender.resistance.type === 'any')) { dmg -= defender.resistance.val; log.text += ` (被抵抗)`; }
+                
                 if (atk.special !== 'ignore_resistance') {
                     if (defender.buff.fullFaceGuard > 0) { dmg = Math.max(0, dmg - 20); log.text += ` (🛡️防守-20)`; }
                     if (defender.buff.potHelmet > 0) { dmg = Math.max(0, dmg - 40); log.text += ` (🪖頭盔-40)`; }
@@ -1277,7 +1315,6 @@
 
                 dmg = Math.max(0, dmg); 
                 
-                // 💡 更新：氣勢披帶發動邏輯 (受到傷害超過當前血量時，強制扣除至剩下 10 滴血)
                 if (defender.buff.hasFocusSash && dmg >= defender.currHp) { 
                     dmg = Math.max(0, defender.currHp - 10); 
                     defender.buff.hasFocusSash = false; 
@@ -1315,6 +1352,14 @@
                     if (activeP.dynamax.turns === 0) {
                         activeP.attachedEnergy = [];
                         window.addLog(`🎇 極巨化結束，${activeP.name} 耗盡了所有能量！`);
+                        
+                        if (activeP.dynamax.originalForm) {
+                            let damageTaken = activeP.hp - activeP.currHp;
+                            Object.assign(activeP, activeP.dynamax.originalForm);
+                            activeP.currHp = Math.max(0, activeP.hp - damageTaken);
+                            activeP.dynamax.originalForm = null;
+                            window.addLog(`✨ 超極巨化解除，${activeP.name} 變回了原樣。`);
+                        }
                     }
                 }
                 
@@ -1416,7 +1461,14 @@
         if (p.buff.hasFocusSash) buffHtml += `<div class="item-tag">🎗️氣勢披帶</div>`; 
         if (p.buff.fullFaceGuard > 0) buffHtml += `<div class="item-tag">🛡️傷害-20</div>`; 
         if (p.buff.potHelmet > 0) buffHtml += `<div class="item-tag">🪖傷害-40</div>`;
-        if (p.dynamax && p.dynamax.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇極巨化(傷+40/受傷-30)</div>`;
+        
+        if (p.dynamax && p.dynamax.turns > 0) {
+            if (p.dynamax.originalForm) {
+                buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇超極巨化</div>`;
+            } else {
+                buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇極巨化(傷+40/受傷-30)</div>`;
+            }
+        }
         if (p.mega && p.mega.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff00ff;color:white;">💎超進化</div>`;
         
         let attacksHtml = '';
@@ -1488,7 +1540,14 @@
                 
                 let statusHtml = ''; if (p.status.poison) statusHtml += '<span class="status-tag status-poison">中毒</span>'; if (p.status.burn) statusHtml += '<span class="status-tag status-burn">灼伤</span>'; if (p.status.asleep) statusHtml += '<span class="status-tag status-asleep">睡眠</span>'; if (p.status.confused) statusHtml += '<span class="status-tag status-confused">混亂</span>'; if (p.status.paralyze) statusHtml += '<span class="status-tag status-paralyze">麻痺</span>'; if (p.status.immune_next) statusHtml += '<span class="status-tag status-immune">免傷</span>'; if (p.status.cant_attack > 0) statusHtml += '<span class="status-tag status-cant-act">禁攻</span>';
                 let buffHtml = ''; if (p.buff.turns > 0) buffHtml += `<div class="item-tag">💪攻擊+${p.buff.dmg}</div>`; if (p.buff.hasFocusSash) buffHtml += `<div class="item-tag">🎗️披帶</div>`; if (p.buff.fullFaceGuard > 0) buffHtml += `<div class="item-tag">🛡️-20</div>`; if (p.buff.potHelmet > 0) buffHtml += `<div class="item-tag">🪖-40</div>`;
-                if (p.dynamax && p.dynamax.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇極巨化(傷+40/受傷-30)</div>`;
+                
+                if (p.dynamax && p.dynamax.turns > 0) {
+                    if (p.dynamax.originalForm) {
+                        buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇超極巨化</div>`;
+                    } else {
+                        buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇極巨化(傷+40/受傷-30)</div>`;
+                    }
+                }
                 if (p.mega && p.mega.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff00ff;color:white;">💎超進化</div>`;
                 
                 const deadClass = p.currHp <= 0 ? (isValidTarget ? 'dead revivable' : 'dead') : '';
