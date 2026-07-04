@@ -983,7 +983,7 @@
             
             if(card.id === 'dynamax_band') {
                 if(window.state.teams[window.state.currentTeam].usedDynamax) { window.showAlert("極巨腕帶一場比賽只能使用一次！"); return; }
-                if (teamNum === window.state.currentTeam && p.currHp > 0) valid = true;
+                if (teamNum === window.state.currentTeam && p.currHp > 0 && (pIdx === team.activeIdx || p.gmaxId)) valid = true;
             } else if (card.id === 'mega_stone') {
                 if(window.state.teams[window.state.currentTeam].usedMega) { window.showAlert("超級進化石一場比賽只能使用一次！"); return; }
                 if (teamNum === window.state.currentTeam && p.currHp > 0 && p.megaId) valid = true; else { if(teamNum === window.state.currentTeam && p.currHp > 0) window.showAlert("這隻寶可夢無法超級進化！"); return; }
@@ -1518,10 +1518,6 @@
                     if(hCard.target === 'active_ally' && isActive && p.currHp > 0) isValidTarget = true;
                     if(hCard.target === 'bench' && !isActive && p.currHp > 0) isValidTarget = true;
                     if(hCard.target === 'dead_ally' && p.currHp <= 0) isValidTarget = true;
-                    
-                    if(hCard.id === 'dynamax_band' && (!isActive || p.currHp <= 0 || team.usedDynamax)) isValidTarget = false;
-                    if(hCard.id === 'mega_stone' && (p.currHp <= 0 || !p.megaId || team.usedMega)) isValidTarget = false;
-                    if(hCard.id === 'focus_sash' && p.hp > 120) isValidTarget = false;
                 }
                 
                 if (window.state.step === 'select_enemy_any_snipe' && p.currHp > 0 && t !== window.state.currentTeam) isValidTarget = true;
@@ -1548,14 +1544,23 @@
                 let targetClass = '';
                 if (isValidTarget && p.currHp > 0) {
                     if (window.state.selectedHandItem && window.state.selectedHandItem.data.id === 'mega_stone') {
-                        targetClass = 'mega-target';
+                        // 如果已經超級進化過，或是該寶可夢沒有megaId，取消發光
+                        if(team.usedMega || !p.megaId) { isValidTarget = false; } else { targetClass = 'mega-target'; }
+                    } else if (window.state.selectedHandItem && window.state.selectedHandItem.data.id === 'dynamax_band') {
+                        // 如果已經極巨化過，或者「不在戰場上且沒有gmaxId」，取消發光
+                        if(team.usedDynamax || (!isActive && !p.gmaxId)) { isValidTarget = false; } else { targetClass = 'valid-target'; }
+                    } else if (window.state.selectedHandItem && window.state.selectedHandItem.data.id === 'focus_sash') {
+                        if(p.hp > 120) { isValidTarget = false; } else { targetClass = 'valid-target'; }
                     } else {
                         targetClass = 'valid-target';
                     }
                 }
 
+                // 若經過上述判斷後 isValidTarget 變為 false，我們要把 dead class 的 revivable 拿掉
+                const finalDeadClass = p.currHp <= 0 ? (isValidTarget ? 'dead revivable' : 'dead') : '';
+
                 let cardHtml = `
-                    <div class="card type-${p.type} ${isActive ? 'card-active is-active-fighter' : 'card-bench'} ${deadClass} ${targetClass}" id="${p.uid}" onclick="window.clickPokemon(${t}, ${pIdx})">
+                    <div class="card type-${p.type} ${isActive ? 'card-active is-active-fighter' : 'card-bench'} ${finalDeadClass} ${targetClass}" id="${p.uid}" onclick="window.clickPokemon(${t}, ${pIdx})">
                         <div class="inspect-btn" onclick="event.stopPropagation(); window.inspectCard(${t}, ${pIdx})">🔍</div>
                         <div class="${headerClass}"><span class="name-text">${p.name}</span><span class="hp-text" style="color: ${hpPer < 30 ? '#ff0000' : '#000'};">HP ${p.currHp}/${p.hp}</span></div>
                         <div class="hp-bar"><div class="hp-fill" style="width:${Math.max(0, hpPer)}%; background:${hpPer < 30 ? '#ff4422' : '#4caf50'}"></div></div>
