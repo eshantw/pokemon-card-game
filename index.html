@@ -8,13 +8,13 @@
  :root{--team1-color:#2a75bb;--team2-color:#e3350d;--color-fire:#ff9d55;--color-water:#5090d6;--color-grass:#63bc5a;--color-electric:#f4d23c;--color-normal:#9d9e9d;--color-brown:#a0522d;--color-purple:#9b59b6;--color-any:#eeeeee}
  *{box-sizing:border-box;margin:0;padding:0;font-family:'Noto Sans TC',Arial,sans-serif;user-select:none}
  
-body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
  #fx-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999}
 
  #lobby{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;z-index:20;background:#0a0a0c;position:absolute;width:100%;height:100%;overflow-y:auto;}
  .config-box{position:relative; z-index:10; background:#111;padding:30px;border-radius:24px;border:2px solid #ffcb05;width:100%;max-width:850px;text-align:center;box-shadow:0 0 30px rgba(255,203,5,.2); margin: auto; transform-origin: center center;}
  
-.upload-section { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin: 10px 0; border: 2px dashed #666; text-align: left; display: flex; flex-direction: column; min-height: 220px;}
+ .upload-section { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin: 10px 0; border: 2px dashed #666; text-align: left; display: flex; flex-direction: column; min-height: 220px;}
  .mode-c { min-height: auto !important; padding: 15px !important; margin-top: 15px !important; }
  .cloud-input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #444; background: #000; color: #77cc55; font-size: 13px; outline:none; }
  .cloud-input:focus { border-color: #ffcb05; }
@@ -25,26 +25,26 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  .mascot-right { right: 2%; animation-delay: 0.75s; }
  @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-20px); } }
  
-.start-btn-content { display: flex; align-items: center; justify-content: center; gap: 12px; }
+ .start-btn-content { display: flex; align-items: center; justify-content: center; gap: 12px; }
  .pokeball-icon { width: 28px; height: 28px; }
 
  #battle-field { position: relative; width: 100vw; height: 100vh; background: #0a0a0c; overflow: hidden; }
  #battle-scale-wrapper { width: 1280px; height: 720px; position: absolute; left: 50%; top: 50%; display: flex; flex-direction: column; }
  
-.battle-main { flex:1; display:flex; justify-content:space-between; align-items:stretch; padding:20px 10px; gap:15px; height: 100%; max-height: 100%; box-sizing: border-box; overflow: hidden; }
+ .battle-main { flex:1; display:flex; justify-content:space-between; align-items:stretch; padding:20px 10px; gap:15px; height: 100%; max-height: 100%; box-sizing: border-box; overflow: hidden; }
  .team-container { width:510px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; padding:20px 15px; border-radius:25px; background:rgba(255,255,255,.03); border:3px solid transparent; transition:.3s; height: 100%; max-height: 100%; box-sizing: border-box; overflow: hidden;}
  .team-container.active-team{border-color:#00f2ff;background:linear-gradient(180deg,rgba(0,242,255,.05) 0,rgba(0,100,255,.15) 100%);box-shadow:0 0 30px rgba(0,242,255,.6),inset 0 0 20px rgba(0,150,255,.4);animation:neonPulse 2s infinite alternate}
  @keyframes neonPulse{0%{box-shadow:0 0 15px rgba(0,242,255,.4),inset 0 0 10px rgba(0,150,255,.3);border-color:#00c3ff}100%{box-shadow:0 0 35px rgba(0,242,255,.8),inset 0 0 25px rgba(0,150,255,.6);border-color:#00f2ff}}
  
-.field-area { display:flex; gap:15px; align-items:center; justify-content:center; flex: 1; min-height: 0;}
+ .field-area { display:flex; gap:15px; align-items:center; justify-content:center; flex: 1; min-height: 0;}
  .bench-grid { display:grid; grid-template-columns:repeat(2,120px); grid-template-rows:repeat(2,auto); gap:10px; justify-content:center; }
  .active-zone { flex:0 0 auto; display:flex; justify-content:center; align-items:center; padding:6px; border:2px dashed #444; border-radius:12px; margin: 0 5px; }
  
-.hand-wrapper { position: relative; width: 100%; margin-top: auto; flex-shrink: 0; }
+ .hand-wrapper { position: relative; width: 100%; margin-top: auto; flex-shrink: 0; }
  .hand-tooltip { position: absolute; bottom: 100%; margin-bottom: 5px; left: 50%; transform: translateX(-50%); width: 95%; background: rgba(20, 20, 20, 0.9); color: #ffcb05; padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: bold; text-align: center; border: 2px solid #ffcb05; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.2s ease-in-out; box-shadow: 0 5px 15px rgba(0,0,0,0.7); line-height: 1.4; }
  .hand-tooltip.show { opacity: 1; }
  
-.hand-area{height:110px; background:rgba(0,0,0,.6); border-radius:12px; padding:8px; display:flex; flex-wrap:nowrap; gap:8px; align-items:center; justify-content:center; overflow:hidden;}
+ .hand-area{height:110px; background:rgba(0,0,0,.6); border-radius:12px; padding:8px; display:flex; flex-wrap:nowrap; gap:8px; align-items:center; justify-content:center; overflow:hidden;}
  .hand-card{position:relative; flex: 1 1 0; max-width:65px; min-width:35px; height:95px; border-radius:8px; padding:4px; cursor:pointer; text-align:center; font-size:12px; font-weight:700; border:2px solid #fff; transition:.2s; box-shadow:0 4px 8px rgba(0,0,0,.5); display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1}
  .hand-card:hover{transform:translateY(-8px) scale(1.1);filter:brightness(1.2);z-index:50;}
  .hand-card.selected{border-color:#0f0;transform:translateY(-10px);box-shadow:0 0 15px rgba(0,255,0,.5)}
@@ -55,7 +55,7 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  #action-hint { color: #bbb; font-size: 13px; text-align: center; margin-bottom: 8px; min-height: 35px; line-height:1.4; flex-shrink: 0; }
  #log{flex:1; width:100%; background:rgba(0,0,0,.7); border:1px solid #333; border-radius:8px; padding:10px; font-size:14px; color:#eee; overflow-y:auto; display:flex; flex-direction:column; gap:8px; height: 0;}
  
-.log-entry{border-bottom:1px solid #222; padding-bottom:5px; animation:slideIn .3s ease-out; opacity:1 !important; line-height:1.4;}
+ .log-entry{border-bottom:1px solid #222; padding-bottom:5px; animation:slideIn .3s ease-out; opacity:1 !important; line-height:1.4;}
  @keyframes slideIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
 
  .card{flex-shrink:0; background:#fff;border-radius:8px;color:#222;padding:6px;font-size:12px;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;border:3px solid transparent;box-shadow:0 6px 12px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
@@ -65,7 +65,7 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  .card-bench .card-img{height:70px}
  .card-bench .attack-row{padding:3px;font-size:10px;margin-top:3px}
  
-.card.type-fire{background:var(--color-fire)}
+ .card.type-fire{background:var(--color-fire)}
  .card.type-water{background:var(--color-water)}
  .card.type-grass{background:var(--color-grass)}
  .card.type-electric{background:var(--color-electric)}
@@ -79,25 +79,25 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  .card.dead.revivable{pointer-events:auto;animation:pulse 1.5s infinite;border-color:#0f0;opacity:.8;filter:grayscale(30%)}
  .card.valid-target{border-color:#0f0;box-shadow:0 0 15px #0f0;animation:pulse 1.5s infinite}
  
-.card.mega-target{border-color:#ff00ff;box-shadow:0 0 25px #ff00ff;animation:megaPulse 1.5s infinite; z-index:20;}
+ .card.mega-target{border-color:#ff00ff;box-shadow:0 0 25px #ff00ff;animation:megaPulse 1.5s infinite; z-index:20;}
  @keyframes megaPulse{0%,100%{box-shadow:0 0 10px #ff00ff}50%{box-shadow:0 0 35px #ff00ff;border-color:#fff}}
  
-.card.gmax-target{border-color:#ffd700;box-shadow:0 0 25px #ffd700;animation:gmaxPulse 1.5s infinite; z-index:20;}
+ .card.gmax-target{border-color:#ffd700;box-shadow:0 0 25px #ffd700;animation:gmaxPulse 1.5s infinite; z-index:20;}
  @keyframes gmaxPulse{0%,100%{box-shadow:0 0 10px #ffd700}50%{box-shadow:0 0 35px #ffd700;border-color:#fff}}
  
-@keyframes pulse{0%,100%{box-shadow:0 0 5px #0f0}50%{box-shadow:0 0 20px #0f0}100%{box-shadow:0 0 5px #0f0}}
+ @keyframes pulse{0%,100%{box-shadow:0 0 5px #0f0}50%{box-shadow:0 0 20px #0f0}100%{box-shadow:0 0 5px #0f0}}
 
  .active-header { display:flex; flex-direction:row; justify-content:space-between; align-items:center; margin-left:20px; font-weight:900; margin-bottom:4px; font-size:14px;}
  .bench-header { display:flex; flex-direction:column; align-items:flex-start; margin-left:18px; font-weight:900; margin-bottom:4px; line-height:1.2; }
  .bench-header .name-text { font-size:12px; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
  .bench-header .hp-text { font-size:11px; font-weight:900; }
  
-.card-img{width:100%;background:white;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #333;position:relative}
+ .card-img{width:100%;background:white;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #333;position:relative}
  .card-img img{width:85%;height:85%;object-fit:contain}
  .inspect-btn{position:absolute;top:-5px;left:-5px;background:rgba(0,0,0,.8);color:white;border-radius:50%;width:24px;height:24px;display:flex;justify-content:center;align-items:center;z-index:10;transition:transform .2s;border:1px solid #fff}
  .inspect-btn:hover{transform:scale(1.2);background:#ffcb05;color:black}
  
-.buff-container{position:absolute;top:4px;right:4px;display:flex;gap:3px;flex-direction:column;align-items:flex-end;z-index:5}
+ .buff-container{position:absolute;top:4px;right:4px;display:flex;gap:3px;flex-direction:column;align-items:flex-end;z-index:5}
  .item-tag{background:#ffcb05;color:black;padding:3px 5px;border-radius:6px;font-size:9px;font-weight:bold;box-shadow:0 2px 4px rgba(0,0,0,.5);border:1px solid #000}
  #inspect-content .item-tag{font-size:14px;padding:4px 8px;border-radius:8px;}
 
@@ -105,15 +105,15 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  .status-tag{padding:3px 5px;border-radius:4px;font-size:9px;font-weight:bold;color:white;border:1px solid rgba(255,255,255,.5);box-shadow:0 2px 4px rgba(0,0,0,.5);}
  #inspect-content .status-tag{font-size:14px;padding:4px 8px;border-radius:8px;}
  
-.status-poison{background-color:#904090}
+ .status-poison{background-color:#904090}
  .status-paralyze{background-color:#f4d23c;color:#000}
  .status-burn{background-color:#f40}
  .status-asleep{background-color:#555}
  .status-confused{background-color:#f90}
  .status-cant-act{background-color:#555555} 
-.status-immune{background-color:#00a8ff} 
+ .status-immune{background-color:#00a8ff} 
 
-.energy-container{display:flex;flex-wrap:wrap;gap:2px;margin-top:3px;min-height:14px;background:rgba(255,255,255,.3);border-radius:4px;padding:2px}
+ .energy-container{display:flex;flex-wrap:wrap;gap:2px;margin-top:3px;min-height:14px;background:rgba(255,255,255,.3);border-radius:4px;padding:2px}
  .energy-icon{width:12px;height:12px;border-radius:50%;border:1px solid #000;display:inline-block;box-shadow:0 1px 2px rgba(0,0,0,0.5);}
  .energy-fire{background:var(--color-fire)}
  .energy-water{background:var(--color-water)}
@@ -125,14 +125,14 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  .energy-any{background:var(--color-any)}
  .energy-rainbow{background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red)}
  
-.attack-row { margin-top: 4px; padding: 4px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.1); color: #222;}
+ .attack-row { margin-top: 4px; padding: 4px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.1); color: #222;}
  .attack-ready { background: rgba(255,255,255,0.95) !important; opacity: 1; box-shadow: 0 0 5px rgba(255,255,255,0.6); }
  .attack-ready:hover { transform: scale(1.02); background: #fff !important; }
  .attack-disabled { background: rgba(255,255,255,0.3) !important; opacity: 1; cursor: not-allowed; }
  .attack-disabled span { color: #333; } 
-.attack-special-icon { font-size: 9px; margin-left: 2px; color: #555; }
+ .attack-special-icon { font-size: 9px; margin-left: 2px; color: #555; }
  
-.bench-attack-preview { margin-top:4px; display:flex; flex-direction:column; gap:3px; align-items:flex-start; background:rgba(255,255,255,0.1); border-radius:4px; padding:4px; }
+ .bench-attack-preview { margin-top:4px; display:flex; flex-direction:column; gap:3px; align-items:flex-start; background:rgba(255,255,255,0.1); border-radius:4px; padding:4px; }
  .bench-attack-preview > div { display:flex; gap:2px; justify-content:flex-start; }
 
  .hp-bar{height:6px;background:#333;border-radius:3px;margin:3px 0;overflow:hidden;border:1px solid #000}
@@ -145,7 +145,7 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  .btn:not(:disabled):hover{filter:brightness(1.3);transform:translateY(-2px)}
  .btn-disabled{opacity:0.4;cursor:not-allowed;}
  
-#setup-ui { display: flex; flex-direction: column; width: 100%; gap: 5px; margin-bottom: 10px; }
+ #setup-ui { display: flex; flex-direction: column; width: 100%; gap: 5px; margin-bottom: 10px; }
 
  .kahoot-btn { padding: 20px 30px; border-radius: 16px; border: none; color: white; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 6px 0 rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: flex-start; min-height: 130px; max-height: 180px; flex: 1 1 calc(50% - 30px); overflow: hidden; box-sizing: border-box;}
  .kahoot-btn:hover { filter: brightness(1.15); transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,0.3); }
@@ -160,16 +160,16 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  #inspect-content .energy-icon{width:20px;height:20px}
  #inspect-content .attack-row{font-size:16px;padding:12px;margin-top:10px;}
  
-.hidden{display:none!important}
+ .hidden{display:none!important}
  
-.damage-pop{position:fixed;color:#f00;font-size:55px;font-weight:900;text-shadow:0 0 12px #fff;pointer-events:none;z-index:20001;animation:popUp 1s forwards}
+ .damage-pop{position:fixed;color:#f00;font-size:55px;font-weight:900;text-shadow:0 0 12px #fff;pointer-events:none;z-index:20001;animation:popUp 1s forwards}
  .heal-pop{position:fixed;color:#4caf50;font-size:55px;font-weight:900;text-shadow:0 0 12px #fff;pointer-events:none;z-index:20001;animation:popUp 1s forwards}
  @keyframes popUp{0%{transform:scale(.5);opacity:1}100%{transform:translateY(-80px) scale(1.5);opacity:0}}
  
-.close-btn{position:absolute;top:10px;right:15px;font-size:24px;cursor:pointer;color:#000;font-weight:bold;transition:.2s}
+ .close-btn{position:absolute;top:10px;right:15px;font-size:24px;cursor:pointer;color:#000;font-weight:bold;transition:.2s}
  .close-btn:hover{transform:scale(1.2);color:#fff}
  
-.coin-container{perspective:1000px;margin:20px auto;width:150px;height:150px;cursor:pointer; transition:transform .2s}
+ .coin-container{perspective:1000px;margin:20px auto;width:150px;height:150px;cursor:pointer; transition:transform .2s}
  .coin-container:hover{transform:scale(1.1)}
  .coin-container.flipping{pointer-events:none}
  .coin{width:100%;height:100%;position:relative;transform-style:preserve-3d; transition: transform 2s cubic-bezier(0.2, 0.8, 0.3, 1);}
@@ -178,6 +178,27 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  .coin-heads::after{content:'';position:absolute;width:100%;height:8px;background:#333;top:50%;transform:translateY(-50%)}
  .coin-heads::before{content:'';position:absolute;width:36px;height:36px;background:#fff;border:6px solid #333;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2}
  .coin-tails{background:#333;color:#fff;transform:rotateY(180deg);border-color:#888;}
+
+ /* 🎡 力量輪盤專屬外觀 (圓形寶可球) */
+ .roulette-power-modal { width: 380px; height: 380px; border-radius: 50%; background: linear-gradient(to bottom, #e3350d 0%, #e3350d 48%, #111 48%, #111 52%, #f5f5f5 52%, #f5f5f5 100%); box-shadow: 0 15px 50px rgba(0,0,0,0.8), inset -10px -20px 40px rgba(0,0,0,0.3), inset 10px 20px 40px rgba(255,255,255,0.4); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #111; }
+ .roulette-power-center { width: 170px; height: 170px; background: #2a2a2a; border-radius: 50%; border: 12px solid #1a1a1a; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.9); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; }
+ .roulette-power-display { font-size: 65px; font-weight: 900; color: #ffcb05; text-shadow: 0 0 20px #ffcb05, 0 0 40px #ff8c00; }
+ .roulette-power-btn { position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); background: linear-gradient(180deg, #ffe066 0%, #ffcb05 100%); border: 2px solid #cc9900; color: #222; font-size: 24px; font-weight: 900; padding: 10px 30px; border-radius: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.8); cursor: pointer; z-index: 3; transition: 0.2s; display: flex; align-items: center; gap: 8px; width: max-content; }
+ .roulette-power-btn:hover { transform: translateX(-50%) scale(1.05); filter: brightness(1.1); }
+ .roulette-power-btn:disabled { filter: grayscale(100%); cursor: not-allowed; transform: translateX(-50%); }
+ .roulette-power-btn-icon { width: 16px; height: 16px; background: #e53935; border-radius: 4px; border: 1px solid #fff; }
+
+ /* 🎰 幸運回收機專屬外觀 (方形圖鑑機) */
+ .roulette-item-modal { width: 420px; height: 320px; border-radius: 25px; background: linear-gradient(to bottom, #e3350d 0%, #e3350d 48%, #111 48%, #111 52%, #f5f5f5 52%, #f5f5f5 100%); box-shadow: 0 15px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.3); position: relative; display: flex; flex-direction: column; align-items: center; border: 3px solid #111; padding: 15px 20px; box-sizing: border-box; }
+ .roulette-item-header { width: 100%; display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 10px; }
+ .roulette-item-light { width: 20px; height: 20px; border-radius: 50%; background: #d32f2f; box-shadow: inset -3px -3px 5px rgba(0,0,0,0.5), inset 3px 3px 5px rgba(255,255,255,0.5), 0 0 10px rgba(255,0,0,0.8); border: 2px solid #111; }
+ .roulette-item-title { font-size: 28px; font-weight: 900; color: #fff; text-shadow: 2px 2px 0 #333, -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 0 4px 5px rgba(0,0,0,0.8); letter-spacing: 2px; }
+ .roulette-item-screen { width: 95%; height: 130px; background: linear-gradient(180deg, #333 0%, #111 100%); border-radius: 12px; border: 4px solid #222; margin-top: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 5px 15px rgba(0,0,0,0.5); z-index: 2; position: relative; }
+ .roulette-item-display { font-size: 32px; font-weight: 900; color: #ffcb05; text-shadow: 0 0 15px #ffcb05, 0 0 30px #ff8c00; text-align: center; line-height: 1.2; }
+ .roulette-item-btn { margin-top: 25px; background: linear-gradient(180deg, #ffe066 0%, #ffcb05 100%); border: 3px solid #222; color: #222; font-size: 22px; font-weight: 900; padding: 10px 30px; border-radius: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.6), inset 0 3px 6px rgba(255,255,255,0.8); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 80%; z-index: 3; }
+ .roulette-item-btn:hover { transform: scale(1.03); filter: brightness(1.1); }
+ .roulette-item-btn:disabled { filter: grayscale(100%); cursor: not-allowed; transform: scale(1); }
+ .roulette-item-btn-icon { width: 16px; height: 16px; background: #e53935; border-radius: 50%; border: 2px solid #fff; }
  </style>
 </head>
 <body>
@@ -205,11 +226,11 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  <img class="lobby-mascot mascot-left">
  <img class="lobby-mascot mascot-right">
  
-<div class="config-box">
+ <div class="config-box">
  <h1 style="color: #ffcb05; margin-bottom: 10px; font-size: 36px;">Pokémon TCG Pro</h1>
  <p style="margin-bottom: 20px; color: #aaa;">終極平衡版：七大屬性升級 & 直覺圖示化介面！</p>
  
-<div style="display:flex; gap:20px; margin-top:10px;">
+ <div style="display:flex; gap:20px; margin-top:10px;">
  <div class="upload-section" style="flex:1;">
  <h3 style="color: #77cc55; margin-bottom:8px;">🌐 模式 A：Google 試算表</h3>
  <p style="font-size:11px; color:#ccc; margin-bottom:10px;">格式：題號 | 題目 | 選項... | 答案</p>
@@ -218,7 +239,7 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  <div id="cloud-status" style="color: #ffcb05; font-size: 13px; font-weight:bold; margin-top:8px;"></div>
  </div>
  
-<div class="upload-section" style="flex:1;">
+ <div class="upload-section" style="flex:1;">
  <h3 style="color: #3399ff; margin-bottom:8px;">📝 模式 B：手動輸入題庫</h3>
  <p style="font-size:11px; color:#ccc; margin-bottom:10px;">由老師判定答對或答錯。多題請用 / 分隔：</p>
  <textarea id="qInput" placeholder="題目1 / 題目2 / ..."></textarea>
@@ -273,13 +294,13 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  <h2 id="turn-indicator" style="margin-bottom: 8px; font-size: 18px; font-weight:900; text-align: center; color: #ffcb05; text-shadow: 0 0 8px rgba(255, 203, 5, 0.8);"></h2>
  <div id="action-hint" style="color: #bbb; font-size: 13px; text-align: center; margin-bottom: 8px; min-height: 35px; line-height:1.4;"></div>
  
-<div id="setup-ui">
+ <div id="setup-ui">
  <button id="btn-redraw" class="btn" style="background:#ffcb05; color:black; font-size:16px;" onclick="redrawCards()">🔄 重抽卡牌 (5)</button>
  <button class="btn" style="background:var(--team1-color); color:white; font-size:16px;" onclick="startGame(1)">▶ TEAM 1 先攻</button>
  <button class="btn" style="background:var(--team2-color); color:white; font-size:16px;" onclick="startGame(2)">▶ TEAM 2 先攻</button>
  </div>
  
-<button id="end-turn-btn" class="btn" style="background:#333; color:white; display: none; font-size:16px;" onclick="endTurn()">結束回合</button>
+ <button id="end-turn-btn" class="btn" style="background:#333; color:white; display: none; font-size:16px;" onclick="endTurn()">結束回合</button>
  <div id="log"></div>
  </div>
 
@@ -322,14 +343,32 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  </div>
  </div>
 
- <!-- 🎡 全新：轉盤動畫 Modal -->
- <div id="roulette-modal" class="game-modal" style="z-index: 20005;">
-    <div class="modal-box" style="max-width: 600px; padding: 40px; background: linear-gradient(135deg, #111, #333); border-color: #00f2ff; box-shadow: 0 0 50px rgba(0,242,255,0.4);">
-        <h2 id="roulette-title" style="color:#00f2ff; font-size:36px; margin-bottom: 20px;">🎰 幸運轉盤 🎰</h2>
-        <div id="roulette-display" style="height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; border: 4px solid #fff; border-radius: 16px; margin: 20px 0; box-shadow: inset 0 0 30px rgba(255,255,255,0.2);">
-        </div>
-        <button id="roulette-stop-btn" class="btn" style="background:#f00; color:#fff; font-size:35px; font-weight:900; padding: 20px; border-radius: 20px; text-shadow: 2px 2px 0 #000; box-shadow: 0 6px #800; margin-top:10px;" onclick="stopRoulette()">🛑 STOP!</button>
-    </div>
+ <!-- 🎡 輪盤視窗 (Modal) -->
+ <div id="roulette-modal" class="game-modal" style="background: rgba(0,0,0,0.85);">
+     <!-- 力量輪盤樣式 -->
+     <div id="roulette-power-ui" class="roulette-power-modal hidden">
+         <div class="roulette-power-center">
+             <div id="roulette-display-power" class="roulette-power-display">?</div>
+         </div>
+         <button id="roulette-stop-btn-power" class="roulette-power-btn" onclick="stopRoulette()">
+             <div class="roulette-power-btn-icon"></div> STOP!
+         </button>
+     </div>
+
+     <!-- 幸運回收機樣式 -->
+     <div id="roulette-item-ui" class="roulette-item-modal hidden">
+         <div class="roulette-item-header">
+             <div class="roulette-item-light"></div>
+             <div class="roulette-item-title">幸運回收機</div>
+             <div class="roulette-item-light"></div>
+         </div>
+         <div class="roulette-item-screen">
+             <div id="roulette-display-item" class="roulette-item-display">?</div>
+         </div>
+         <button id="roulette-stop-btn-item" class="roulette-item-btn" onclick="stopRoulette()">
+             <div class="roulette-item-btn-icon"></div> 抓取 / STOP!
+         </button>
+     </div>
  </div>
 
  <div id="inspect-modal" class="game-modal" onclick="closeInspect()">
@@ -372,7 +411,7 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  pendingAttack: null, pendingCatcherTarget: null, eotFlips: [], coinFlipReason: '', coinFlipsQueue: 0, coinFlipsResults: 0, transformingPokemon: null, isAttacking: false, redrawsLeft: 5, nextTurnTeam: null,
  teams: { 1: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [], usedDynamax: false, usedMega: false }, 2: { pokemon: [], activeIdx: 0, hand: [], lostLives: 0, wrongAnswers: [], usedDynamax: false, usedMega: false } },
  coinStreak: { result: null, count: 0 },
- rouletteState: null // 新增輪盤狀態管理
+ rouletteState: { type: null, targetIdx: null, interval: null, currentVal: null, pool: [] }
  };
 
  document.addEventListener('DOMContentLoaded', () => {
@@ -391,15 +430,15 @@ body{background:#0a0a0c;color:#fff;width:100vw;height:100vh;overflow:hidden;disp
  try {
  window.addLog("⏳ 正在同步角色資料...");
  for (const p of POKEMON_DB) { 
-if (p === null || typeof p !== 'object') continue;
+ if (p === null || typeof p !== 'object') continue;
  if (p.id === undefined || p.id === null || p.id === "") throw new Error(`發現一隻寶可夢沒有設定 id！寶可夢名稱為：「${p.name || '未命名'}」`);
  await setDoc(doc(db, "pokemons", p.id.toString()), p); 
-}
+ }
  for (const t of TRAINERS_DB) { 
-if (t === null || typeof t !== 'object') continue;
+ if (t === null || typeof t !== 'object') continue;
  if (t.id === undefined || t.id === null || t.id === "") throw new Error(`發現一個道具沒有設定 id！道具名稱為：「${t.name || '未命名'}」`);
  await setDoc(doc(db, "trainers", t.id.toString()), t); 
-}
+ }
  window.showAlert("✅ 同步成功！角色與道具已上傳至雲端。"); window.addLog("✅ 雲端資料庫已更新。");
  } catch (e) { window.showAlert("❌ 同步失敗: " + e.message); }
  });
@@ -445,7 +484,7 @@ if (t === null || typeof t !== 'object') continue;
  window.state.teams[t].pokemon = pool.slice(0, 5).map((p, i) => ({
  ...p, currHp: p.hp, attachedEnergy: [], uid: `t${t}_${i}`,
  status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
- buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0, powerRouletteDmg: 0 }, isDead: false, hasContributedToLoss: false,
+ buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0 }, isDead: false, hasContributedToLoss: false,
  dynamax: { turns: 0, originalForm: null }, mega: { turns: 0, originalForm: null }, transformState: null
  }));
  window.state.teams[t].hand = []; window.state.teams[t].lostLives = 0; window.state.teams[t].wrongAnswers = [];
@@ -454,12 +493,12 @@ if (t === null || typeof t !== 'object') continue;
  const hp1 = window.state.teams[1].pokemon.reduce((sum, p) => sum + p.hp, 0);
  const hp2 = window.state.teams[2].pokemon.reduce((sum, p) => sum + p.hp, 0);
  attempts++; if (Math.abs(hp1 - hp2) <= 80 || attempts >= 50) isBalanced = true; 
-}
+ }
 
  document.getElementById('lobby').classList.add('hidden');
  document.getElementById('battle-field').classList.remove('hidden');
  window.updateBattleScale(); 
-window.state.step = 'setup';
+ window.state.step = 'setup';
  window.addLog(`🎲 連線成功！請決定先攻方。`);
  window.render();
  } catch (e) { window.showAlert("❌ 連線失敗：" + e.message); }
@@ -487,11 +526,11 @@ window.state.step = 'setup';
  'confuse_self_flip': (attacker, defender, log, coinResult) => { if (!coinResult) { attacker.status.confused = true; log.text += ` 💫 副作用：自己陷入混亂！`; } },
  'paralyze_flip': (attacker, defender, log, coinResult) => { if (coinResult) { defender.status.paralyze = true; log.text += ` ⚡ 對手麻痺！`; } },
  
-'hex_damage_40': (attacker, defender, log, coinResult, baseDmg) => { 
-const hasS = defender.status.poison || defender.status.burn || defender.status.asleep || defender.status.confused || defender.status.paralyze; 
-if(hasS) { log.text += ` (禍不單行追加 40 傷害！)`; return baseDmg + 40; } 
-return baseDmg; 
-},
+ 'hex_damage_40': (attacker, defender, log, coinResult, baseDmg) => { 
+ const hasS = defender.status.poison || defender.status.burn || defender.status.asleep || defender.status.confused || defender.status.paralyze; 
+ if(hasS) { log.text += ` (禍不單行追加 40 傷害！)`; return baseDmg + 40; } 
+ return baseDmg; 
+ },
 
  'pain_split': (attacker, defender, log) => {
  let avg = Math.ceil((attacker.currHp + defender.currHp) / 2);
@@ -509,17 +548,17 @@ return baseDmg;
  'heal_self_20': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 20); window.showHeal(attacker.uid, 20); log.text += ` 💚 恢復了 20 HP！`; },
  'heal_self_30': (attacker, defender, log) => { attacker.currHp = Math.min(attacker.hp, attacker.currHp + 30); window.showHeal(attacker.uid, 30); log.text += ` 💚 恢復了 30 HP！`; },
  
-'heal_all_allies_30': (attacker, defender, log) => { 
-const myTeam = window.state.teams[window.state.currentTeam];
+ 'heal_all_allies_30': (attacker, defender, log) => { 
+ const myTeam = window.state.teams[window.state.currentTeam];
  myTeam.pokemon.forEach(p => { 
-if (p.currHp > 0) {
+ if (p.currHp > 0) {
  let oldHp = p.currHp;
  p.currHp = Math.min(p.hp, p.currHp + 30); 
-if(p.currHp > oldHp) window.showHeal(p.uid, p.currHp - oldHp);
+ if(p.currHp > oldHp) window.showHeal(p.uid, p.currHp - oldHp);
  }
  });
  log.text += ` 💚 聖光發動！我方全體恢復 HP！`; 
-},
+ },
 
  'red_hp_burst_40': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+40！)`; return baseDmg + 40; } return baseDmg; },
  'red_hp_burst_50': (attacker, defender, log, coinResult, baseDmg) => { if ((attacker.currHp / attacker.hp) < 0.3) { log.text += ` (💥紅血爆發，傷害+50！)`; return baseDmg + 50; } return baseDmg; },
@@ -527,12 +566,12 @@ if(p.currHp > oldHp) window.showHeal(p.uid, p.currHp - oldHp);
  'plus_dmg_if_status_30': (attacker, defender, log, coinResult, baseDmg) => { const hasS = attacker.status.poison || attacker.status.burn || attacker.status.asleep || attacker.status.confused || attacker.status.paralyze; if(hasS) { log.text += ` (潛能激發追加 30 傷害！)`; return baseDmg + 30; } return baseDmg; },
  'plus_dmg_if_status_40': (attacker, defender, log, coinResult, baseDmg) => { const hasS = attacker.status.poison || attacker.status.burn || attacker.status.asleep || attacker.status.confused || attacker.status.paralyze; if(hasS) { log.text += ` (潛能激發追加 40 傷害！)`; return baseDmg + 40; } return baseDmg; },
  
-'plus_dmg_per_extra_energy_10': (attacker, defender, log, coinResult, baseDmg, atk) => { 
-let extraCount = Math.max(0, attacker.attachedEnergy.length - atk.cost.length);
+ 'plus_dmg_per_extra_energy_10': (attacker, defender, log, coinResult, baseDmg, atk) => { 
+ let extraCount = Math.max(0, attacker.attachedEnergy.length - atk.cost.length);
  let added = extraCount * 10;
  if (added > 0) log.text += ` (額外 ${extraCount} 能量追加 ${added} 傷害！)`; 
-return baseDmg + added; 
-},
+ return baseDmg + added; 
+ },
 
  'self_dmg_20': (attacker, defender, log) => { attacker.currHp = Math.max(0, attacker.currHp - 20); window.showDamage(attacker.uid, 20, 'normal', false, attacker.uid); log.text += ` (副作用：自傷 20)`; },
  'self_dmg_30': (attacker, defender, log) => { attacker.currHp = Math.max(0, attacker.currHp - 30); window.showDamage(attacker.uid, 30, 'normal', false, attacker.uid); log.text += ` (副作用：自傷 30)`; },
@@ -547,10 +586,10 @@ return baseDmg + added;
  'reduce_dmg_taken_flip_30': (attacker, defender, log, coinResult) => { if(coinResult) { attacker.status.reduce_dmg_30 = true; log.text += ` (受傷-30)`; } },
  'enemy_dmg_minus_30': (attacker, defender, log) => { defender.status.enemy_dmg_minus_30 = 2; },
  
-'calm_mind_20': (attacker, defender, log) => { 
-attacker.status.pending_buff_dmg = 20;
+ 'calm_mind_20': (attacker, defender, log) => { 
+ attacker.status.pending_buff_dmg = 20;
  attacker.status.reduce_dmg_20 = true; 
-log.text += ` (冥想發動：下回攻擊+20，且目前受傷-20)`;
+ log.text += ` (冥想發動：下回攻擊+20，且目前受傷-20)`;
  },
 
  'seal_attack': (attacker, defender, log) => { defender.status.cant_attack = 1; if(attacker.attachedEnergy.length > 0) attacker.attachedEnergy.pop(); },
@@ -587,7 +626,7 @@ log.text += ` (冥想發動：下回攻擊+20，且目前受傷-20)`;
  if(hits > 0) log.text += ` (波及對手全體後備造成 20 傷害！)`;
  },
  
-'aoe_10': (attacker, defender, log) => {
+ 'aoe_10': (attacker, defender, log) => {
  const enemyTeam = window.state.teams[window.state.currentTeam === 1 ? 2 : 1];
  let hits = 0;
  enemyTeam.pokemon.forEach((p, idx) => {
@@ -641,7 +680,7 @@ log.text += ` (冥想發動：下回攻擊+20，且目前受傷-20)`;
  window.resizeFxCanvas = function() { fxCanvas.width = window.innerWidth; fxCanvas.height = window.innerHeight; };
  window.addEventListener('resize', window.resizeFxCanvas); window.resizeFxCanvas();
  
-window.triggerModernHit = function(x, y, type, dmg) {
+ window.triggerModernHit = function(x, y, type, dmg) {
  const colors = { fire: '#FF4400', water: '#0088FF', grass: '#00FF44', electric: '#FFDD00', normal: '#FFFFFF', brown: '#a0522d', purple: '#9b59b6' };
  const color = colors[type] || '#FFFFFF';
  fxSparks.push({ x, y, color, l: 1.0, scale: 0.2, maxScale: 0.8 + dmg/150 });
@@ -690,12 +729,12 @@ window.triggerModernHit = function(x, y, type, dmg) {
  requestAnimationFrame(window.animateFx);
  };
  
-window.drawSparkV2 = function(s) {
+ window.drawSparkV2 = function(s) {
  fxCtx.save(); fxCtx.translate(s.x, s.y); fxCtx.globalAlpha = s.l; fxCtx.globalCompositeOperation = 'lighter';
  const coreGrad = fxCtx.createRadialGradient(0, 0, 0, 0, 0, 50 * s.scale); 
-coreGrad.addColorStop(0, '#fff'); coreGrad.addColorStop(0.4, s.color); coreGrad.addColorStop(1, 'transparent');
+ coreGrad.addColorStop(0, '#fff'); coreGrad.addColorStop(0.4, s.color); coreGrad.addColorStop(1, 'transparent');
  fxCtx.fillStyle = coreGrad; fxCtx.beginPath(); fxCtx.arc(0, 0, 60 * s.scale, 0, Math.PI*2); fxCtx.fill(); 
-fxCtx.strokeStyle = s.color; fxCtx.lineWidth = 5 * s.l; fxCtx.beginPath(); fxCtx.arc(0, 0, 150 * s.scale, 0, Math.PI * 2); fxCtx.stroke();
+ fxCtx.strokeStyle = s.color; fxCtx.lineWidth = 5 * s.l; fxCtx.beginPath(); fxCtx.arc(0, 0, 150 * s.scale, 0, Math.PI * 2); fxCtx.stroke();
  fxCtx.fillStyle = '#fff';
  for(let i=0; i<16; i++) {
  fxCtx.save(); fxCtx.rotate((i / 16) * Math.PI * 2 + fxFrame * 0.05);
@@ -748,7 +787,7 @@ fxCtx.strokeStyle = s.color; fxCtx.lineWidth = 5 * s.l; fxCtx.beginPath(); fxCtx
  const idMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
  if (!idMatch || !idMatch[1]) { document.getElementById('cloud-status').innerText = "❌ 無法解析網址，請確認包含 /d/ 試算表ID"; return; }
  
-const sheetId = idMatch[1]; const callbackName = 'gvizCallback_' + Date.now();
+ const sheetId = idMatch[1]; const callbackName = 'gvizCallback_' + Date.now();
  window[callbackName] = function(data) {
  try {
  window.state.csvQuestions = []; let rows = data.table.rows; let startIdx = 0;
@@ -782,9 +821,9 @@ const sheetId = idMatch[1]; const callbackName = 'gvizCallback_' + Date.now();
  const file = e.target.files[0]; if(!file) return;
  const reader = new FileReader();
  reader.onload = (evt) => { 
-window.parseCSVData(evt.target.result); 
-if (window.state.csvQuestions.length > 0) alert(`✅ 讀取到 ${window.state.csvQuestions.length} 題。`); else alert("❌ 無法解析題庫格式。"); 
-};
+ window.parseCSVData(evt.target.result); 
+ if (window.state.csvQuestions.length > 0) alert(`✅ 讀取到 ${window.state.csvQuestions.length} 題。`); else alert("❌ 無法解析題庫格式。"); 
+ };
  reader.readAsText(file);
  };
 
@@ -806,7 +845,7 @@ if (window.state.csvQuestions.length > 0) alert(`✅ 讀取到 ${window.state.cs
  window.state.teams[t].pokemon = pool.slice(0, 5).map((p, i) => ({
  ...p, currHp: p.hp, attachedEnergy: [], uid: `t${t}_${i}`,
  status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
- buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0, powerRouletteDmg: 0 }, isDead: false, hasContributedToLoss: false,
+ buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0 }, isDead: false, hasContributedToLoss: false,
  dynamax: { turns: 0, originalForm: null }, mega: { turns: 0, originalForm: null }, transformState: null
  }));
  window.state.teams[t].hand = []; window.state.teams[t].lostLives = 0; window.state.teams[t].wrongAnswers = [];
@@ -814,7 +853,7 @@ if (window.state.csvQuestions.length > 0) alert(`✅ 讀取到 ${window.state.cs
  }
  const hp1 = window.state.teams[1].pokemon.reduce((sum, p) => sum + p.hp, 0); const hp2 = window.state.teams[2].pokemon.reduce((sum, p) => sum + p.hp, 0);
  attempts++; if (Math.abs(hp1 - hp2) <= 80 || attempts >= 50) isBalanced = true; 
-}
+ }
  window.addLog(`🔄 已重新發放雙方卡牌。剩餘調度次數：${window.state.redrawsLeft}`); window.render();
  }
  };
@@ -835,17 +874,17 @@ if (window.state.csvQuestions.length > 0) alert(`✅ 讀取到 ${window.state.cs
 
  window.state.step = 'quiz'; window.state.selectedHandItem = null; window.state.isAttacking = false;
  
-document.getElementById('modal-team-name').textContent = `TEAM ${window.state.currentTeam} 答題時間`;
+ document.getElementById('modal-team-name').textContent = `TEAM ${window.state.currentTeam} 答題時間`;
  document.getElementById('modal-team-name').style.color = '#ffcb05';
  
-const qContainer = document.getElementById('quiz-options-container'); qContainer.innerHTML = '';
+ const qContainer = document.getElementById('quiz-options-container'); qContainer.innerHTML = '';
 
  if (window.state.quizMode === 'csv' && window.state.csvQuestions.length > 0) {
  const qObj = window.state.csvQuestions[window.state.qIdx % window.state.csvQuestions.length];
  let qFontSize = qObj.q.length > 30 ? '36px' : '50px';
  document.getElementById('quiz-text').innerHTML = `<div style="font-size:${qFontSize}; font-weight:bold; color:#fff; text-shadow: 2px 2px 4px #000; margin-bottom:30px; padding: 0 20px;">${qObj.q}</div>`;
  
-const styles = ['kb-red', 'kb-blue', 'kb-yellow', 'kb-green']; const icons = ['▲', '◆', '●', '■'];
+ const styles = ['kb-red', 'kb-blue', 'kb-yellow', 'kb-green']; const icons = ['▲', '◆', '●', '■'];
  let optionsData = qObj.opts.map((opt, i) => ({ text: opt, isCorrect: (i + 1 === qObj.ans) }));
 
  if (document.getElementById('shuffle-answers') && document.getElementById('shuffle-answers').checked) {
@@ -859,7 +898,7 @@ const styles = ['kb-red', 'kb-blue', 'kb-yellow', 'kb-green']; const icons = ['�
  } else {
  let qText = window.state.questions[window.state.qIdx % window.state.questions.length] || "無題目";
  let qFontSize = qText.length > 30 ? '40px' : '60px'; 
-document.getElementById('quiz-text').innerHTML = `<div style="font-size:${qFontSize}; font-weight:bold; color:#fff; text-shadow: 2px 2px 4px #000; margin-bottom:30px; padding: 0 20px;">${qText}</div>`;
+ document.getElementById('quiz-text').innerHTML = `<div style="font-size:${qFontSize}; font-weight:bold; color:#fff; text-shadow: 2px 2px 4px #000; margin-bottom:30px; padding: 0 20px;">${qText}</div>`;
  qContainer.innerHTML = `<button class="btn" style="background:#4caf50; color:white; padding:25px 60px; width:auto; font-size:40px; margin:0 20px; border-radius:16px;" onclick="window.checkAnswer(true)">◯ 答對</button><button class="btn" style="background:#f44336; color:white; padding:25px 60px; width:auto; font-size:40px; margin:0 20px; border-radius:16px;" onclick="window.checkAnswer(false)">✕ 答錯</button>`;
  }
 
@@ -874,14 +913,14 @@ document.getElementById('quiz-text').innerHTML = `<div style="font-size:${qFontS
  const myTeam = window.state.teams[window.state.currentTeam]; const givenEnergy = window.getSmartEnergyType(myTeam);
  if (myTeam.hand.length < 7) { myTeam.hand.push({ cardType: 'energy', type: givenEnergy }); window.addLog(`✅ 答對！獲得 [${window.getTypeName(givenEnergy)}] 能量。`); } else { window.addLog(`✅ 答對！(手牌已滿)`); }
  
-const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
+ const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
  const trainerChance = window.getTrainerDrawChance(myTeam);
 
  if(Math.random() < trainerChance && myTeam.hand.length < 7 && tDB.length > 0) { 
-const trainer = tDB[Math.floor(Math.random() * tDB.length)]; 
-myTeam.hand.push({ cardType: 'trainer', ...trainer }); 
-window.addLog(`🎁 獲得道具：「${trainer.name}」！`); 
-}
+ const trainer = tDB[Math.floor(Math.random() * tDB.length)]; 
+ myTeam.hand.push({ cardType: 'trainer', ...trainer }); 
+ window.addLog(`🎁 獲得道具：「${trainer.name}」！`); 
+ }
  window.updateHint("請點擊手牌使用，或點擊招式攻擊 (攻擊後將自動結束回合)。\n🔍 點選左上角放大鏡可查看詳細狀態。");
  } else {
  const myTeam = window.state.teams[window.state.currentTeam];
@@ -896,16 +935,24 @@ window.addLog(`🎁 獲得道具：「${trainer.name}」！`);
  if(window.state.step !== 'action' || window.state.isAttacking) return;
  const myTeam = window.state.teams[window.state.currentTeam]; const card = myTeam.hand[idx];
  
- // 🎰 攔截「幸運回收機」的祭品選擇邏輯
- if(window.state.selectedHandItem && window.state.selectedHandItem.data.id === 'lucky_recycler') {
-     if(idx === window.state.selectedHandItem.index) { window.state.selectedHandItem = null; window.updateHint("已取消選取。"); window.render(); return; }
-     let recyclerIdx = window.state.selectedHandItem.index;
-     let toRemove = [idx, recyclerIdx].sort((a,b) => b - a); // 由大到小排序避免陣列錯位
-     myTeam.hand.splice(toRemove[0], 1);
-     myTeam.hand.splice(toRemove[1], 1);
-     window.state.selectedHandItem = null;
-     window.startRoulette('item', null);
-     return;
+ if (window.state.selectedHandItem && window.state.selectedHandItem.data.id === 'lucky_recycler') {
+ if (idx === window.state.selectedHandItem.index) {
+ window.state.selectedHandItem = null;
+ window.updateHint("已取消選取。");
+ window.render();
+ return;
+ }
+ window.showConfirm(`要獻祭「${card.name || window.getTypeName(card.type)+'能量'}」來發動幸運回收機嗎？`, () => {
+ myTeam.hand.splice(idx, 1);
+ 
+ // 🐛 核心修正：如果獻祭的卡牌在回收機「左邊」，陣列會往前遞補，回收機的 index 也要跟著減 1
+ if (idx < window.state.selectedHandItem.index) {
+ window.state.selectedHandItem.index -= 1;
+ }
+ 
+ window.useTrainerCard(null, null);
+ });
+ return;
  }
 
  if(window.state.selectedHandItem && window.state.selectedHandItem.index === idx) { window.state.selectedHandItem = null; window.updateHint("已取消選取。"); } 
@@ -914,13 +961,22 @@ window.addLog(`🎁 獲得道具：「${trainer.name}」！`);
  if(card.cardType === 'energy') { if(window.state.hasAttachedEnergyThisTurn) return window.showAlert("每回合限附著 1 張能量！"); window.updateHint("請點擊場上任一寶可夢來附著能量。"); } 
  else if (card.cardType === 'trainer') {
  if(card.id === 'lucky_recycler') {
-    if (myTeam.hand.length < 2) { window.showAlert("需要至少 1 張其他手牌作為回收代價！"); window.state.selectedHandItem = null; return; }
-    window.updateHint(`🎰 請點擊手牌中「另一張不要的卡片」作為回收代價！`);
+ if (myTeam.hand.length < 2) {
+ window.state.selectedHandItem = null;
+ return window.showAlert("需要有至少另一張手牌作為代價才能發動「幸運回收機」！");
  }
- else if(card.id === 'power_roulette') window.updateHint(`🎡 請點擊我方戰鬥寶可夢。`);
- else if(card.id === 'none') window.useTrainerCard(null, null);
- else if(card.target === 'ally') window.updateHint(`請點擊我方寶可夢。`); else if(card.target === 'active_ally') window.updateHint(`請點擊我方戰鬥寶可夢。`);
- else if(card.target === 'bench') window.updateHint(`請點擊我方後備區。`); else if(card.target === 'dead_ally') window.updateHint(`請點擊陣亡寶可夢復活。`); else if(card.target === 'enemy_bench') window.updateHint(`請點擊對手後備區。`);
+ window.updateHint("請點擊手牌中另一張要獻祭棄置的廢卡/能量。");
+ }
+ else if(card.target === 'none' || card.id === 'energy_search' || card.id === 'prof_research') {
+ window.useTrainerCard(null, null);
+ }
+ else if(card.id === 'power_roulette') window.updateHint(`請點擊我方戰鬥寶可夢。`);
+ else if(card.id === 'dynamax_band') window.updateHint(`請點擊我方超極巨化潛力寶可夢。`);
+ else if(card.target === 'ally') window.updateHint(`請點擊我方寶可夢。`); 
+ else if(card.target === 'active_ally') window.updateHint(`請點擊我方戰鬥寶可夢。`);
+ else if(card.target === 'bench') window.updateHint(`請點擊我方後備區。`); 
+ else if(card.target === 'dead_ally') window.updateHint(`請點擊陣亡寶可夢復活。`); 
+ else if(card.target === 'enemy_bench') window.updateHint(`請點擊對手後備區。`);
  }
  }
  window.render();
@@ -930,13 +986,11 @@ window.addLog(`🎁 獲得道具：「${trainer.name}」！`);
  const oldActive = team.pokemon[team.activeIdx];
  if(oldActive.currHp > 0) {
  oldActive.status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 };
- oldActive.buff.powerRouletteDmg = 0; // 重置輪盤爆發
  
-if (oldActive.transformState) {
+ if (oldActive.transformState) {
  if (oldActive.transformState.originalForm.name === '夢幻') {
- let healAmount = Math.min(oldActive.hp - oldActive.currHp, 60);
- oldActive.currHp += healAmount;
- window.addLog(`✨ 夢幻特權！退回後備前恢復了 ${healAmount} HP！`);
+ oldActive.currHp = Math.min(oldActive.hp, oldActive.currHp + 60);
+ window.addLog(`✨ 夢幻特權！退回後備休養，HP +60！`);
  }
  let hpPercent = oldActive.currHp / oldActive.hp;
  Object.assign(oldActive, oldActive.transformState.originalForm);
@@ -949,21 +1003,21 @@ if (oldActive.transformState) {
  if (oldActive.mega && oldActive.mega.originalForm) {
  let damageTaken = oldActive.hp - oldActive.currHp;
  Object.assign(oldActive, oldActive.mega.originalForm); 
-oldActive.currHp = Math.max(0, oldActive.hp - damageTaken); 
-oldActive.mega.originalForm = null; oldActive.mega.turns = 0;
+ oldActive.currHp = Math.max(0, oldActive.hp - damageTaken); 
+ oldActive.mega.originalForm = null; oldActive.mega.turns = 0;
  window.addLog(`✨ 退回後備，超級進化解除！`);
  }
  if (oldActive.dynamax && oldActive.dynamax.originalForm) {
  let damageTaken = oldActive.hp - oldActive.currHp;
  Object.assign(oldActive, oldActive.dynamax.originalForm); 
-oldActive.currHp = Math.max(0, oldActive.hp - damageTaken); 
-oldActive.dynamax.originalForm = null; oldActive.dynamax.turns = 0;
+ oldActive.currHp = Math.max(0, oldActive.hp - damageTaken); 
+ oldActive.dynamax.originalForm = null; oldActive.dynamax.turns = 0;
  window.addLog(`✨ 退回後備，超極巨化解除！`);
  }
  } else { 
-if (oldActive.transformState) { Object.assign(oldActive, oldActive.transformState.originalForm); oldActive.transformState = null; }
+ if (oldActive.transformState) { Object.assign(oldActive, oldActive.transformState.originalForm); oldActive.transformState = null; }
  if (oldActive.mega && oldActive.mega.originalForm) { Object.assign(oldActive, oldActive.mega.originalForm); oldActive.mega.originalForm = null; oldActive.mega.turns = 0; } 
-if (oldActive.dynamax && oldActive.dynamax.originalForm) { Object.assign(oldActive, oldActive.dynamax.originalForm); oldActive.dynamax.originalForm = null; oldActive.dynamax.turns = 0; }
+ if (oldActive.dynamax && oldActive.dynamax.originalForm) { Object.assign(oldActive, oldActive.dynamax.originalForm); oldActive.dynamax.originalForm = null; oldActive.dynamax.turns = 0; }
  }
  team.activeIdx = newIdx;
  };
@@ -994,7 +1048,7 @@ if (oldActive.dynamax && oldActive.dynamax.originalForm) { Object.assign(oldActi
  return;
  }
  
-if (window.state.step === 'select_ally_heal_50' || window.state.step === 'select_ally_heal_70') {
+ if (window.state.step === 'select_ally_heal_50' || window.state.step === 'select_ally_heal_70') {
  if (teamNum === window.state.currentTeam && p.currHp > 0) {
  let healAmount = window.state.step === 'select_ally_heal_50' ? 50 : 70;
  let oldHp = p.currHp;
@@ -1009,29 +1063,26 @@ if (window.state.step === 'select_ally_heal_50' || window.state.step === 'select
 
  if (window.state.step === 'select_enemy_bench') {
  if (teamNum !== window.state.currentTeam && pIdx !== window.state.teams[teamNum].activeIdx && p.currHp > 0) { window.retreatToBench(window.state.teams[teamNum], pIdx); window.addLog(`💨 強制將 ${p.name} 拖入戰場！`); window.state.step = 'finished'; window.render(); setTimeout(window.processEndOfTurn, 1500); } 
-else { window.showAlert("請選擇對手後備區寶可夢！"); } return;
+ else { window.showAlert("請選擇對手後備區寶可夢！"); } return;
  }
  if (window.state.step === 'select_transform_target') {
  if (teamNum !== window.state.currentTeam && p.currHp > 0) {
  const attacker = window.state.transformingPokemon;
- const myTeam = window.state.teams[window.state.currentTeam];
- 
-let hpPercent = attacker.currHp / attacker.hp;
+ let hpPercent = attacker.currHp / attacker.hp;
  attacker.transformState = { 
-originalForm: { name: attacker.name, hp: attacker.hp, type: attacker.type, attacks: JSON.parse(JSON.stringify(attacker.attacks)), weakness: attacker.weakness, resistance: attacker.resistance, id: attacker.id },
+ originalForm: { name: attacker.name, hp: attacker.hp, type: attacker.type, attacks: JSON.parse(JSON.stringify(attacker.attacks)), weakness: attacker.weakness, resistance: attacker.resistance, id: attacker.id },
  originalEnergy: [...attacker.attachedEnergy]
  };
  
-attacker.name = p.name; attacker.hp = p.hp; attacker.type = p.type; attacker.attacks = p.attacks; attacker.weakness = p.weakness; attacker.resistance = p.resistance; attacker.id = p.id; 
-attacker.attachedEnergy = [...p.attachedEnergy];
+ attacker.name = p.name; attacker.hp = p.hp; attacker.type = p.type; attacker.attacks = p.attacks; attacker.weakness = p.weakness; attacker.resistance = p.resistance; attacker.id = p.id; 
+ attacker.attachedEnergy = [...p.attachedEnergy];
+ attacker.currHp = Math.max(10, Math.round(attacker.hp * hpPercent));
  
-attacker.currHp = Math.max(10, Math.round(attacker.hp * hpPercent));
- 
-window.addLog(`✨ ${attacker.transformState.originalForm.name} 變身成了 ${p.name}！(血量等比例轉換)`); 
-window.state.transformingPokemon = null; 
-window.state.step = 'finished'; 
-window.render(); 
-setTimeout(window.processEndOfTurn, 1500);
+ window.addLog(`✨ ${attacker.transformState.originalForm.name} 變身成了 ${p.name}！(血量等比例轉換)`); 
+ window.state.transformingPokemon = null; 
+ window.state.step = 'finished'; 
+ window.render(); 
+ setTimeout(window.processEndOfTurn, 1500);
  } else { window.showAlert("請選擇對手寶可夢！"); } return;
  }
 
@@ -1046,7 +1097,9 @@ setTimeout(window.processEndOfTurn, 1500);
  if(card.target === 'dead_ally' && teamNum === window.state.currentTeam && p.currHp <= 0) valid = true;
  if(card.target === 'enemy_bench' && teamNum !== window.state.currentTeam && pIdx !== window.state.teams[teamNum].activeIdx && p.currHp > 0) valid = true;
  
-if(card.id === 'dynamax_band') {
+ if(card.id === 'power_roulette') {
+ if (teamNum === window.state.currentTeam && pIdx === team.activeIdx && p.currHp > 0) valid = true;
+ } else if(card.id === 'dynamax_band') {
  if(window.state.teams[window.state.currentTeam].usedDynamax) { window.showAlert("極巨腕帶一場比賽只能使用一次！"); return; }
  if (teamNum === window.state.currentTeam && p.currHp > 0 && p.gmaxId) valid = true; else { if(teamNum === window.state.currentTeam && p.currHp > 0) window.showAlert("這隻寶可夢沒有超極巨化潛力！"); return; }
  } else if (card.id === 'mega_stone') {
@@ -1054,7 +1107,7 @@ if(card.id === 'dynamax_band') {
  if (teamNum === window.state.currentTeam && p.currHp > 0 && p.megaId) valid = true; else { if(teamNum === window.state.currentTeam && p.currHp > 0) window.showAlert("這隻寶可夢無法超級進化！"); return; }
  }
  
-if(!valid) return;
+ if(!valid) return;
 
  if (card.id === 'pot_helmet' && p.hp >= 100) { return window.showAlert("「鍋型頭盔」僅限最大 HP 小於 100 的寶可夢裝備！"); }
  if (card.id === 'focus_sash' && p.hp > 120) { return window.showAlert("「氣勢披帶」僅限最大 HP 為 120 (含)以下的寶可夢裝備！"); }
@@ -1073,72 +1126,93 @@ if(!valid) return;
  }
  };
 
+ // 🎡 啟動輪盤邏輯
  window.startRoulette = function(type, targetIdx) {
-     window.state.rouletteState = { type: type, targetIdx: targetIdx, interval: null, pool: [] };
-     const display = document.getElementById('roulette-display');
-     const stopBtn = document.getElementById('roulette-stop-btn');
-     const title = document.getElementById('roulette-title');
-     stopBtn.style.display = 'block';
+ window.state.rouletteState.type = type;
+ window.state.rouletteState.targetIdx = targetIdx;
+ 
+ const powerUI = document.getElementById('roulette-power-ui');
+ const itemUI = document.getElementById('roulette-item-ui');
+ const btnPower = document.getElementById('roulette-stop-btn-power');
+ const btnItem = document.getElementById('roulette-stop-btn-item');
 
-     // 🎡 力量輪盤的獎池數值 (你可以隨時新增或修改數字)
-     if(type === 'power') {
-         title.innerHTML = '🎡 力量輪盤 🎡';
-         window.state.rouletteState.pool = [5, 10, 15, 20, 30];
-     } 
-     // 🎰 幸運回收機的獎池 (放入你想給的道具 ID)
-     else if(type === 'item') {
-         title.innerHTML = '🎰 幸運回收機 🎰';
-         window.state.rouletteState.pool = ["potion", "super_potion", "full_heal", "switch", "energy_search", "pokemon_catcher", "rescue_stretcher", "boss_orders", "prof_research", "muscle_band", "focus_sash", "full_face_guard", "pot_helmet", "mystery_swap", "dynamax_band", "mega_stone"];
-     }
+ let display;
 
-     document.getElementById('roulette-modal').style.display = 'flex';
+ if(type === 'power') {
+ powerUI.classList.remove('hidden');
+ itemUI.classList.add('hidden');
+ btnPower.disabled = false;
+ display = document.getElementById('roulette-display-power');
+ window.state.rouletteState.pool = [5, 10, 15, 20, 30];
+ } else if(type === 'item') {
+ powerUI.classList.add('hidden');
+ itemUI.classList.remove('hidden');
+ btnItem.disabled = false;
+ display = document.getElementById('roulette-display-item');
+ window.state.rouletteState.pool = ["potion", "super_potion", "full_heal", "switch", "energy_search", "pokemon_catcher", "rescue_stretcher", "boss_orders", "prof_research", "muscle_band", "focus_sash", "full_face_guard", "pot_helmet", "mystery_swap", "dynamax_band", "mega_stone"];
+ }
 
-     let i = 0;
-     // 快速閃動動畫
-     window.state.rouletteState.interval = setInterval(() => {
-         let val = window.state.rouletteState.pool[i % window.state.rouletteState.pool.length];
-         if(type === 'power') {
-             display.innerHTML = `<div style="font-size: 80px; font-weight:900; color:#ffcb05; text-shadow: 0 0 10px #ffcb05;">+${val}</div>`;
-         } else {
-             let itemObj = window.CLOUD_TRAINERS_DB.find(t => t.id === val);
-             let name = itemObj ? itemObj.name : val;
-             let icon = itemObj ? itemObj.icon : '🎁';
-             display.innerHTML = `<div style="font-size: 70px;">${icon}</div><div style="font-size:35px; color:#fff;">${name}</div>`;
-         }
-         i++;
-     }, 60); 
+ document.getElementById('roulette-modal').style.display = 'flex';
+
+ window.state.rouletteState.interval = setInterval(() => {
+ const pool = window.state.rouletteState.pool;
+ const rand = pool[Math.floor(Math.random() * pool.length)];
+ window.state.rouletteState.currentVal = rand;
+ 
+ if (type === 'power') {
+ display.textContent = `+${rand}`;
+ } else {
+ const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
+ const item = tDB.find(t => t.id === rand);
+ display.innerHTML = item ? `<div style="font-size:30px; margin-bottom:5px;">${item.icon}</div><div style="font-size:24px; color:#fff; text-shadow:none; letter-spacing:1px;">${item.name}</div>` : rand;
+ }
+ }, 80);
  };
 
  window.stopRoulette = function() {
-     clearInterval(window.state.rouletteState.interval);
-     document.getElementById('roulette-stop-btn').style.display = 'none';
-     const display = document.getElementById('roulette-display');
+ const btnPower = document.getElementById('roulette-stop-btn-power');
+ const btnItem = document.getElementById('roulette-stop-btn-item');
+ btnPower.disabled = true;
+ btnItem.disabled = true;
+ 
+ clearInterval(window.state.rouletteState.interval);
+ const type = window.state.rouletteState.type;
+ const result = window.state.rouletteState.currentVal;
+ const myTeam = window.state.teams[window.state.currentTeam];
 
-     let pool = window.state.rouletteState.pool;
-     let result = pool[Math.floor(Math.random() * pool.length)];
-
-     if(window.state.rouletteState.type === 'power') {
-         display.innerHTML = `<div style="font-size: 100px; font-weight:900; color:#0f0; text-shadow: 0 0 20px #0f0; animation: pulse 0.5s 3;">+${result}!!</div>`;
-         let p = window.state.teams[window.state.currentTeam].pokemon[window.state.rouletteState.targetIdx];
-         p.buff.powerRouletteDmg = result; // 疊加到輪盤專屬 Buff 區塊
-         window.addLog(`🎡 力量輪盤啟動！${p.name} 下一次攻擊增加 ${result} 傷害！`);
-     } else {
-         let itemObj = window.CLOUD_TRAINERS_DB.find(t => t.id === result);
-         display.innerHTML = `<div style="font-size: 80px;">${itemObj.icon}</div><div style="font-size:45px; font-weight:900; color:#0f0; text-shadow: 0 0 15px #0f0; animation: pulse 0.5s 3;">${itemObj.name}!!</div>`;
-         window.state.teams[window.state.currentTeam].hand.push({ cardType: 'trainer', ...itemObj });
-         window.addLog(`🎰 幸運回收成功！獲得道具：「${itemObj.name}」！`);
-     }
-
-     setTimeout(() => {
-         document.getElementById('roulette-modal').style.display = 'none';
-         window.render();
-     }, 2000);
+ // 停頓 1.2 秒讓玩家看清楚大獎
+ setTimeout(() => {
+ document.getElementById('roulette-modal').style.display = 'none';
+ if (type === 'power') {
+ const p = myTeam.pokemon[window.state.rouletteState.targetIdx];
+ p.buff.dmg += result;
+ p.buff.turns = 1;
+ window.addLog(`🎡 力量輪盤爆發！${p.name} 本回合攻擊力 +${result}！`);
+ } else if (type === 'item') {
+ const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
+ const item = tDB.find(t => t.id === result);
+ if (item && myTeam.hand.length < 7) {
+ myTeam.hand.push({ cardType: 'trainer', ...item });
+ window.addLog(`🎰 幸運回收機轉出大獎：「${item.name}」！`);
+ }
+ }
+ if (window.state.selectedHandItem) {
+ myTeam.hand.splice(window.state.selectedHandItem.index, 1);
+ }
+ window.state.selectedHandItem = null;
+ window.updateHint("道具使用完畢。");
+ window.render();
+ }, 1200); 
  };
 
  window.useTrainerCard = function(teamNum, targetIdx) {
  const myTeam = window.state.teams[window.state.currentTeam]; const card = window.state.selectedHandItem.data; let consumed = true;
  
-if(card.id === 'mystery_swap') {
+ if(card.id === 'power_roulette') {
+ window.startRoulette('power', targetIdx); return;
+ } else if(card.id === 'lucky_recycler') {
+ window.startRoulette('item', null); return;
+ } else if(card.id === 'mystery_swap') {
  const currentIds = [...window.state.teams[1].pokemon, ...window.state.teams[2].pokemon].map(p => p.id);
  const candidates = window.CLOUD_POKEMON_DB.filter(p => !currentIds.includes(p.id) && !p.name.includes('超級') && !p.name.includes('超極巨') && !p.name.includes('極巨化'));
  if(candidates.length === 0) return window.showAlert("目前沒有多餘的寶可夢可替換！");
@@ -1147,7 +1221,7 @@ if(card.id === 'mystery_swap') {
  myTeam.pokemon[targetIdx] = {
  ...newP, currHp: newP.hp, attachedEnergy: [], uid: oldP.uid,
  status: { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 },
- buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0, powerRouletteDmg: 0 }, isDead: false, dynamax: { turns: 0, originalForm: null }, mega: { turns: 0, originalForm: null }, transformState: null
+ buff: { dmg: 0, turns: 0, hasFocusSash: false, potHelmet: 0, fullFaceGuard: 0 }, isDead: false, dynamax: { turns: 0, originalForm: null }, mega: { turns: 0, originalForm: null }, transformState: null
  };
  window.addLog(`🎲 神秘置換！${oldP.name} 換成了 ${newP.name}！`);
  } else if(card.id === 'pokemon_catcher') {
@@ -1155,59 +1229,57 @@ if(card.id === 'mystery_swap') {
  document.getElementById('coin-desc').innerHTML = `請擲硬幣：<br>正面則強制對手替換。`;
  const coinInner = document.getElementById('coin-inner'); if(coinInner) { coinInner.style.transition = 'none'; coinInner.style.transform = 'rotateY(0deg)'; }
  document.getElementById('coin-modal').style.display = 'flex'; return; 
-} else if(card.id === 'potion' || card.id === 'super_potion') {
+ } else if(card.id === 'potion' || card.id === 'super_potion') {
  const p = myTeam.pokemon[targetIdx]; if(p.currHp === p.hp) return window.showAlert("HP 已滿！");
  const heal = card.id === 'potion' ? 30 : 50; 
-let oldHp = p.currHp;
+ let oldHp = p.currHp;
  p.currHp = Math.min(p.hp, p.currHp + heal); 
-if(p.currHp > oldHp) window.showHeal(p.uid, p.currHp - oldHp);
+ if(p.currHp > oldHp) window.showHeal(p.uid, p.currHp - oldHp);
  window.addLog(`💊 ${p.name} 回復了 ${p.currHp - oldHp} HP。`);
  } else if(card.id === 'full_heal') { 
-const p = myTeam.pokemon[targetIdx]; p.status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 }; window.addLog(`🌿 ${p.name} 解除狀態。`); 
-} else if(card.id === 'switch') { 
-window.retreatToBench(myTeam, targetIdx); window.addLog(`🔄 無消耗將 ${myTeam.pokemon[targetIdx].name} 換上場。`); 
-} else if(card.id === 'rescue_stretcher') { 
-const p = myTeam.pokemon[targetIdx]; p.currHp = Math.ceil(p.hp / 2); p.isDead = false; window.addLog(`🚑 ${p.name} 復活！`); 
-} else if(card.id === 'boss_orders') { 
-const enemyTeam = window.state.teams[teamNum]; window.retreatToBench(enemyTeam, targetIdx); window.addLog(`🗣️ 強制對手換上 ${enemyTeam.pokemon[targetIdx].name}。`); 
-} else if(card.id === 'muscle_band') { 
-const p = myTeam.pokemon[targetIdx]; p.buff.dmg = 20; p.buff.turns = 2; window.addLog(`💪 ${p.name} 攻擊力+20！`); 
-} else if(card.id === 'focus_sash') { 
-const p = myTeam.pokemon[targetIdx]; p.buff.hasFocusSash = true; window.addLog(`🎗️ ${p.name} 裝備披帶！`); 
-} else if(card.id === 'full_face_guard') { 
-const p = myTeam.pokemon[targetIdx]; p.buff.fullFaceGuard = 4; window.addLog(`🛡️ ${p.name} 裝備了全罩防守！`); 
-} else if(card.id === 'pot_helmet') { 
-const p = myTeam.pokemon[targetIdx]; p.buff.potHelmet = 3; window.addLog(`🪖 ${p.name} 裝備了鍋型頭盔！`); 
-} else if(card.id === 'power_roulette') {
- window.startRoulette('power', targetIdx);
-} else if(card.id === 'energy_search') {
+ const p = myTeam.pokemon[targetIdx]; p.status = { poison: false, paralyze: false, burn: false, asleep: false, confused: false, immune_next: false, reduce_dmg_20: false, reduce_dmg_30: false, reduce_dmg_50: false, cant_attack: 0, enemy_dmg_minus_30: 0, pending_buff_dmg: 0 }; window.addLog(`🌿 ${p.name} 解除狀態。`); 
+ } else if(card.id === 'switch') { 
+ window.retreatToBench(myTeam, targetIdx); window.addLog(`🔄 無消耗將 ${myTeam.pokemon[targetIdx].name} 換上場。`); 
+ } else if(card.id === 'rescue_stretcher') { 
+ const p = myTeam.pokemon[targetIdx]; p.currHp = Math.ceil(p.hp / 2); p.isDead = false; window.addLog(`🚑 ${p.name} 復活！`); 
+ } else if(card.id === 'boss_orders') { 
+ const enemyTeam = window.state.teams[teamNum]; window.retreatToBench(enemyTeam, targetIdx); window.addLog(`🗣️ 強制對手換上 ${enemyTeam.pokemon[targetIdx].name}。`); 
+ } else if(card.id === 'muscle_band') { 
+ const p = myTeam.pokemon[targetIdx]; p.buff.dmg = 20; p.buff.turns = 2; window.addLog(`💪 ${p.name} 攻擊力+20！`); 
+ } else if(card.id === 'focus_sash') { 
+ const p = myTeam.pokemon[targetIdx]; p.buff.hasFocusSash = true; window.addLog(`🎗️ ${p.name} 裝備披帶！`); 
+ } else if(card.id === 'full_face_guard') { 
+ const p = myTeam.pokemon[targetIdx]; p.buff.fullFaceGuard = 4; window.addLog(`🛡️ ${p.name} 裝備了全罩防守！`); 
+ } else if(card.id === 'pot_helmet') { 
+ const p = myTeam.pokemon[targetIdx]; p.buff.potHelmet = 3; window.addLog(`🪖 ${p.name} 裝備了鍋型頭盔！`); 
+ } else if(card.id === 'energy_search') {
  if (myTeam.hand.length < 7) myTeam.hand.push({ cardType: 'energy', type: window.getSmartEnergyType(myTeam) });
  if (myTeam.hand.length < 7) myTeam.hand.push({ cardType: 'energy', type: window.getSmartEnergyType(myTeam) });
  window.addLog(`🔍 隨機抽取了能量卡。`);
  } else if(card.id === 'prof_research') {
  window.addLog(`🔬 捨棄手牌重新抽卡。`); myTeam.hand.splice(window.state.selectedHandItem.index, 1); myTeam.hand = []; 
-const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
+ const tDB = window.CLOUD_TRAINERS_DB || (typeof TRAINERS_DB !== 'undefined' ? TRAINERS_DB : []);
  const trainerChance = window.getTrainerDrawChance(myTeam);
  for(let i=0; i<3; i++){ 
-if(Math.random() < trainerChance && myTeam.hand.length < 7 && tDB.length > 0) { 
-myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] }); 
-} else if (myTeam.hand.length < 7) { 
-myTeam.hand.push({ cardType: 'energy', type: window.getSmartEnergyType(myTeam) }); 
-} 
-}
+ if(Math.random() < trainerChance && myTeam.hand.length < 7 && tDB.length > 0) { 
+ myTeam.hand.push({ cardType: 'trainer', ...tDB[Math.floor(Math.random() * tDB.length)] }); 
+ } else if (myTeam.hand.length < 7) { 
+ myTeam.hand.push({ cardType: 'energy', type: window.getSmartEnergyType(myTeam) }); 
+ } 
+ }
  consumed = false; 
-}
+ }
  else if (card.id === 'dynamax_band') {
  const p = myTeam.pokemon[targetIdx];
  const gmaxForm = window.CLOUD_POKEMON_DB.find(m => m.id == p.gmaxId);
  if (!gmaxForm) return window.showAlert(`找不到超極巨化資料 (ID: ${p.gmaxId})`);
  
-p.dynamax.turns = 2;
+ p.dynamax.turns = 2;
  myTeam.usedDynamax = true;
  let damageTaken = p.hp - p.currHp;
  p.dynamax.originalForm = { name: p.name, hp: p.hp, type: p.type, attacks: JSON.parse(JSON.stringify(p.attacks)), weakness: p.weakness, resistance: p.resistance, id: p.id };
  
-p.name = gmaxForm.name;
+ p.name = gmaxForm.name;
  p.hp = gmaxForm.hp;
  p.type = gmaxForm.type;
  p.attacks = gmaxForm.attacks;
@@ -1215,7 +1287,7 @@ p.name = gmaxForm.name;
  p.resistance = gmaxForm.resistance;
  p.id = gmaxForm.id;
  
-p.currHp = Math.max(1, p.hp - damageTaken);
+ p.currHp = Math.max(1, p.hp - damageTaken);
  p.status.poison = p.status.paralyze = p.status.burn = p.status.asleep = p.status.confused = false;
  window.addLog(`🎇 狂暴的能量湧現！超極巨化成 ${p.name}！(狀態已淨化)`);
  }
@@ -1224,10 +1296,10 @@ p.currHp = Math.max(1, p.hp - damageTaken);
  const megaForm = window.CLOUD_POKEMON_DB.find(m => m.id == p.megaId);
  if (!megaForm) return window.showAlert(`找不到超進化資料 (ID: ${p.megaId})`);
  
-let damageTaken = p.hp - p.currHp;
+ let damageTaken = p.hp - p.currHp;
  p.mega.originalForm = { name: p.name, hp: p.hp, type: p.type, attacks: JSON.parse(JSON.stringify(p.attacks)), weakness: p.weakness, resistance: p.resistance, id: p.id };
  
-p.name = megaForm.name;
+ p.name = megaForm.name;
  p.hp = megaForm.hp;
  p.type = megaForm.type;
  p.attacks = megaForm.attacks;
@@ -1235,7 +1307,7 @@ p.name = megaForm.name;
  p.resistance = megaForm.resistance;
  p.id = megaForm.id;
  
-p.currHp = Math.max(1, p.hp - damageTaken);
+ p.currHp = Math.max(1, p.hp - damageTaken);
  p.status.poison = p.status.paralyze = p.status.burn = p.status.asleep = p.status.confused = false;
  p.mega.turns = 2;
  myTeam.usedMega = true;
@@ -1256,7 +1328,7 @@ p.currHp = Math.max(1, p.hp - damageTaken);
 
  window.executeAttack = function(event, teamNum, atkIdx) {
  if (event) event.stopPropagation(); if (window.state.isAttacking) return; 
-try {
+ try {
  if (teamNum !== window.state.currentTeam) return window.showAlert("無法使用對手招式！");
  if (window.state.step !== 'action') return window.showAlert("請先答對題目！");
  const myTeam = window.state.teams[window.state.currentTeam]; const attacker = myTeam.pokemon[myTeam.activeIdx];
@@ -1295,8 +1367,8 @@ try {
  document.getElementById('coin-desc').innerHTML = desc; const coinInner = document.getElementById('coin-inner'); if(coinInner) { coinInner.style.transition = 'none'; coinInner.style.transform = 'rotateY(0deg)'; }
  document.getElementById('coin-modal').style.display = 'flex';
  } else if (atk.special === 'flip_3_x20' || atk.special === 'flip_3_x30') { window.state.coinFlipsQueue = 3; window.state.coinFlipsResults = 0; window.promptMultiFlip(); } 
-else if (atk.special === 'flip_2_x20' || atk.special === 'flip_2_x30') { window.state.coinFlipsQueue = 2; window.state.coinFlipsResults = 0; window.promptMultiFlip(); } 
-else { window.resolveAttack(null); }
+ else if (atk.special === 'flip_2_x20' || atk.special === 'flip_2_x30') { window.state.coinFlipsQueue = 2; window.state.coinFlipsResults = 0; window.promptMultiFlip(); } 
+ else { window.resolveAttack(null); }
  };
 
  window.promptMultiFlip = function() {
@@ -1311,13 +1383,13 @@ else { window.resolveAttack(null); }
  const coinBtn = document.getElementById('auto-coin'); if (coinBtn && coinBtn.classList.contains('flipping')) return;
  if(coinBtn) coinBtn.classList.add('flipping'); const coinInner = document.getElementById('coin-inner'); 
 
-let chance = 0.5;
+ let chance = 0.5;
  if (window.state.coinStreak.count >= 2) {
  chance = window.state.coinStreak.result === true ? 0.15 : 0.85;
  }
  const isHeads = Math.random() < chance;
  
-const spins = 5; const deg = spins * 360 + (isHeads ? 0 : 180);
+ const spins = 5; const deg = spins * 360 + (isHeads ? 0 : 180);
  if(coinInner) { coinInner.style.transition = 'transform 2s cubic-bezier(0.2, 0.8, 0.3, 1)'; coinInner.style.transform = `rotateY(${deg}deg)`; }
  setTimeout(() => { if(coinBtn) coinBtn.classList.remove('flipping'); window.resolveCoinFlip(isHeads); setTimeout(() => { if(coinInner) { coinInner.style.transition = 'none'; coinInner.style.transform = `rotateY(0deg)`; } }, 500); }, 2100);
  };
@@ -1325,7 +1397,7 @@ const spins = 5; const deg = spins * 360 + (isHeads ? 0 : 180);
  window.resolveCoinFlip = function(isHeads) {
  document.getElementById('coin-modal').style.display = 'none'; const reason = window.state.coinFlipReason;
  
-if (isHeads === window.state.coinStreak.result) {
+ if (isHeads === window.state.coinStreak.result) {
  window.state.coinStreak.count++;
  } else {
  window.state.coinStreak.result = isHeads;
@@ -1334,7 +1406,7 @@ if (isHeads === window.state.coinStreak.result) {
 
  if (reason === 'confusion') {
  if (isHeads) { window.addLog(`💫 克服混亂！`); window.continueAttack(); } 
-else {
+ else {
  window.addLog(`💫 混亂發作，自傷 30 點。`); const attacker = window.state.pendingAttack.attacker; attacker.currHp = Math.max(0, attacker.currHp - 30); window.showDamage(attacker.uid, 30, 'normal', false, attacker.uid);
  if (attacker.currHp <= 0 && !attacker.isDead) { attacker.isDead = true; window.state.teams[window.state.currentTeam].lostLives++; window.addLog(`💀 ${attacker.name} 氣絕！`); if(window.checkGameOver()) return; }
  window.state.step = 'finished'; window.state.selectedHandItem = null; window.state.isAttacking = false; window.render(); setTimeout(window.processEndOfTurn, 1500);
@@ -1345,11 +1417,11 @@ else {
  if (window.state.selectedHandItem) { window.state.teams[window.state.currentTeam].hand.splice(window.state.selectedHandItem.index, 1); }
  window.state.selectedHandItem = null; window.updateHint("訓練家卡使用完畢。"); window.render();
  } else if (reason === 'attack') { window.resolveAttack(isHeads); } 
-else if (reason === 'multi_attack') { if(isHeads) window.state.coinFlipsResults++; window.state.coinFlipsQueue--; window.promptMultiFlip(); } 
-else if (reason === 'burn' || reason === 'asleep') {
+ else if (reason === 'multi_attack') { if(isHeads) window.state.coinFlipsResults++; window.state.coinFlipsQueue--; window.promptMultiFlip(); } 
+ else if (reason === 'burn' || reason === 'asleep') {
  const flip = window.state.eotFlips.shift(); const p = window.state.teams[flip.team].pokemon[flip.pIdx];
- if (isHeads) { if (reason === 'burn') { p.status.burn = false; window.addLog(`🔥 解除灼伤。`); } if (reason === 'asleep') { p.status.asleep = false; window.addLog(`💤 醒來了。`); } } 
-else { if (reason === 'burn') window.addLog(`🔥 持續灼伤。`); if (reason === 'asleep') window.addLog(`💤 繼續熟睡。`); }
+ if (isHeads) { if (reason === 'burn') { p.status.burn = false; window.addLog(`🔥 解除灼傷。`); } if (reason === 'asleep') { p.status.asleep = false; window.addLog(`💤 醒來了。`); } } 
+ else { if (reason === 'burn') window.addLog(`🔥 持續灼傷。`); if (reason === 'asleep') window.addLog(`💤 繼續熟睡。`); }
  window.render(); setTimeout(window.processNextEotFlip, 800);
  }
  };
@@ -1365,13 +1437,13 @@ else { if (reason === 'burn') window.addLog(`🔥 持續灼伤。`); if (reason 
  const newDmg = window.AttackEffects[atk.special](attacker, defender, log, coinResult, dmg, atk);
  if (newDmg !== undefined) dmg = newDmg;
  if (atk.special === 'heal_choose_50' || atk.special === 'heal_choose_70') dmg = 0; 
-} else if (atk.special) {
+ } else if (atk.special) {
  if (atk.special === 'snipe_any') {
  window.state.step = 'select_enemy_any_snipe'; 
-window.state.isAttacking = false;
+ window.state.isAttacking = false;
  window.updateHint(`🎯 請選擇對手場上任一寶可夢進行狙擊！(將造成 ${atk.d} 傷害)`); 
-window.render(); return; 
-}
+ window.render(); return; 
+ }
  if (atk.special === 'heal_choose_50' || atk.special === 'heal_choose_70') {
  window.state.step = atk.special === 'heal_choose_50' ? 'select_ally_heal_50' : 'select_ally_heal_70';
  window.state.pendingAttack = null; window.state.isAttacking = false;
@@ -1408,8 +1480,8 @@ window.render(); return;
  }
 
  if(defender.status.immune_next) { 
-dmg = 0; log.text += ` (免疫！)`; 
-} else if (atk.special !== 'ignore_resistance') {
+ dmg = 0; log.text += ` (免疫！)`; 
+ } else if (atk.special !== 'ignore_resistance') {
  if(defender.status.reduce_dmg_20) dmg = Math.max(0, dmg - 20);
  if(defender.status.reduce_dmg_30) dmg = Math.max(0, dmg - 30);
  if(defender.status.reduce_dmg_50) dmg = Math.max(0, dmg - 50);
@@ -1421,14 +1493,6 @@ dmg = 0; log.text += ` (免疫！)`;
 
  if(dmg > 0) {
  if(attacker.buff.turns > 0) dmg += attacker.buff.dmg;
- 
- // 🎡 【力量輪盤】在此疊加傷害 (完美計算在弱點加成之前！)
- if(attacker.buff.powerRouletteDmg > 0) {
-     dmg += attacker.buff.powerRouletteDmg;
-     log.text += ` (🎡力量輪盤爆發 +${attacker.buff.powerRouletteDmg}！)`;
-     attacker.buff.powerRouletteDmg = 0; // 一次性消耗
- }
-
  const weakPool = Array.isArray(defender.weakness) ? defender.weakness : [defender.weakness];
  if(weakPool.includes(attacker.type)) { dmg = Math.floor(dmg * 1.5); log.text += ` (效果絕佳！)`; }
  if (atk.special !== 'ignore_resistance' && (defender.resistance.type === attacker.type || defender.resistance.type === 'any')) { dmg -= defender.resistance.val; log.text += ` (被抵抗)`; }
@@ -1439,13 +1503,13 @@ dmg = 0; log.text += ` (免疫！)`;
 
  dmg = Math.max(0, dmg); 
 
-if (defender.buff.hasFocusSash && dmg >= defender.currHp) { 
-dmg = Math.max(0, defender.currHp - 10); 
-defender.buff.hasFocusSash = false; 
-log.text += ` 🎗️ 披帶發動！(保留 10 滴血)`; 
-}
+ if (defender.buff.hasFocusSash && dmg >= defender.currHp) { 
+ dmg = Math.max(0, defender.currHp - 10); 
+ defender.buff.hasFocusSash = false; 
+ log.text += ` 🎗️ 披帶發動！(保留 10 滴血)`; 
+ }
  
-defender.currHp = Math.max(0, defender.currHp - dmg);
+ defender.currHp = Math.max(0, defender.currHp - dmg);
  window.showDamage(defender.uid, dmg, attacker.type, isUltimate, attacker.uid);
  log.text += `造成 ${dmg} 傷害！`;
  } else if (atk.d > 0) { window.showDamage(defender.uid, 0, attacker.type, false, attacker.uid); }
@@ -1454,7 +1518,7 @@ defender.currHp = Math.max(0, defender.currHp - dmg);
  if (attacker.currHp <= 0 && !attacker.isDead) { attacker.isDead = true; window.state.teams[window.state.currentTeam].lostLives++; log.text += ` 💀 我方氣絕！`; }
 
  window.addLog(log.text); window.state.step = 'finished'; window.state.selectedHandItem = null; window.render(); 
-document.getElementById('end-turn-btn').style.display = 'block';
+ document.getElementById('end-turn-btn').style.display = 'block';
  if (window.checkGameOver()) return;
  setTimeout(() => { window.state.isAttacking = false; window.processEndOfTurn(); }, isUltimate ? 2500 : 1500);
  } catch (e) { window.state.isAttacking = false; window.showAlert("攻擊錯誤: " + e.message); console.error(e); }
@@ -1468,16 +1532,16 @@ document.getElementById('end-turn-btn').style.display = 'block';
  const activeP = window.state.teams[t].pokemon[window.state.teams[t].activeIdx];
  if (activeP && activeP.currHp > 0) {
  if (activeP.status.poison) { activeP.currHp = Math.max(0, activeP.currHp - 10); window.showDamage(activeP.uid, 10, 'poison'); window.addLog(`☠️ ${activeP.name} 中毒受傷。`); }
- if (activeP.status.burn) { activeP.currHp = Math.max(0, activeP.currHp - 20); window.showDamage(activeP.uid, 20, 'fire'); window.addLog(`🔥 ${activeP.name} 灼伤受傷。`); window.state.eotFlips.push({team: t, pIdx: window.state.teams[t].activeIdx, type: 'burn'}); }
+ if (activeP.status.burn) { activeP.currHp = Math.max(0, activeP.currHp - 20); window.showDamage(activeP.uid, 20, 'fire'); window.addLog(`🔥 ${activeP.name} 灼傷受傷。`); window.state.eotFlips.push({team: t, pIdx: window.state.teams[t].activeIdx, type: 'burn'}); }
  if (activeP.status.asleep) { window.state.eotFlips.push({team: t, pIdx: window.state.teams[t].activeIdx, type: 'asleep'}); }
  
-if (activeP.dynamax && activeP.dynamax.turns > 0 && t === window.state.currentTeam) {
+ if (activeP.dynamax && activeP.dynamax.turns > 0 && t === window.state.currentTeam) {
  activeP.dynamax.turns--;
  if (activeP.dynamax.turns === 0) {
  activeP.attachedEnergy = [];
  window.addLog(`🎇 極巨化結束，${activeP.name} 耗盡了所有能量！`);
  
-if (activeP.dynamax.originalForm) {
+ if (activeP.dynamax.originalForm) {
  let damageTaken = activeP.hp - activeP.currHp;
  Object.assign(activeP, activeP.dynamax.originalForm);
  activeP.currHp = Math.max(0, activeP.hp - damageTaken);
@@ -1487,7 +1551,7 @@ if (activeP.dynamax.originalForm) {
  }
  }
  
-if (activeP.mega && activeP.mega.turns > 0 && t === window.state.currentTeam) {
+ if (activeP.mega && activeP.mega.turns > 0 && t === window.state.currentTeam) {
  activeP.mega.turns--;
  if (activeP.mega.turns === 0 && activeP.mega.originalForm) {
  let damageTaken = activeP.hp - activeP.currHp;
@@ -1496,7 +1560,7 @@ if (activeP.mega && activeP.mega.turns > 0 && t === window.state.currentTeam) {
  activeP.mega.originalForm = null;
  window.addLog(`💎 超級進化解除，${activeP.name} 變回了原樣。`);
  
-activeP.currHp = Math.max(0, activeP.currHp - 40);
+ activeP.currHp = Math.max(0, activeP.currHp - 40);
  window.showDamage(activeP.uid, 40, 'normal');
  window.addLog(`⚠️ 超級進化解除副作用：${activeP.name} 受到 40 傷害。`);
  }
@@ -1505,7 +1569,7 @@ activeP.currHp = Math.max(0, activeP.currHp - 40);
  if (activeP.currHp <= 0 && !activeP.isDead) { activeP.isDead = true; window.state.teams[t].lostLives++; someoneDied = true; window.addLog(`💀 ${activeP.name} 氣絕！`); }
  }
  
-window.state.teams[t].pokemon.forEach(p => {
+ window.state.teams[t].pokemon.forEach(p => {
  if(p.currHp > 0 && t === window.state.currentTeam) {
  if(p.buff.turns > 0) { p.buff.turns--; if(p.buff.turns === 0) p.buff.dmg = 0; }
  if(p.buff.fullFaceGuard > 0) { p.buff.fullFaceGuard--; if(p.buff.fullFaceGuard === 0) window.addLog(`🛡️ ${p.name} 防守失效。`); }
@@ -1526,7 +1590,7 @@ window.state.teams[t].pokemon.forEach(p => {
  const endingTeamActive = window.state.teams[window.state.currentTeam].pokemon[window.state.teams[window.state.currentTeam].activeIdx];
  if (endingTeamActive && endingTeamActive.status.paralyze) { endingTeamActive.status.paralyze = false; window.addLog(`⚡ ${endingTeamActive.name} 麻痺解除。`); }
  
-if (someoneDied && window.checkGameOver()) return;
+ if (someoneDied && window.checkGameOver()) return;
  setTimeout(window.processNextEotFlip, 1000);
  };
 
@@ -1535,7 +1599,7 @@ if (someoneDied && window.checkGameOver()) return;
  const flip = window.state.eotFlips[0]; const p = window.state.teams[flip.team].pokemon[flip.pIdx];
  if (p.currHp <= 0) { window.state.eotFlips.shift(); window.processNextEotFlip(); return; }
  window.state.coinFlipReason = flip.type;
- document.getElementById('coin-desc').innerHTML = flip.type === 'burn' ? `請為 <b>${p.name}</b> 的🔥灼伤恢復擲硬幣：` : `請為 <b>${p.name}</b> 的💤睡眠恢復擲硬幣：`;
+ document.getElementById('coin-desc').innerHTML = flip.type === 'burn' ? `請為 <b>${p.name}</b> 的🔥灼傷恢復擲硬幣：` : `請為 <b>${p.name}</b> 的💤睡眠恢復擲硬幣：`;
  const coinInner = document.getElementById('coin-inner'); if(coinInner) { coinInner.style.transition = 'none'; coinInner.style.transform = 'rotateY(0deg)'; }
  document.getElementById('coin-modal').style.display = 'flex';
  } else { window.state.nextTurnTeam = window.state.currentTeam === 1 ? 2 : 1; window.checkEotSwaps(); }
@@ -1561,7 +1625,7 @@ if (someoneDied && window.checkGameOver()) return;
  const wrongs = window.state.teams[t].wrongAnswers;
  summaryHtml += `<h3 style="color:${t===1?'#00c3ff':'#ff6b6b'}; margin-top:${t===2?'15px':'0'}; margin-bottom:5px; font-size:18px;">Team ${t} 錯題：</h3>`;
  if(wrongs.length === 0) { summaryHtml += `<div style="font-size:16px; color:#aaa; margin-left:10px;">(無錯題紀錄！)</div>`; } 
-else {
+ else {
  const wrongCounts = {}; wrongs.forEach(w => { wrongCounts[w] = (wrongCounts[w] || 0) + 1; });
  const formattedWrongs = Object.entries(wrongCounts).map(([w, count]) => count > 1 ? `<span style="color:#4caf50; font-weight:bold;">${w}(${count})</span>` : `<span style="font-weight:bold;">${w}</span>`);
  summaryHtml += `<div style="font-size:18px; margin-left:10px; color:#eee; line-height: 1.6; word-wrap: break-word; letter-spacing:1px;">${formattedWrongs.join('<span style="color:#888; margin:0 6px;">,</span>')}</div>`;
@@ -1572,23 +1636,22 @@ else {
 
  window.inspectCard = function(t, pIdx) {
  const p = window.state.teams[t].pokemon[pIdx]; 
-const weakIcon = p.weakness === 'none' ? '無' : (Array.isArray(p.weakness) ? p.weakness.map(w => `<div class="energy-icon energy-${w}"></div>`).join('') : `<div class="energy-icon energy-${p.weakness}"></div>`);
+ const weakIcon = p.weakness === 'none' ? '無' : (Array.isArray(p.weakness) ? p.weakness.map(w => `<div class="energy-icon energy-${w}"></div>`).join('') : `<div class="energy-icon energy-${p.weakness}"></div>`);
  const resIcon = p.resistance.type === 'none' ? '無' : `<div class="energy-icon energy-${p.resistance.type}"></div>${p.resistance.val > 0 ? `-${p.resistance.val}` : ''}`;
  
-let statusHtml = ''; if (p.status.poison) statusHtml += '<span class="status-tag status-poison">中毒</span>'; if (p.status.burn) statusHtml += '<span class="status-tag status-burn">灼伤</span>'; if (p.status.asleep) statusHtml += '<span class="status-tag status-asleep">睡眠</span>'; if (p.status.confused) statusHtml += '<span class="status-tag status-confused">混亂</span>'; if (p.status.paralyze) statusHtml += '<span class="status-tag status-paralyze">麻痺</span>'; if (p.status.immune_next) statusHtml += '<span class="status-tag status-immune">免傷</span>'; if (p.status.cant_attack > 0) statusHtml += '<span class="status-tag status-cant-act">禁攻</span>';
+ let statusHtml = ''; if (p.status.poison) statusHtml += '<span class="status-tag status-poison">中毒</span>'; if (p.status.burn) statusHtml += '<span class="status-tag status-burn">灼傷</span>'; if (p.status.asleep) statusHtml += '<span class="status-tag status-asleep">睡眠</span>'; if (p.status.confused) statusHtml += '<span class="status-tag status-confused">混亂</span>'; if (p.status.paralyze) statusHtml += '<span class="status-tag status-paralyze">麻痺</span>'; if (p.status.immune_next) statusHtml += '<span class="status-tag status-immune">免傷</span>'; if (p.status.cant_attack > 0) statusHtml += '<span class="status-tag status-cant-act">禁攻</span>';
  
-let buffHtml = ''; 
-if (p.buff.turns > 0) buffHtml += `<div class="item-tag">💪攻擊+${p.buff.dmg}</div>`; 
-if (p.buff.powerRouletteDmg > 0) buffHtml += `<div class="item-tag" style="background:#0f0;">🎡下回加傷+${p.buff.powerRouletteDmg}</div>`; 
-if (p.status.reduce_dmg_20) buffHtml += `<div class="item-tag">🛡️受傷-20</div>`;
+ let buffHtml = ''; 
+ if (p.buff.turns > 0) buffHtml += `<div class="item-tag">💪攻擊+${p.buff.dmg}</div>`; 
+ if (p.status.reduce_dmg_20) buffHtml += `<div class="item-tag">🛡️受傷-20</div>`;
  if (p.status.reduce_dmg_30) buffHtml += `<div class="item-tag">🛡️受傷-30</div>`;
  if (p.status.reduce_dmg_50) buffHtml += `<div class="item-tag">🛡️受傷-50</div>`;
  if (p.buff.hasFocusSash) buffHtml += `<div class="item-tag">🎗️氣勢披帶</div>`; 
-if (p.buff.fullFaceGuard > 0) buffHtml += `<div class="item-tag">🛡️傷害-20</div>`; 
-if (p.buff.potHelmet > 0) buffHtml += `<div class="item-tag">🪖傷害-40</div>`;
+ if (p.buff.fullFaceGuard > 0) buffHtml += `<div class="item-tag">🛡️傷害-20</div>`; 
+ if (p.buff.potHelmet > 0) buffHtml += `<div class="item-tag">🪖傷害-40</div>`;
  if (p.transformState) buffHtml += `<div class="item-tag" style="background:#00d2ff;color:white;">✨變身中</div>`;
  
-if (p.dynamax && p.dynamax.turns > 0) {
+ if (p.dynamax && p.dynamax.turns > 0) {
  if (p.dynamax.originalForm) {
  buffHtml += `<div class="item-tag" style="background:#ff4444;color:white;">🎇超極巨化</div>`;
  } else {
@@ -1597,12 +1660,12 @@ if (p.dynamax && p.dynamax.turns > 0) {
  }
  if (p.mega && p.mega.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff00ff;color:white;">💎超進化</div>`;
  
-let attacksHtml = '';
+ let attacksHtml = '';
  const isMyActive = (t === window.state.currentTeam && pIdx === window.state.teams[t].activeIdx && window.state.step === 'action');
 
  p.attacks.forEach((atk, aIdx) => {
  let costHtml = `<div style="display:flex; flex-wrap:wrap; width:45px; gap:4px; flex-shrink:0;">${atk.cost.map(c => `<div class="energy-icon energy-${c}"></div>`).join('')}</div>`; 
-if (isMyActive) {
+ if (isMyActive) {
  const hasEnergy = window.canUseAttack(p, atk);
  const rowClass = hasEnergy ? 'attack-ready' : 'attack-disabled';
  attacksHtml += `<div class="attack-row ${rowClass}" style="padding:15px; font-size:18px; margin-top:10px; border: 2px solid #aaa; flex-direction:column; align-items:stretch;" onclick="event.stopPropagation(); if(${hasEnergy}) { window.executeAttackFromInspect(${t}, ${aIdx}); } else { window.showAlert('能量不足！'); }">
@@ -1635,9 +1698,9 @@ if (isMyActive) {
  const drawSide = (t) => {
  const team = window.state.teams[t]; const isMyTurn = (t === window.state.currentTeam && window.state.step !== 'setup');
  const lives = 3 - team.lostLives; let fireHtml = ''; 
-for(let i=0; i<3; i++) fireHtml += (i < lives ? '🔥' : '<span style="filter:grayscale(100%); opacity:0.3;">🔥</span>');
+ for(let i=0; i<3; i++) fireHtml += (i < lives ? '🔥' : '<span style="filter:grayscale(100%); opacity:0.3;">🔥</span>');
  
-document.getElementById(`side-${t}`).className = `team-container ${isMyTurn ? 'active-team' : ''}`;
+ document.getElementById(`side-${t}`).className = `team-container ${isMyTurn ? 'active-team' : ''}`;
  document.getElementById(`header-${t}`).innerHTML = `<h2>TEAM ${t} ${fireHtml}</h2>`;
 
  let benHtml = '', actHtml = '';
@@ -1653,21 +1716,20 @@ document.getElementById(`side-${t}`).className = `team-container ${isMyTurn ? 'a
  if(hCard.target === 'bench' && !isActive && p.currHp > 0) isValidTarget = true;
  if(hCard.target === 'dead_ally' && p.currHp <= 0) isValidTarget = true;
  
-if(hCard.id === 'dynamax_band' && (p.currHp <= 0 || team.usedDynamax || (!isActive && !p.gmaxId))) isValidTarget = false;
- if(hCard.id === 'mega_stone' && (p.currHp <= 0 || !p.megaId || team.usedMega)) isValidTarget = false;
+ if(hCard.id === 'power_roulette' && (!isActive || p.currHp <= 0)) isValidTarget = false;
+ if(hCard.id === 'dynamax_band' && (p.currHp <= 0 || team.usedDynamax || !p.gmaxId)) isValidTarget = false;
+ if(hCard.id === 'mega_stone' && (p.currHp <= 0 || team.usedMega || !p.megaId)) isValidTarget = false;
  if(hCard.id === 'focus_sash' && p.hp > 120) isValidTarget = false;
  }
  
-if (window.state.step === 'select_enemy_any_snipe' && p.currHp > 0 && t !== window.state.currentTeam) isValidTarget = true;
+ if (window.state.step === 'select_enemy_any_snipe' && p.currHp > 0 && t !== window.state.currentTeam) isValidTarget = true;
  if ((window.state.step === 'select_ally_heal_50' || window.state.step === 'select_ally_heal_70') && p.currHp > 0 && t === window.state.currentTeam) isValidTarget = true;
 
  const weakIcon = p.weakness === 'none' ? '無' : (Array.isArray(p.weakness) ? p.weakness.map(w => `<div class="energy-icon energy-${w}"></div>`).join('') : `<div class="energy-icon energy-${p.weakness}"></div>`);
  const resIcon = p.resistance.type === 'none' ? '無' : `<div class="energy-icon energy-${p.resistance.type}"></div>`;
  
-let statusHtml = ''; if (p.status.poison) statusHtml += '<span class="status-tag status-poison">中毒</span>'; if (p.status.burn) statusHtml += '<span class="status-tag status-burn">灼伤</span>'; if (p.status.asleep) statusHtml += '<span class="status-tag status-asleep">睡眠</span>'; if (p.status.confused) statusHtml += '<span class="status-tag status-confused">混亂</span>'; if (p.status.paralyze) statusHtml += '<span class="status-tag status-paralyze">麻痺</span>'; if (p.status.immune_next) statusHtml += '<span class="status-tag status-immune">免傷</span>'; if (p.status.cant_attack > 0) statusHtml += '<span class="status-tag status-cant-act">禁攻</span>';
- let buffHtml = ''; if (p.buff.turns > 0) buffHtml += `<div class="item-tag">💪攻擊+${p.buff.dmg}</div>`; 
- if (p.buff.powerRouletteDmg > 0) buffHtml += `<div class="item-tag" style="background:#0f0;">🎡下回加傷+${p.buff.powerRouletteDmg}</div>`; 
- if (p.buff.hasFocusSash) buffHtml += `<div class="item-tag">🎗️披帶</div>`; if (p.buff.fullFaceGuard > 0) buffHtml += `<div class="item-tag">🛡️-20</div>`; if (p.buff.potHelmet > 0) buffHtml += `<div class="item-tag">🪖-40</div>`;
+ let statusHtml = ''; if (p.status.poison) statusHtml += '<span class="status-tag status-poison">中毒</span>'; if (p.status.burn) statusHtml += '<span class="status-tag status-burn">灼傷</span>'; if (p.status.asleep) statusHtml += '<span class="status-tag status-asleep">睡眠</span>'; if (p.status.confused) statusHtml += '<span class="status-tag status-confused">混亂</span>'; if (p.status.paralyze) statusHtml += '<span class="status-tag status-paralyze">麻痺</span>'; if (p.status.immune_next) statusHtml += '<span class="status-tag status-immune">免傷</span>'; if (p.status.cant_attack > 0) statusHtml += '<span class="status-tag status-cant-act">禁攻</span>';
+ let buffHtml = ''; if (p.buff.turns > 0) buffHtml += `<div class="item-tag">💪攻擊+${p.buff.dmg}</div>`; if (p.buff.hasFocusSash) buffHtml += `<div class="item-tag">🎗️披帶</div>`; if (p.buff.fullFaceGuard > 0) buffHtml += `<div class="item-tag">🛡️-20</div>`; if (p.buff.potHelmet > 0) buffHtml += `<div class="item-tag">🪖-40</div>`;
  if (p.transformState) buffHtml += `<div class="item-tag" style="background:#00d2ff;color:white;">✨變身中</div>`;
  if (p.dynamax && p.dynamax.turns > 0) {
  if (p.dynamax.originalForm) {
@@ -1678,7 +1740,7 @@ let statusHtml = ''; if (p.status.poison) statusHtml += '<span class="status-tag
  }
  if (p.mega && p.mega.turns > 0) buffHtml += `<div class="item-tag" style="background:#ff00ff;color:white;">💎超進化</div>`;
  
-const deadClass = p.currHp <= 0 ? (isValidTarget ? 'dead revivable' : 'dead') : '';
+ const deadClass = p.currHp <= 0 ? (isValidTarget ? 'dead revivable' : 'dead') : '';
  const headerClass = isActive ? 'active-header' : 'bench-header';
 
  let targetClass = '';
@@ -1723,7 +1785,7 @@ const deadClass = p.currHp <= 0 ? (isValidTarget ? 'dead revivable' : 'dead') : 
  });
  document.getElementById(`field-${t}`).innerHTML = (t===1) ? `<div class="bench-grid">${benHtml}</div>${actHtml}` : `${actHtml}<div class="bench-grid">${benHtml}</div>`;
  
-const handDiv = document.getElementById(`hand-${t}`); handDiv.innerHTML = '';
+ const handDiv = document.getElementById(`hand-${t}`); handDiv.innerHTML = '';
  team.hand.forEach((card, cIdx) => {
  const isSelected = (window.state.selectedHandItem && window.state.selectedHandItem.index === cIdx); const descText = card.desc ? card.desc.replace(/'/g, "\\'") : '';
  if(card.cardType === 'energy') {
@@ -1735,7 +1797,7 @@ const handDiv = document.getElementById(`hand-${t}`); handDiv.innerHTML = '';
  };
  drawSide(1); drawSide(2);
  
-const turnInd = document.getElementById('turn-indicator'); const actionHint = document.getElementById('action-hint');
+ const turnInd = document.getElementById('turn-indicator'); const actionHint = document.getElementById('action-hint');
  const setupUI = document.getElementById('setup-ui'); const endBtn = document.getElementById('end-turn-btn');
  if (window.state.step === 'setup') {
  turnInd.style.display = 'none'; actionHint.style.display = 'none'; endBtn.style.display = 'none'; setupUI.style.display = 'flex';
